@@ -1,0 +1,21 @@
+# Documentação de engenharia interna — não faz parte do repositório público.
+# Fica disponível localmente para quem trabalha no projeto, mas nunca é commitada.
+/docs/
+
+# Ambiente
+.env
+
+# Backend (Maven)
+backend/target/
+
+# Frontend (Angular)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE / SO
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

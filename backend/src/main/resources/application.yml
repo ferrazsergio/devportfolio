@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: devportfolio-backend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/devportfolio}
+    username: ${SPRING_DATASOURCE_USERNAME:devportfolio}
+    password: ${SPRING_DATASOURCE_PASSWORD:devportfolio}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
