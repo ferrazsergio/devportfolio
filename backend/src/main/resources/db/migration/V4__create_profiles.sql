@@ -1,0 +1,20 @@
+create table profiles (
+    id uuid primary key,
+    portfolio_id uuid not null,
+    full_name varchar(255),
+    username varchar(50),
+    photo_url varchar(500),
+    headline varchar(255),
+    bio text,
+    location varchar(255),
+    professional_email varchar(255),
+    phone varchar(50),
+    github_url varchar(500),
+    linkedin_url varchar(500),
+    website_url varchar(500),
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
+    constraint uk_profiles_portfolio_id unique (portfolio_id),
+    constraint uk_profiles_username unique (username),
+    constraint fk_profiles_portfolio foreign key (portfolio_id) references portfolios (id)
+);

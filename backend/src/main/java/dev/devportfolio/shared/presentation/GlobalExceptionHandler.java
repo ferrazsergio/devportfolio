@@ -1,6 +1,7 @@
 package dev.devportfolio.shared.presentation;
 
 import dev.devportfolio.shared.domain.ConflictException;
+import dev.devportfolio.shared.domain.NotFoundException;
 import dev.devportfolio.shared.infrastructure.TraceIdFilter;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +36,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleConflict(ConflictException ex) {
+        return new ErrorResponse(traceId(), ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFound(NotFoundException ex) {
         return new ErrorResponse(traceId(), ex.getMessage(), List.of());
     }
 

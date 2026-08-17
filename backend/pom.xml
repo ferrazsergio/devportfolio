@@ -91,6 +91,24 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!--
+                Surefire (mvn test) roda só as classes *Test/*Tests: testes unitários rápidos,
+                sem Docker. Failsafe (mvn verify) roda as classes *IT: testes de integração/API
+                com Testcontainers. Sem isso, arquivos *IT.java são compilados mas NUNCA
+                executados por "mvn verify" (bug real encontrado ao validar a Fase 3).
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
