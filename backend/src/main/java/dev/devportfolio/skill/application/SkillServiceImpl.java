@@ -7,6 +7,7 @@ import dev.devportfolio.skill.domain.SkillAlreadyExistsException;
 import dev.devportfolio.skill.domain.SkillCategory;
 import dev.devportfolio.skill.domain.SkillRepository;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,5 +60,13 @@ public class SkillServiceImpl implements SkillService {
         Skill skill = skillRepository.findByIdAndPortfolioId(skillId, portfolioId)
                 .orElseThrow(() -> new NotFoundException("Habilidade não encontrada."));
         skillRepository.delete(skill);
+    }
+
+    @Override
+    public List<Skill> findByPortfolioIdAndIdIn(UUID portfolioId, Set<UUID> skillIds) {
+        if (skillIds.isEmpty()) {
+            return List.of();
+        }
+        return skillRepository.findByPortfolioIdAndIdIn(portfolioId, skillIds);
     }
 }

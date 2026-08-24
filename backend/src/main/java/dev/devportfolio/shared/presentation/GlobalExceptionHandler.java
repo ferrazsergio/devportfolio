@@ -1,6 +1,7 @@
 package dev.devportfolio.shared.presentation;
 
 import dev.devportfolio.shared.domain.ConflictException;
+import dev.devportfolio.shared.domain.DomainValidationException;
 import dev.devportfolio.shared.domain.NotFoundException;
 import dev.devportfolio.shared.infrastructure.TraceIdFilter;
 import java.util.List;
@@ -36,6 +37,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleConflict(ConflictException ex) {
+        return new ErrorResponse(traceId(), ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(DomainValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleDomainValidation(DomainValidationException ex) {
         return new ErrorResponse(traceId(), ex.getMessage(), List.of());
     }
 
