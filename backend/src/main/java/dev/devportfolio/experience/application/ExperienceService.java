@@ -10,6 +10,9 @@ public interface ExperienceService {
 
     List<Experience> list(UUID ownerUserId);
 
+    /** Usada pelo módulo publicpage (RF09) — portfolioId já resolvido pelo chamador. */
+    List<Experience> listByPortfolioId(UUID portfolioId);
+
     Experience create(UUID ownerUserId, String company, String role, String description, LocalDate startDate,
             LocalDate endDate, boolean current, String location, Set<UUID> technologyIds);
 

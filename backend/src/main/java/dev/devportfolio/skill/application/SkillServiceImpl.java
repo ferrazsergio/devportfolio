@@ -31,6 +31,11 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
+    public List<Skill> listByPortfolioId(UUID portfolioId) {
+        return skillRepository.findByPortfolioId(portfolioId);
+    }
+
+    @Override
     @Transactional
     public Skill create(UUID ownerUserId, String name, SkillCategory category) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);

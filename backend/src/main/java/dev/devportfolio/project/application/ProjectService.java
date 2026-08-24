@@ -11,6 +11,9 @@ public interface ProjectService {
 
     List<Project> list(UUID ownerUserId, Boolean featured);
 
+    /** Usada pelo módulo publicpage (RF09) — portfolioId já resolvido pelo chamador. */
+    List<Project> listByPortfolioId(UUID portfolioId);
+
     Project create(UUID ownerUserId, String name, String slug, String shortDescription, String fullDescription,
             String imageUrl, String githubUrl, String demoUrl, LocalDate date, ProjectStatus status,
             boolean featured, Set<UUID> technologyIds);

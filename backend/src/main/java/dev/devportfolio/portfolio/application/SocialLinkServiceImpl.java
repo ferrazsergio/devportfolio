@@ -26,6 +26,11 @@ public class SocialLinkServiceImpl implements SocialLinkService {
     }
 
     @Override
+    public List<SocialLink> listByPortfolioId(UUID portfolioId) {
+        return socialLinkRepository.findByPortfolioIdOrderByOrderAsc(portfolioId);
+    }
+
+    @Override
     @Transactional
     public SocialLink create(UUID ownerUserId, String platform, String url, int order) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);

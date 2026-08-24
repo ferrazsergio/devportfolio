@@ -2,6 +2,7 @@ package dev.devportfolio.portfolio.application;
 
 import dev.devportfolio.portfolio.domain.Portfolio;
 import dev.devportfolio.portfolio.domain.PortfolioRepository;
+import dev.devportfolio.portfolio.domain.PortfolioStatus;
 import dev.devportfolio.portfolio.domain.Profile;
 import dev.devportfolio.portfolio.domain.ProfileRepository;
 import dev.devportfolio.shared.domain.NotFoundException;
@@ -33,5 +34,27 @@ public class PortfolioServiceImpl implements PortfolioService {
         return portfolioRepository.findByOwnerUserId(ownerUserId)
                 .map(Portfolio::getId)
                 .orElseThrow(() -> new NotFoundException("Portfólio não encontrado."));
+    }
+
+    @Override
+    public Portfolio getByOwner(UUID ownerUserId) {
+        return portfolioRepository.findByOwnerUserId(ownerUserId)
+                .orElseThrow(() -> new NotFoundException("Portfólio não encontrado."));
+    }
+
+    @Override
+    @Transactional
+    public Portfolio updateStatus(UUID ownerUserId, PortfolioStatus status) {
+        Portfolio portfolio = portfolioRepository.findByOwnerUserId(ownerUserId)
+                .orElseThrow(() -> new NotFoundException("Portfólio não encontrado."));
+        portfolio.updateStatus(status);
+        return portfolio;
+    }
+
+    @Override
+    public boolean isPublished(UUID portfolioId) {
+        return portfolioRepository.findById(portfolioId)
+                .map(portfolio -> portfolio.getStatus() == PortfolioStatus.PUBLISHED)
+                .orElse(false);
     }
 }

@@ -10,6 +10,9 @@ public interface SkillService {
 
     List<Skill> list(UUID ownerUserId, SkillCategory category);
 
+    /** Usada pelo módulo publicpage (RF09) — portfolioId já resolvido pelo chamador. */
+    List<Skill> listByPortfolioId(UUID portfolioId);
+
     Skill create(UUID ownerUserId, String name, SkillCategory category);
 
     Skill update(UUID ownerUserId, UUID skillId, String name, SkillCategory category);

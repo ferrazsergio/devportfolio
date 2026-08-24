@@ -48,6 +48,10 @@ public class Portfolio {
         this.status = PortfolioStatus.DRAFT;
     }
 
+    public void updateStatus(PortfolioStatus status) {
+        this.status = status;
+    }
+
     public UUID getId() {
         return id;
     }

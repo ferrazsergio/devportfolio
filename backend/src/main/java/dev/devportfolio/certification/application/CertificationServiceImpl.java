@@ -29,6 +29,11 @@ public class CertificationServiceImpl implements CertificationService {
     }
 
     @Override
+    public List<Certification> listByPortfolioId(UUID portfolioId) {
+        return certificationRepository.findByPortfolioIdOrderByIssueDateDesc(portfolioId);
+    }
+
+    @Override
     @Transactional
     public Certification create(UUID ownerUserId, String name, String issuingOrganization, LocalDate issueDate,
             LocalDate expirationDate, String credentialUrl, String credentialId) {

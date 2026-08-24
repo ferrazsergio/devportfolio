@@ -28,6 +28,11 @@ public class EducationServiceImpl implements EducationService {
     }
 
     @Override
+    public List<Education> listByPortfolioId(UUID portfolioId) {
+        return educationRepository.findByPortfolioIdOrderByStartDateDesc(portfolioId);
+    }
+
+    @Override
     @Transactional
     public Education create(UUID ownerUserId, String institution, String course, String degree, LocalDate startDate,
             LocalDate endDate, String description) {

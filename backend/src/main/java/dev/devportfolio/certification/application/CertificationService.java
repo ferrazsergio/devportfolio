@@ -9,6 +9,9 @@ public interface CertificationService {
 
     List<Certification> list(UUID ownerUserId);
 
+    /** Usada pelo módulo publicpage (RF09) — portfolioId já resolvido pelo chamador. */
+    List<Certification> listByPortfolioId(UUID portfolioId);
+
     Certification create(UUID ownerUserId, String name, String issuingOrganization, LocalDate issueDate,
             LocalDate expirationDate, String credentialUrl, String credentialId);
 

@@ -36,6 +36,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public List<Project> listByPortfolioId(UUID portfolioId) {
+        return projectRepository.findByPortfolioIdOrderByOrderAsc(portfolioId);
+    }
+
+    @Override
     @Transactional
     public Project create(UUID ownerUserId, String name, String slug, String shortDescription,
             String fullDescription, String imageUrl, String githubUrl, String demoUrl, LocalDate date,

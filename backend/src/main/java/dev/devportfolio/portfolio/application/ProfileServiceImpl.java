@@ -4,6 +4,7 @@ import dev.devportfolio.portfolio.domain.Profile;
 import dev.devportfolio.portfolio.domain.ProfileRepository;
 import dev.devportfolio.portfolio.domain.UsernameAlreadyInUseException;
 import dev.devportfolio.shared.domain.NotFoundException;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,11 @@ public class ProfileServiceImpl implements ProfileService {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         return profileRepository.findByPortfolioId(portfolioId)
                 .orElseThrow(() -> new NotFoundException("Perfil não encontrado."));
+    }
+
+    @Override
+    public Optional<Profile> findByUsername(String username) {
+        return profileRepository.findByUsernameIgnoreCase(username);
     }
 
     @Override

@@ -9,6 +9,9 @@ public interface EducationService {
 
     List<Education> list(UUID ownerUserId);
 
+    /** Usada pelo módulo publicpage (RF09) — portfolioId já resolvido pelo chamador. */
+    List<Education> listByPortfolioId(UUID portfolioId);
+
     Education create(UUID ownerUserId, String institution, String course, String degree, LocalDate startDate,
             LocalDate endDate, String description);
 

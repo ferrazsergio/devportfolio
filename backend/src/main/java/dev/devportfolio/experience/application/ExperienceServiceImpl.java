@@ -33,6 +33,11 @@ public class ExperienceServiceImpl implements ExperienceService {
     }
 
     @Override
+    public List<Experience> listByPortfolioId(UUID portfolioId) {
+        return experienceRepository.findByPortfolioIdOrderByOrderAsc(portfolioId);
+    }
+
+    @Override
     @Transactional
     public Experience create(UUID ownerUserId, String company, String role, String description, LocalDate startDate,
             LocalDate endDate, boolean current, String location, Set<UUID> technologyIds) {
