@@ -1,0 +1,90 @@
+<div class="page">
+  <h1 class="page-title">Experiências</h1>
+
+  <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) {
+      <p class="alert alert-danger">{{ errorMessage() }}</p>
+    }
+    <div class="grid">
+      <label>
+        Empresa
+        <input type="text" formControlName="company" />
+      </label>
+      <label>
+        Cargo
+        <input type="text" formControlName="role" />
+      </label>
+      <label>
+        Início
+        <input type="date" formControlName="startDate" />
+      </label>
+      <label>
+        Término
+        <input type="date" formControlName="endDate" [attr.disabled]="form.controls.current.value ? true : null" />
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" formControlName="current" />
+        Emprego atual
+      </label>
+      <label>
+        Localização
+        <input type="text" formControlName="location" />
+      </label>
+      <label class="grid__full">
+        Descrição
+        <textarea formControlName="description" rows="2"></textarea>
+      </label>
+
+      @if (skills().length > 0) {
+        <div class="grid__full">
+          <span class="field-label">Tecnologias</span>
+          <div class="tech-picker">
+            @for (skill of skills(); track skill.id) {
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="isTechnologySelected(skill.id)"
+                  (change)="toggleTechnology(skill.id, $any($event.target).checked)"
+                />
+                {{ skill.name }}
+              </label>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <div class="card-form__actions">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  @if (loading()) {
+    <p>Carregando…</p>
+  } @else if (items().length === 0) {
+    <p class="empty">Nenhuma experiência cadastrada ainda.</p>
+  } @else {
+    <ul class="list">
+      @for (item of items(); track item.id; let i = $index) {
+        <li class="list__item">
+          <div class="list__order">
+            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0">↑</button>
+            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1">↓</button>
+          </div>
+          <div>
+            <strong>{{ item.role }}</strong> · {{ item.company }}
+            @if (technologyNames(item)) {
+              <div class="list__muted">{{ technologyNames(item) }}</div>
+            }
+          </div>
+          <span class="list__actions">
+            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

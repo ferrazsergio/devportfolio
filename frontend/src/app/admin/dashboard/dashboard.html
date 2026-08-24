@@ -1,0 +1,40 @@
+@if (loading()) {
+  <p>Carregando…</p>
+} @else if (portfolio(); as portfolioValue) {
+  <h1 class="page-title">Início</h1>
+
+  <section class="card dashboard-card">
+    <div class="dashboard-card__header">
+      <div>
+        <h2>Seu portfólio</h2>
+        <p class="dashboard-card__hint">
+          @if (portfolioValue.status === 'DRAFT') {
+            Ainda não está visível publicamente. Preencha o perfil e publique quando estiver pronto.
+          } @else {
+            Está no ar e visível publicamente.
+          }
+        </p>
+      </div>
+
+      <span class="badge" [class.badge-success]="portfolioValue.status === 'PUBLISHED'" [class.badge-neutral]="portfolioValue.status === 'DRAFT'">
+        {{ portfolioValue.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho' }}
+      </span>
+    </div>
+
+    <div class="dashboard-card__actions">
+      <button type="button" class="btn btn-dark" (click)="togglePublished()" [disabled]="updating()">
+        @if (updating()) {
+          Salvando…
+        } @else if (portfolioValue.status === 'PUBLISHED') {
+          Voltar para rascunho
+        } @else {
+          Publicar portfólio
+        }
+      </button>
+
+      @if (portfolioValue.status === 'PUBLISHED' && username()) {
+        <a class="btn btn-secondary" [routerLink]="['/', username()]" target="_blank">Ver página pública</a>
+      }
+    </div>
+  </section>
+}

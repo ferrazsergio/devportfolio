@@ -8,98 +8,135 @@
     <p>Esse portfólio não existe ou ainda não foi publicado.</p>
   </div>
 } @else if (portfolio(); as data) {
-  <main class="page">
-    <header class="profile">
+  <header class="hero">
+    <div class="hero__inner">
       @if (data.profile.photoUrl) {
-        <img class="profile__photo" [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
+        <img class="hero__photo" [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
       }
-      <div class="profile__info">
-        <h1>{{ data.profile.fullName }}</h1>
-        @if (data.profile.headline) {
-          <p class="profile__headline">{{ data.profile.headline }}</p>
-        }
-        @if (data.profile.location) {
-          <p class="profile__location">{{ data.profile.location }}</p>
-        }
-        @if (data.profile.bio) {
-          <p class="profile__bio">{{ data.profile.bio }}</p>
-        }
+      <h1 class="hero__name">{{ data.profile.fullName }}</h1>
+      @if (data.profile.headline) {
+        <p class="hero__headline">{{ data.profile.headline }}</p>
+      }
+      @if (data.profile.location) {
+        <p class="hero__location">{{ data.profile.location }}</p>
+      }
+      @if (data.profile.bio) {
+        <p class="hero__bio">{{ data.profile.bio }}</p>
+      }
 
-        <div class="profile__contacts">
-          @if (data.profile.professionalEmail) {
-            <a [href]="'mailto:' + data.profile.professionalEmail">{{ data.profile.professionalEmail }}</a>
-          }
-          @if (data.profile.githubUrl) {
-            <a [href]="data.profile.githubUrl" target="_blank" rel="noopener">GitHub</a>
-          }
-          @if (data.profile.linkedinUrl) {
-            <a [href]="data.profile.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
-          }
-          @if (data.profile.websiteUrl) {
-            <a [href]="data.profile.websiteUrl" target="_blank" rel="noopener">Site</a>
-          }
-          @for (link of data.profile.socialLinks; track link.url) {
-            <a [href]="link.url" target="_blank" rel="noopener">{{ link.platform }}</a>
-          }
-        </div>
+      <div class="hero__contacts">
+        @if (data.profile.professionalEmail) {
+          <a class="pill-link" [href]="'mailto:' + data.profile.professionalEmail">Email</a>
+        }
+        @if (data.profile.githubUrl) {
+          <a class="pill-link" [href]="data.profile.githubUrl" target="_blank" rel="noopener">GitHub</a>
+        }
+        @if (data.profile.linkedinUrl) {
+          <a class="pill-link" [href]="data.profile.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
+        }
+        @if (data.profile.websiteUrl) {
+          <a class="pill-link" [href]="data.profile.websiteUrl" target="_blank" rel="noopener">Site</a>
+        }
+        @for (link of data.profile.socialLinks; track link.url) {
+          <a class="pill-link" [href]="link.url" target="_blank" rel="noopener">{{ link.platform }}</a>
+        }
+        <button type="button" class="pill-link pill-link--action" (click)="copyLink()">
+          {{ linkCopied() ? 'Link copiado!' : 'Compartilhar' }}
+        </button>
       </div>
-    </header>
+    </div>
+  </header>
 
-    @if (data.experiences.length > 0) {
-      <section class="section">
-        <h2>Experiência</h2>
-        @for (experience of data.experiences; track experience.company + experience.role) {
-          <article class="card">
-            <h3>{{ experience.role }} · {{ experience.company }}</h3>
-            <p class="card__period">
-              {{ formatPeriod(experience.startDate, experience.endDate, experience.current) }}
-              @if (experience.location) {
-                · {{ experience.location }}
-              }
-            </p>
-            @if (experience.description) {
-              <p>{{ experience.description }}</p>
-            }
-            @if (experience.technologies.length > 0) {
-              <ul class="tags">
-                @for (tech of experience.technologies; track tech.name) {
-                  <li>{{ tech.name }}</li>
-                }
-              </ul>
-            }
-          </article>
+  @if (hasAnyContent(data)) {
+    <nav class="anchor-nav">
+      <div class="anchor-nav__inner">
+        @if (data.experiences.length > 0) {
+          <a href="#experience">Experiência</a>
         }
+        @if (data.projects.length > 0) {
+          <a href="#projects">Projetos</a>
+        }
+        @if (data.skills.length > 0) {
+          <a href="#skills">Habilidades</a>
+        }
+        @if (data.educations.length > 0) {
+          <a href="#education">Formação</a>
+        }
+        @if (data.certifications.length > 0) {
+          <a href="#certifications">Certificações</a>
+        }
+      </div>
+    </nav>
+  }
+
+  <main class="page">
+    @if (data.experiences.length > 0) {
+      <section class="section" id="experience">
+        <h2 class="section__title">Experiência</h2>
+        <ol class="timeline">
+          @for (experience of data.experiences; track experience.company + experience.role) {
+            <li class="timeline__item">
+              <div class="card">
+                <h3>{{ experience.role }} · {{ experience.company }}</h3>
+                <p class="card__period">
+                  {{ formatPeriod(experience.startDate, experience.endDate, experience.current) }}
+                  @if (experience.location) {
+                    · {{ experience.location }}
+                  }
+                </p>
+                @if (experience.description) {
+                  <p>{{ experience.description }}</p>
+                }
+                @if (experience.technologies.length > 0) {
+                  <ul class="tags">
+                    @for (tech of experience.technologies; track tech.name) {
+                      <li class="badge badge-primary">{{ tech.name }}</li>
+                    }
+                  </ul>
+                }
+              </div>
+            </li>
+          }
+        </ol>
       </section>
     }
 
     @if (data.projects.length > 0) {
-      <section class="section">
-        <h2>Projetos</h2>
-        <div class="grid">
+      <section class="section" id="projects">
+        <h2 class="section__title">Projetos</h2>
+        <div class="project-grid">
           @for (project of data.projects; track project.slug) {
-            <article class="card">
+            <article class="card project-card">
               @if (project.imageUrl) {
-                <img class="card__image" [src]="project.imageUrl" [alt]="project.name" />
+                <img class="project-card__image" [src]="project.imageUrl" [alt]="project.name" />
               }
-              <h3>{{ project.name }}</h3>
-              @if (project.shortDescription) {
-                <p>{{ project.shortDescription }}</p>
-              }
-              <p class="card__links">
-                @if (project.githubUrl) {
-                  <a [href]="project.githubUrl" target="_blank" rel="noopener">Código</a>
-                }
-                @if (project.demoUrl) {
-                  <a [href]="project.demoUrl" target="_blank" rel="noopener">Demo</a>
-                }
-              </p>
-              @if (project.technologies.length > 0) {
-                <ul class="tags">
-                  @for (tech of project.technologies; track tech.name) {
-                    <li>{{ tech.name }}</li>
+              <div class="project-card__body">
+                <h3>
+                  {{ project.name }}
+                  @if (project.featured) {
+                    <span class="badge badge-warning">destaque</span>
                   }
-                </ul>
-              }
+                </h3>
+                <p class="card__period">{{ statusLabel(project.status) }}</p>
+                @if (project.shortDescription) {
+                  <p>{{ project.shortDescription }}</p>
+                }
+                <p class="card__links">
+                  @if (project.githubUrl) {
+                    <a [href]="project.githubUrl" target="_blank" rel="noopener">Código</a>
+                  }
+                  @if (project.demoUrl) {
+                    <a [href]="project.demoUrl" target="_blank" rel="noopener">Demo</a>
+                  }
+                </p>
+                @if (project.technologies.length > 0) {
+                  <ul class="tags">
+                    @for (tech of project.technologies; track tech.name) {
+                      <li class="badge badge-neutral">{{ tech.name }}</li>
+                    }
+                  </ul>
+                }
+              </div>
             </article>
           }
         </div>
@@ -107,43 +144,64 @@
     }
 
     @if (data.skills.length > 0) {
-      <section class="section">
-        <h2>Habilidades</h2>
-        <ul class="tags tags--large">
-          @for (skill of data.skills; track skill.name) {
-            <li>{{ skill.name }}</li>
+      <section class="section" id="skills">
+        <h2 class="section__title">Habilidades</h2>
+        <div class="skill-groups">
+          @for (group of skillGroups(data.skills); track group.category) {
+            <div class="card skill-group">
+              <h3>{{ group.label }}</h3>
+              <ul class="tags">
+                @for (skill of group.skills; track skill.name) {
+                  <li class="badge badge-primary">{{ skill.name }}</li>
+                }
+              </ul>
+            </div>
           }
-        </ul>
+        </div>
       </section>
     }
 
     @if (data.educations.length > 0) {
-      <section class="section">
-        <h2>Formação</h2>
-        @for (education of data.educations; track education.institution + education.course) {
-          <article class="card">
-            <h3>{{ education.course }} · {{ education.institution }}</h3>
-            @if (education.degree) {
-              <p class="card__period">{{ education.degree }}</p>
-            }
-          </article>
-        }
+      <section class="section" id="education">
+        <h2 class="section__title">Formação</h2>
+        <ol class="timeline">
+          @for (education of data.educations; track education.institution + education.course) {
+            <li class="timeline__item">
+              <div class="card">
+                <h3>{{ education.course }} · {{ education.institution }}</h3>
+                @if (education.degree) {
+                  <p class="card__period">{{ education.degree }}</p>
+                }
+                @if (education.description) {
+                  <p>{{ education.description }}</p>
+                }
+              </div>
+            </li>
+          }
+        </ol>
       </section>
     }
 
     @if (data.certifications.length > 0) {
-      <section class="section">
-        <h2>Certificações</h2>
-        @for (certification of data.certifications; track certification.name + certification.issuingOrganization) {
-          <article class="card">
-            <h3>{{ certification.name }}</h3>
-            <p class="card__period">{{ certification.issuingOrganization }}</p>
-            @if (certification.credentialUrl) {
-              <a [href]="certification.credentialUrl" target="_blank" rel="noopener">Ver credencial</a>
-            }
-          </article>
-        }
+      <section class="section" id="certifications">
+        <h2 class="section__title">Certificações</h2>
+        <div class="project-grid">
+          @for (certification of data.certifications; track certification.name + certification.issuingOrganization) {
+            <article class="card">
+              <h3>{{ certification.name }}</h3>
+              <p class="card__period">{{ certification.issuingOrganization }}</p>
+              @if (certification.credentialUrl) {
+                <a [href]="certification.credentialUrl" target="_blank" rel="noopener">Ver credencial</a>
+              }
+            </article>
+          }
+        </div>
       </section>
     }
   </main>
+
+  <footer class="site-footer">
+    <app-logo />
+    <p>Portfólio construído com DevPortfolio.</p>
+  </footer>
 }

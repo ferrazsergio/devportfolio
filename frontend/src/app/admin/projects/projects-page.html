@@ -1,0 +1,112 @@
+<div class="page">
+  <h1 class="page-title">Projetos</h1>
+
+  <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) {
+      <p class="alert alert-danger">{{ errorMessage() }}</p>
+    }
+    <div class="grid">
+      <label>
+        Nome
+        <input type="text" formControlName="name" />
+      </label>
+      <label>
+        Slug (URL)
+        <input type="text" formControlName="slug" placeholder="meu-projeto" />
+      </label>
+      <label>
+        Status
+        <select formControlName="status">
+          @for (option of statuses; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Data
+        <input type="date" formControlName="date" />
+      </label>
+      <label class="grid__full">
+        Descrição curta
+        <input type="text" formControlName="shortDescription" />
+      </label>
+      <label class="grid__full">
+        Descrição completa
+        <textarea formControlName="fullDescription" rows="3"></textarea>
+      </label>
+      <label>
+        Imagem (URL)
+        <input type="text" formControlName="imageUrl" />
+      </label>
+      <label>
+        GitHub
+        <input type="text" formControlName="githubUrl" />
+      </label>
+      <label>
+        Demo
+        <input type="text" formControlName="demoUrl" />
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" formControlName="featured" />
+        Projeto em destaque
+      </label>
+
+      @if (skills().length > 0) {
+        <div class="grid__full">
+          <span class="field-label">Tecnologias</span>
+          <div class="tech-picker">
+            @for (skill of skills(); track skill.id) {
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="isTechnologySelected(skill.id)"
+                  (change)="toggleTechnology(skill.id, $any($event.target).checked)"
+                />
+                {{ skill.name }}
+              </label>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <div class="card-form__actions">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  @if (loading()) {
+    <p>Carregando…</p>
+  } @else if (items().length === 0) {
+    <p class="empty">Nenhum projeto cadastrado ainda.</p>
+  } @else {
+    <ul class="list">
+      @for (item of items(); track item.id; let i = $index) {
+        <li class="list__item">
+          <div class="list__order">
+            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0">↑</button>
+            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1">↓</button>
+          </div>
+          <div>
+            <strong>{{ item.name }}</strong>
+            @if (item.featured) {
+              <span class="badge badge-warning">destaque</span>
+            }
+            <div class="list__muted">
+              {{ statusLabel(item.status) }}
+              @if (technologyNames(item)) {
+                · {{ technologyNames(item) }}
+              }
+            </div>
+          </div>
+          <span class="list__actions">
+            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

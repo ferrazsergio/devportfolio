@@ -1,0 +1,44 @@
+<div class="page">
+  <h1 class="page-title">Habilidades</h1>
+
+  <form class="inline-form" [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) {
+      <p class="alert alert-danger">{{ errorMessage() }}</p>
+    }
+    <div class="inline-form__fields">
+      <input type="text" formControlName="name" placeholder="Nome (ex.: Java)" />
+      <select formControlName="category">
+        @for (option of categories; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      <div class="inline-form__actions">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ editingId() ? 'Salvar' : 'Adicionar' }}
+        </button>
+        @if (editingId()) {
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (loading()) {
+    <p>Carregando…</p>
+  } @else if (skills().length === 0) {
+    <p class="empty">Nenhuma habilidade cadastrada ainda.</p>
+  } @else {
+    <ul class="list">
+      @for (skill of skills(); track skill.id) {
+        <li class="list__item">
+          <span>{{ skill.name }}</span>
+          <span class="badge badge-primary">{{ categoryLabel(skill.category) }}</span>
+          <span class="list__actions">
+            <button type="button" class="btn btn-icon" (click)="edit(skill)">Editar</button>
+            <button type="button" class="btn btn-danger" (click)="remove(skill)">Remover</button>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

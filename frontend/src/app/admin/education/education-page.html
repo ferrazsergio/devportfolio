@@ -1,0 +1,64 @@
+<div class="page">
+  <h1 class="page-title">Formação</h1>
+
+  <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) {
+      <p class="alert alert-danger">{{ errorMessage() }}</p>
+    }
+    <div class="grid">
+      <label>
+        Instituição
+        <input type="text" formControlName="institution" />
+      </label>
+      <label>
+        Curso
+        <input type="text" formControlName="course" />
+      </label>
+      <label>
+        Grau
+        <input type="text" formControlName="degree" placeholder="Bacharelado, Técnico…" />
+      </label>
+      <label>
+        Início
+        <input type="date" formControlName="startDate" />
+      </label>
+      <label>
+        Término
+        <input type="date" formControlName="endDate" />
+      </label>
+      <label class="grid__full">
+        Descrição
+        <textarea formControlName="description" rows="2"></textarea>
+      </label>
+    </div>
+    <div class="card-form__actions">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  @if (loading()) {
+    <p>Carregando…</p>
+  } @else if (items().length === 0) {
+    <p class="empty">Nenhuma formação cadastrada ainda.</p>
+  } @else {
+    <ul class="list">
+      @for (item of items(); track item.id) {
+        <li class="list__item">
+          <div>
+            <strong>{{ item.course }}</strong> · {{ item.institution }}
+            @if (item.degree) {
+              <span class="list__muted"> — {{ item.degree }}</span>
+            }
+          </div>
+          <span class="list__actions">
+            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

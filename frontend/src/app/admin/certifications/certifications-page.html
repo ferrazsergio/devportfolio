@@ -1,0 +1,62 @@
+<div class="page">
+  <h1 class="page-title">Certificações</h1>
+
+  <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) {
+      <p class="alert alert-danger">{{ errorMessage() }}</p>
+    }
+    <div class="grid">
+      <label>
+        Nome
+        <input type="text" formControlName="name" />
+      </label>
+      <label>
+        Instituição emissora
+        <input type="text" formControlName="issuingOrganization" />
+      </label>
+      <label>
+        Data de emissão
+        <input type="date" formControlName="issueDate" />
+      </label>
+      <label>
+        Validade
+        <input type="date" formControlName="expirationDate" />
+      </label>
+      <label>
+        URL da credencial
+        <input type="text" formControlName="credentialUrl" />
+      </label>
+      <label>
+        Identificador da credencial
+        <input type="text" formControlName="credentialId" />
+      </label>
+    </div>
+    <div class="card-form__actions">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      @if (editingId()) {
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      }
+    </div>
+  </form>
+
+  @if (loading()) {
+    <p>Carregando…</p>
+  } @else if (items().length === 0) {
+    <p class="empty">Nenhuma certificação cadastrada ainda.</p>
+  } @else {
+    <ul class="list">
+      @for (item of items(); track item.id) {
+        <li class="list__item">
+          <div>
+            <strong>{{ item.name }}</strong>
+            <span class="list__muted"> — {{ item.issuingOrganization }}</span>
+          </div>
+          <span class="list__actions">
+            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

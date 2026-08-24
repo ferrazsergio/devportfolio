@@ -1,0 +1,80 @@
+@if (loading()) {
+  <p>Carregando…</p>
+} @else {
+  <div class="page">
+    <h1 class="page-title">Perfil</h1>
+
+    <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
+      @if (errorMessage()) {
+        <p class="alert alert-danger">{{ errorMessage() }}</p>
+      }
+      @if (savedMessage()) {
+        <p class="alert alert-success">Perfil atualizado.</p>
+      }
+
+      <div class="grid">
+        <label>
+          Nome completo
+          <input type="text" formControlName="fullName" />
+        </label>
+
+        <label>
+          Nome de usuário (URL pública)
+          <input type="text" formControlName="username" placeholder="seu-usuario" />
+          <small>Letras minúsculas, números e hífen. 3 a 50 caracteres.</small>
+        </label>
+
+        <label class="grid__full">
+          Título profissional
+          <input type="text" formControlName="headline" placeholder="Ex.: Desenvolvedor Java" />
+        </label>
+
+        <label class="grid__full">
+          Biografia
+          <textarea formControlName="bio" rows="4"></textarea>
+        </label>
+
+        <label>
+          Localização
+          <input type="text" formControlName="location" />
+        </label>
+
+        <label>
+          Foto (URL)
+          <input type="text" formControlName="photoUrl" />
+        </label>
+
+        <label>
+          Email profissional
+          <input type="email" formControlName="professionalEmail" />
+        </label>
+
+        <label>
+          Telefone
+          <input type="text" formControlName="phone" />
+        </label>
+
+        <label>
+          GitHub
+          <input type="text" formControlName="githubUrl" />
+        </label>
+
+        <label>
+          LinkedIn
+          <input type="text" formControlName="linkedinUrl" />
+        </label>
+
+        <label>
+          Site
+          <input type="text" formControlName="websiteUrl" />
+        </label>
+      </div>
+
+      <div class="card-form__actions">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Salvando…' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}

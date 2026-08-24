@@ -1,0 +1,30 @@
+.dashboard-card {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.dashboard-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.dashboard-card__header h2 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
+}
+
+.dashboard-card__hint {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  max-width: 42ch;
+}
+
+.dashboard-card__actions {
+  display: flex;
+  gap: var(--space-3);
+}
