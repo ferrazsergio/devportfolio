@@ -67,7 +67,7 @@ class ProjectControllerIT {
                         .session(session)
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"B\",\"slug\":\"MEU-PROJETO\",\"status\":\"IN_PROGRESS\"}"))
+                        .content("{\"name\":\"B\",\"slug\":\"meu-projeto\",\"status\":\"IN_PROGRESS\"}"))
                 .andExpect(status().isConflict());
     }
 

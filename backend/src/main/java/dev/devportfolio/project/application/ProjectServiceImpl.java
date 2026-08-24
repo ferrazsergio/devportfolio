@@ -42,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
             ProjectStatus status, boolean featured, Set<UUID> technologyIds) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         requireOwnedTechnologies(portfolioId, technologyIds);
-        if (projectRepository.existsByPortfolioIdAndSlugIgnoreCase(portfolioId, slug)) {
+        if (projectRepository.existsByPortfolioIdAndSlug(portfolioId, slug)) {
             throw new ProjectSlugAlreadyInUseException();
         }
         int nextOrder = projectRepository.findByPortfolioIdOrderByOrderAsc(portfolioId).size();
@@ -59,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
         requireOwnedTechnologies(portfolioId, technologyIds);
         Project project = projectRepository.findByIdAndPortfolioId(projectId, portfolioId)
                 .orElseThrow(() -> new NotFoundException("Projeto não encontrado."));
-        if (projectRepository.existsByPortfolioIdAndSlugIgnoreCaseAndIdNot(portfolioId, slug, projectId)) {
+        if (projectRepository.existsByPortfolioIdAndSlugAndIdNot(portfolioId, slug, projectId)) {
             throw new ProjectSlugAlreadyInUseException();
         }
         project.update(name, slug, shortDescription, fullDescription, imageUrl, githubUrl, demoUrl, date, status,

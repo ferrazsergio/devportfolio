@@ -16,7 +16,9 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     Optional<Project> findByIdAndPortfolioId(UUID id, UUID portfolioId);
 
-    boolean existsByPortfolioIdAndSlugIgnoreCase(UUID portfolioId, String slug);
+    // slug já é normalizado para minúsculas pela validação de entrada (regex ^[a-z0-9-]{3,100}$),
+    // então uma comparação exata já é suficiente e bate com a unique constraint case-sensitive do banco.
+    boolean existsByPortfolioIdAndSlug(UUID portfolioId, String slug);
 
-    boolean existsByPortfolioIdAndSlugIgnoreCaseAndIdNot(UUID portfolioId, String slug, UUID id);
+    boolean existsByPortfolioIdAndSlugAndIdNot(UUID portfolioId, String slug, UUID id);
 }

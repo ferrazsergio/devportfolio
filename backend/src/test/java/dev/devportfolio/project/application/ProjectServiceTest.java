@@ -42,7 +42,7 @@ class ProjectServiceTest {
     @Test
     void rejectsDuplicateSlugForSameOwner() {
         when(portfolioService.requirePortfolioId(OWNER_ID)).thenReturn(PORTFOLIO_ID);
-        when(projectRepository.existsByPortfolioIdAndSlugIgnoreCase(PORTFOLIO_ID, "meu-projeto")).thenReturn(true);
+        when(projectRepository.existsByPortfolioIdAndSlug(PORTFOLIO_ID, "meu-projeto")).thenReturn(true);
 
         assertThatThrownBy(() -> projectService.create(OWNER_ID, "Meu Projeto", "meu-projeto", null, null, null,
                 null, null, null, ProjectStatus.IN_PROGRESS, false, Set.of()))
