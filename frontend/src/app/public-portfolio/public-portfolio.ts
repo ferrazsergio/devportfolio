@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { LogoComponent } from '../core/ui/logo/logo';
 import { PublicPortfolioApiService } from './public-portfolio-api.service';
@@ -37,6 +38,8 @@ export interface SkillGroup {
 export class PublicPortfolioComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly api = inject(PublicPortfolioApiService);
+  private readonly title = inject(Title);
+  private readonly meta = inject(Meta);
 
   protected readonly portfolio = signal<PublicPortfolio | null>(null);
   protected readonly loading = signal(true);
@@ -49,12 +52,26 @@ export class PublicPortfolioComponent {
       next: (data) => {
         this.portfolio.set(data);
         this.loading.set(false);
+        this.updateMetaTags(data);
       },
       error: () => {
         this.notFound.set(true);
         this.loading.set(false);
+        this.title.setTitle('Portfólio não encontrado · DevPortfolio');
       },
     });
+  }
+
+  private updateMetaTags(data: PublicPortfolio): void {
+    const displayName = data.profile.fullName ?? this.route.snapshot.paramMap.get('username')!;
+    const description = data.profile.headline ?? data.profile.bio ?? 'Portfólio de desenvolvedor(a) no DevPortfolio.';
+    this.title.setTitle(`${displayName} · DevPortfolio`);
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ property: 'og:title', content: displayName });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    if (data.profile.photoUrl) {
+      this.meta.updateTag({ property: 'og:image', content: data.profile.photoUrl });
+    }
   }
 
   protected formatPeriod(startDate: string, endDate: string | null, current: boolean): string {

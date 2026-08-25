@@ -6,8 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.containsString;
 
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -118,5 +120,39 @@ class PublicPageControllerIT {
         mockMvc.perform(get("/api/v1/public/CASE-USER"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.profile.fullName").value("Case User"));
+    }
+
+    @Test
+    void metaEndpointReturnsHtmlWithOpenGraphTagsForPublishedPortfolio() throws Exception {
+        MockHttpSession session = registerAndLogin(mockMvc, "public-meta@example.com");
+        mockMvc.perform(put("/api/v1/profile")
+                        .session(session)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"fullName\":\"Meta User\",\"username\":\"meta-user\",\"headline\":\"Java dev <script>\"}"))
+                .andExpect(status().isOk());
+        mockMvc.perform(patch("/api/v1/portfolio/status")
+                        .session(session)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\":\"PUBLISHED\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/v1/public/meta-user/meta"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(content().string(containsString("<title>Meta User · DevPortfolio</title>")))
+                .andExpect(content().string(containsString("og:title")))
+                .andExpect(content().string(containsString("rel=\"canonical\"")))
+                // headline com HTML deve vir escapado, nunca injetado cru na resposta
+                .andExpect(content().string(containsString("Java dev &lt;script&gt;")));
+    }
+
+    @Test
+    void metaEndpointReturnsNotFoundHtmlForMissingOrDraftPortfolio() throws Exception {
+        mockMvc.perform(get("/api/v1/public/never-registered/meta"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(content().string(containsString("não encontrado")));
     }
 }
