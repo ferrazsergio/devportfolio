@@ -42,7 +42,7 @@ public class GithubApiClient {
         this.apiBaseUrl = apiBaseUrl;
     }
 
-    @CircuitBreaker(name = "github", fallbackMethod = "exchangeCodeFallback")
+    @CircuitBreaker(name = "github-oauth", fallbackMethod = "exchangeCodeFallback")
     public GithubTokenResponse exchangeCodeForToken(String code, String redirectUri) {
         GithubTokenResponse response = restClient.post().uri(oauthBaseUrl + "/login/oauth/access_token")
                 .header("Accept", "application/json")
@@ -62,7 +62,7 @@ public class GithubApiClient {
         throw new ExternalServiceException("GitHub indisponível no momento. Tente novamente em instantes.", cause);
     }
 
-    @CircuitBreaker(name = "github", fallbackMethod = "getAuthenticatedUserFallback")
+    @CircuitBreaker(name = "github-oauth", fallbackMethod = "getAuthenticatedUserFallback")
     public GithubUserDto getAuthenticatedUser(String accessToken) {
         return restClient.get().uri(apiBaseUrl + "/user").header("Authorization", "Bearer " + accessToken)
                 .header("Accept", "application/vnd.github+json")
@@ -82,7 +82,7 @@ public class GithubApiClient {
         throw new ExternalServiceException("GitHub indisponível no momento. Tente novamente em instantes.", cause);
     }
 
-    @CircuitBreaker(name = "github", fallbackMethod = "listRepositoriesFallback")
+    @CircuitBreaker(name = "github-api", fallbackMethod = "listRepositoriesFallback")
     public List<GithubRepoDto> listRepositories(String accessToken) {
         GithubRepoDto[] repos = restClient.get().uri(apiBaseUrl + "/user/repos?per_page=100&sort=updated")
                 .header("Authorization", "Bearer " + accessToken).header("Accept", "application/vnd.github+json")

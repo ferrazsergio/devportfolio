@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/github")
 public class GithubController {
 
+    private static final Logger log = LoggerFactory.getLogger(GithubController.class);
     private static final String OAUTH_STATE_SESSION_KEY = "github_oauth_state";
 
     private final GithubOAuthService oauthService;
@@ -68,6 +71,7 @@ public class GithubController {
                 response.sendRedirect(publicBaseUrl + "/admin/projects?github=connected");
                 return;
             } catch (RuntimeException ex) {
+                log.warn("Falha ao conectar conta do GitHub para o usuário {}", principal.getUser().getId(), ex);
                 response.sendRedirect(publicBaseUrl + "/admin/projects?github=error");
                 return;
             }
