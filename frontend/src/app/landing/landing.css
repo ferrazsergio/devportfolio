@@ -1,0 +1,228 @@
+:host {
+  display: block;
+}
+
+.landing-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-8);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.landing-nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.landing-nav__links a:not(.btn) {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.landing-nav__links a:not(.btn):hover {
+  color: var(--color-primary-600);
+}
+
+.hero {
+  background: var(--color-primary-900);
+  color: var(--color-neutral-300);
+  padding: var(--space-16) var(--space-5);
+  text-align: center;
+}
+
+.hero h1 {
+  color: var(--color-white);
+  font-size: var(--text-4xl);
+  max-width: 30ch;
+  margin: 0 auto var(--space-5);
+}
+
+.hero p {
+  max-width: 60ch;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.hero__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.section {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-5);
+}
+
+.section h2 {
+  font-size: var(--text-2xl);
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-5);
+}
+
+.feature-card {
+  padding: var(--space-5);
+}
+
+.feature-card svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary-600);
+  margin-bottom: var(--space-3);
+}
+
+.feature-card h3 {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-1);
+}
+
+.feature-card p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.open-source {
+  background: var(--color-neutral-50);
+  max-width: none;
+  text-align: center;
+}
+
+.open-source > div {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.open-source p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: var(--space-3) 0 var(--space-6);
+}
+
+.docker-workflow {
+  text-align: center;
+}
+
+.docker-workflow__steps {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.docker-workflow__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 160px;
+}
+
+.docker-workflow__number {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-600);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.docker-workflow__step p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.docker-workflow__code {
+  background: var(--color-primary-900);
+  color: var(--color-neutral-100);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  text-align: left;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.seo-sharing {
+  text-align: center;
+}
+
+.seo-sharing p {
+  max-width: 60ch;
+  margin: 0 auto;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.landing-footer {
+  background: var(--color-primary-900);
+  color: var(--color-neutral-400);
+  padding: var(--space-8) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.landing-footer .logo__wordmark {
+  color: var(--color-white);
+}
+
+.landing-footer p {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.landing-footer__links {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.landing-footer__links a {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-300);
+  text-decoration: none;
+}
+
+.landing-footer__links a:hover {
+  color: var(--color-white);
+}
+
+@media (max-width: 640px) {
+  .landing-nav {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .hero {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}

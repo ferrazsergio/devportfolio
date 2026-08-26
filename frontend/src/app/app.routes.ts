@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
+import { LandingComponent } from './landing/landing';
 import { LoginComponent } from './auth/login/login';
 import { RegisterComponent } from './auth/register/register';
 import { AdminShellComponent } from './admin/shell/admin-shell';
@@ -14,6 +15,7 @@ import { SocialLinksPageComponent } from './admin/social-links/social-links-page
 import { PublicPortfolioComponent } from './public-portfolio/public-portfolio';
 
 export const routes: Routes = [
+  { path: '', component: LandingComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
