@@ -23,6 +23,11 @@ app:
   cors:
     allowed-origin: ${APP_CORS_ORIGIN:http://localhost:4200}
   public-base-url: ${APP_PUBLIC_BASE_URL:http://localhost:4200}
+  github:
+    client-id: ${GITHUB_CLIENT_ID:}
+    client-secret: ${GITHUB_CLIENT_SECRET:}
+    # Chave AES-256 (base64) para cifrar o access token do GitHub em repouso — ver ADR-008.
+    token-encryption-key: ${APP_TOKEN_ENCRYPTION_KEY:}
 
 management:
   endpoints:
@@ -32,3 +37,16 @@ management:
   endpoint:
     health:
       show-details: never
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      github:
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        # Token revogado/expirado é um problema do dado de UM usuário, não de
+        # instabilidade do GitHub — não deve contar para abrir o circuito.
+        ignore-exceptions:
+          - dev.devportfolio.github.domain.GithubTokenInvalidException

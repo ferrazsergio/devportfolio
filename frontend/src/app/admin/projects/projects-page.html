@@ -1,6 +1,72 @@
 <div class="page">
   <h1 class="page-title">Projetos</h1>
 
+  <section class="card github-card">
+    <div class="github-card__header">
+      <h2>GitHub</h2>
+      @if (githubStatus()?.connected) {
+        <span class="badge badge-success">Conectado como &commat;{{ githubStatus()?.githubUsername }}</span>
+      } @else {
+        <span class="badge badge-neutral">Não conectado</span>
+      }
+    </div>
+
+    @if (githubMessage()) {
+      <p class="alert alert-success">{{ githubMessage() }}</p>
+    }
+
+    @if (githubStatus()?.connected) {
+      <div class="github-card__actions">
+        <button type="button" class="btn btn-secondary" (click)="loadGithubRepos()" [disabled]="githubLoadingRepos()">
+          {{ githubLoadingRepos() ? 'Carregando…' : 'Importar repositórios' }}
+        </button>
+        <button type="button" class="btn btn-danger" (click)="disconnectGithub()">Desconectar</button>
+      </div>
+
+      @if (githubRepos(); as repos) {
+        @if (repos.length === 0) {
+          <p class="empty">Nenhum repositório público encontrado.</p>
+        } @else {
+          <ul class="list github-repo-list">
+            @for (repo of repos; track repo.fullName) {
+              <li class="list__item">
+                <label class="checkbox">
+                  <input
+                    type="checkbox"
+                    [checked]="isGithubRepoSelected(repo.fullName)"
+                    (change)="toggleGithubRepoSelection(repo.fullName, $any($event.target).checked)"
+                  />
+                  <strong>{{ repo.name }}</strong>
+                </label>
+                @if (repo.description) {
+                  <span class="list__muted">{{ repo.description }}</span>
+                }
+                @if (repo.language) {
+                  <span class="badge badge-neutral">{{ repo.language }}</span>
+                }
+              </li>
+            }
+          </ul>
+          <div class="github-card__actions">
+            <button
+              type="button"
+              class="btn btn-dark"
+              (click)="importSelectedGithubRepos()"
+              [disabled]="githubImporting()"
+            >
+              {{ githubImporting() ? 'Importando…' : 'Importar selecionados' }}
+            </button>
+          </div>
+        }
+      }
+    } @else {
+      <p class="empty">Conecte sua conta do GitHub para importar repositórios como projetos.</p>
+      <div class="github-card__actions">
+        <button type="button" class="btn btn-primary" (click)="connectGithub()">Conectar com GitHub</button>
+      </div>
+    }
+  </section>
+
   <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
     @if (errorMessage()) {
       <p class="alert alert-danger">{{ errorMessage() }}</p>

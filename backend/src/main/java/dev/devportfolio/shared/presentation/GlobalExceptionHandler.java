@@ -2,6 +2,7 @@ package dev.devportfolio.shared.presentation;
 
 import dev.devportfolio.shared.domain.ConflictException;
 import dev.devportfolio.shared.domain.DomainValidationException;
+import dev.devportfolio.shared.domain.ExternalServiceException;
 import dev.devportfolio.shared.domain.NotFoundException;
 import dev.devportfolio.shared.infrastructure.TraceIdFilter;
 import java.util.List;
@@ -50,6 +51,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(NotFoundException ex) {
         return new ErrorResponse(traceId(), ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(ExternalServiceException.class)
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public ErrorResponse handleExternalService(ExternalServiceException ex) {
+        String traceId = traceId();
+        log.warn("Falha ao chamar serviço externo, traceId={}", traceId, ex);
+        return new ErrorResponse(traceId, ex.getMessage(), List.of());
     }
 
     @ExceptionHandler(AuthenticationException.class)

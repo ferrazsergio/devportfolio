@@ -1,6 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { GithubApiService } from '../github/github-api.service';
+import { GithubRepo, GithubStatus } from '../github/github.model';
 import { SkillApiService } from '../skills/skill-api.service';
 import { Skill } from '../skills/skill.model';
 import { ProjectApiService } from './project-api.service';
@@ -16,6 +19,15 @@ export class ProjectsPageComponent {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(ProjectApiService);
   private readonly skillApi = inject(SkillApiService);
+  private readonly githubApi = inject(GithubApiService);
+  private readonly route = inject(ActivatedRoute);
+
+  protected readonly githubStatus = signal<GithubStatus | null>(null);
+  protected readonly githubRepos = signal<GithubRepo[] | null>(null);
+  protected readonly githubSelected = signal<ReadonlySet<string>>(new Set());
+  protected readonly githubLoadingRepos = signal(false);
+  protected readonly githubImporting = signal(false);
+  protected readonly githubMessage = signal<string | null>(null);
 
   protected readonly statuses = PROJECT_STATUSES;
   protected readonly items = signal<Project[]>([]);
@@ -42,6 +54,80 @@ export class ProjectsPageComponent {
   constructor() {
     this.reload();
     this.skillApi.list().subscribe((skills) => this.skills.set(skills));
+    this.loadGithubStatus();
+
+    const githubParam = this.route.snapshot.queryParamMap.get('github');
+    if (githubParam === 'connected') {
+      this.githubMessage.set('Conta do GitHub conectada com sucesso.');
+    } else if (githubParam === 'error') {
+      this.githubMessage.set('Não foi possível conectar com o GitHub. Tente novamente.');
+    }
+  }
+
+  private loadGithubStatus(): void {
+    this.githubApi.status().subscribe((status) => this.githubStatus.set(status));
+  }
+
+  protected connectGithub(): void {
+    window.location.href = this.githubApi.connectUrl();
+  }
+
+  protected disconnectGithub(): void {
+    this.githubApi.disconnect().subscribe(() => {
+      this.githubStatus.set({ connected: false, githubUsername: null });
+      this.githubRepos.set(null);
+      this.githubSelected.set(new Set());
+    });
+  }
+
+  protected loadGithubRepos(): void {
+    this.githubLoadingRepos.set(true);
+    this.githubApi.repositories().subscribe({
+      next: (repos) => {
+        this.githubRepos.set(repos);
+        this.githubLoadingRepos.set(false);
+      },
+      error: (error: unknown) => {
+        this.githubMessage.set(extractErrorMessage(error));
+        this.githubLoadingRepos.set(false);
+      },
+    });
+  }
+
+  protected toggleGithubRepoSelection(fullName: string, checked: boolean): void {
+    const next = new Set(this.githubSelected());
+    if (checked) {
+      next.add(fullName);
+    } else {
+      next.delete(fullName);
+    }
+    this.githubSelected.set(next);
+  }
+
+  protected isGithubRepoSelected(fullName: string): boolean {
+    return this.githubSelected().has(fullName);
+  }
+
+  protected importSelectedGithubRepos(): void {
+    const fullNames = [...this.githubSelected()];
+    if (fullNames.length === 0) {
+      return;
+    }
+    this.githubImporting.set(true);
+    this.githubApi.importRepositories(fullNames).subscribe({
+      next: (result) => {
+        this.githubImporting.set(false);
+        this.githubRepos.set(null);
+        this.githubSelected.set(new Set());
+        const skippedNote = result.skipped.length > 0 ? ` (${result.skipped.length} não importado(s))` : '';
+        this.githubMessage.set(`${result.imported.length} projeto(s) importado(s)${skippedNote}.`);
+        this.reload();
+      },
+      error: (error: unknown) => {
+        this.githubMessage.set(extractErrorMessage(error));
+        this.githubImporting.set(false);
+      },
+    });
   }
 
   private reload(): void {
