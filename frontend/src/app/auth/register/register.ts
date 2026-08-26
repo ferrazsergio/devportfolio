@@ -24,6 +24,7 @@ export class RegisterComponent {
 
   protected readonly submitting = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly showPassword = signal(false);
 
   protected submit(): void {
     if (this.form.invalid) {

@@ -23,6 +23,7 @@ export class LoginComponent {
 
   protected readonly submitting = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly showPassword = signal(false);
   protected readonly justRegistered = signal(
     inject(ActivatedRoute).snapshot.queryParamMap.get('registered') === '1',
   );

@@ -40,8 +40,16 @@
         @for (link of data.profile.socialLinks; track link.url) {
           <a class="pill-link" [href]="link.url" target="_blank" rel="noopener">{{ link.platform }}</a>
         }
+      </div>
+
+      <div class="hero__share">
+        <span class="hero__share-label">Compartilhar:</span>
+        <a class="pill-link" [href]="linkedInShareUrl()" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pill-link" [href]="whatsappShareUrl(data)" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="pill-link" [href]="facebookShareUrl()" target="_blank" rel="noopener">Facebook</a>
+        <a class="pill-link" [href]="twitterShareUrl(data)" target="_blank" rel="noopener">X</a>
         <button type="button" class="pill-link pill-link--action" (click)="copyLink()">
-          {{ linkCopied() ? 'Link copiado!' : 'Compartilhar' }}
+          {{ linkCopied() ? 'Link copiado!' : 'Copiar link' }}
         </button>
       </div>
     </div>

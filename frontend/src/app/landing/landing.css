@@ -36,6 +36,21 @@
   color: var(--color-neutral-300);
   padding: var(--space-16) var(--space-5);
   text-align: center;
+  animation: fade-in-up var(--duration-standard) var(--ease-standard) both;
+}
+
+.feature-card {
+  transition: transform var(--duration-standard) var(--ease-standard);
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    animation: none;
+  }
 }
 
 .hero h1 {

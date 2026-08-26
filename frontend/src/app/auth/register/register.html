@@ -21,7 +21,32 @@
 
     <label>
       Senha
-      <input type="password" formControlName="password" autocomplete="new-password" />
+      <div class="password-field">
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="password-field__toggle"
+          (click)="showPassword.set(!showPassword())"
+          [attr.aria-label]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+        >
+          @if (showPassword()) {
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M1.5 10S4.5 4 10 4s8.5 6 8.5 6-3 6-8.5 6-8.5-6-8.5-6Z" stroke-linejoin="round" />
+              <circle cx="10" cy="10" r="2.3" />
+              <path d="M3 3l14 14" stroke-linecap="round" />
+            </svg>
+          } @else {
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M1.5 10S4.5 4 10 4s8.5 6 8.5 6-3 6-8.5 6-8.5-6-8.5-6Z" stroke-linejoin="round" />
+              <circle cx="10" cy="10" r="2.3" />
+            </svg>
+          }
+        </button>
+      </div>
       <small>Mínimo de 8 caracteres.</small>
     </label>
 

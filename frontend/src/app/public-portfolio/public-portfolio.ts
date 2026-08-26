@@ -115,4 +115,27 @@ export class PublicPortfolioComponent {
       setTimeout(() => this.linkCopied.set(false), 2000);
     });
   }
+
+  private shareText(data: PublicPortfolio): string {
+    const name = data.profile.fullName ?? '';
+    return data.profile.headline ? `${name} · ${data.profile.headline}` : name;
+  }
+
+  protected linkedInShareUrl(): string {
+    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+  }
+
+  protected whatsappShareUrl(data: PublicPortfolio): string {
+    const text = `${this.shareText(data)} ${window.location.href}`;
+    return `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+  }
+
+  protected facebookShareUrl(): string {
+    return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+  }
+
+  protected twitterShareUrl(data: PublicPortfolio): string {
+    const params = new URLSearchParams({ url: window.location.href, text: this.shareText(data) });
+    return `https://twitter.com/intent/tweet?${params.toString()}`;
+  }
 }
