@@ -32,8 +32,11 @@ public class GithubApiClient {
             @Value("${app.github.client-secret}") String clientSecret,
             @Value("${app.github.oauth-base-url:https://github.com}") String oauthBaseUrl,
             @Value("${app.github.api-base-url:https://api.github.com}") String apiBaseUrl) {
+        // HTTP/1.1 explícito: o HttpClient do JDK tenta HTTP/2 por padrão, o que causa
+        // "RST_STREAM"/EOF ao falar com servidores de teste (WireMock/Jetty) que não
+        // negociam h2c corretamente. GitHub também atende bem em HTTP/1.1.
         JdkClientHttpRequestFactory requestFactory = new JdkClientHttpRequestFactory(
-                HttpClient.newBuilder().connectTimeout(TIMEOUT).build());
+                HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).connectTimeout(TIMEOUT).build());
         requestFactory.setReadTimeout(TIMEOUT);
         this.restClient = builder.requestFactory(requestFactory).build();
         this.clientId = clientId;
