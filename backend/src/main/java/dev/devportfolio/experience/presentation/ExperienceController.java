@@ -3,6 +3,7 @@ package dev.devportfolio.experience.presentation;
 import dev.devportfolio.experience.application.ExperienceService;
 import dev.devportfolio.experience.domain.Experience;
 import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Experiências")
 @RestController
 @RequestMapping("/api/v1/experiences")
 public class ExperienceController {

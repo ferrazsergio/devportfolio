@@ -3,6 +3,7 @@ package dev.devportfolio.portfolio.presentation;
 import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
 import dev.devportfolio.portfolio.application.SocialLinkService;
 import dev.devportfolio.portfolio.domain.SocialLink;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Links sociais")
 @RestController
 @RequestMapping("/api/v1/social-links")
 public class SocialLinkController {

@@ -3,6 +3,7 @@ package dev.devportfolio.project.presentation;
 import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
 import dev.devportfolio.project.application.ProjectService;
 import dev.devportfolio.project.domain.Project;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Projetos")
 @RestController
 @RequestMapping("/api/v1/projects")
 public class ProjectController {

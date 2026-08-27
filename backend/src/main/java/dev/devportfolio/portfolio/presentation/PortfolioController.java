@@ -3,6 +3,7 @@ package dev.devportfolio.portfolio.presentation;
 import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
 import dev.devportfolio.portfolio.application.PortfolioService;
 import dev.devportfolio.portfolio.domain.Portfolio;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Portfólio")
 @RestController
 @RequestMapping("/api/v1/portfolio")
 public class PortfolioController {

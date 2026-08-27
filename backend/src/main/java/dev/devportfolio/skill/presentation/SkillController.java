@@ -4,6 +4,7 @@ import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
 import dev.devportfolio.skill.application.SkillService;
 import dev.devportfolio.skill.domain.Skill;
 import dev.devportfolio.skill.domain.SkillCategory;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Habilidades")
 @RestController
 @RequestMapping("/api/v1/skills")
 public class SkillController {

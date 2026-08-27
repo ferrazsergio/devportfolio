@@ -3,6 +3,7 @@ package dev.devportfolio.identity.presentation;
 import dev.devportfolio.identity.application.RegisterUserService;
 import dev.devportfolio.identity.domain.User;
 import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Autenticação")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {

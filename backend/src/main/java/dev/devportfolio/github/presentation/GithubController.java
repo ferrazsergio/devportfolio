@@ -4,6 +4,8 @@ import dev.devportfolio.github.application.GithubImportResult;
 import dev.devportfolio.github.application.GithubOAuthService;
 import dev.devportfolio.github.application.GithubRepositoryService;
 import dev.devportfolio.identity.infrastructure.AuthenticatedUser;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  * usuário já está autenticado via sessão própria (ADR-005); aqui só vincula
  * uma conta GitHub opcional para importar repositórios como Project.
  */
+@Tag(name = "Integração GitHub")
 @RestController
 @RequestMapping("/api/v1/github")
 public class GithubController {
@@ -48,6 +51,7 @@ public class GithubController {
         this.publicBaseUrl = publicBaseUrl;
     }
 
+    @Hidden
     @GetMapping("/connect")
     public void connect(HttpSession session, HttpServletResponse response) throws IOException {
         String state = UUID.randomUUID().toString();
@@ -56,6 +60,7 @@ public class GithubController {
         response.sendRedirect(authorizeUrl);
     }
 
+    @Hidden
     @GetMapping("/callback")
     public void callback(@AuthenticationPrincipal AuthenticatedUser principal,
             @RequestParam(required = false) String code, @RequestParam(required = false) String state,

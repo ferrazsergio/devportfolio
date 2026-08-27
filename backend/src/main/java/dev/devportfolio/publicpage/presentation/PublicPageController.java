@@ -3,6 +3,8 @@ package dev.devportfolio.publicpage.presentation;
 import dev.devportfolio.publicpage.application.PublicPageService;
 import dev.devportfolio.publicpage.application.PublicPortfolioView;
 import dev.devportfolio.shared.domain.NotFoundException;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Página pública")
 @RestController
 @RequestMapping("/api/v1/public")
 public class PublicPageController {
@@ -38,6 +41,7 @@ public class PublicPageController {
      * HTML pré-renderizado para crawlers (RF13/RF14, ver ADR-007). Não é consumido
      * pela SPA — o Nginx encaminha aqui apenas requisições de bots conhecidos.
      */
+    @Hidden
     @GetMapping(value = "/{username}/meta", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> getMetaHtml(@PathVariable String username) {
         try {
