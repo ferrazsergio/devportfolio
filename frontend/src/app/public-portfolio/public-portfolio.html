@@ -9,46 +9,123 @@
   </div>
 } @else if (portfolio(); as data) {
   <header class="hero">
-    <div class="hero__inner">
-      @if (data.profile.photoUrl) {
-        <img class="hero__photo" [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
-      }
-      <h1 class="hero__name">{{ data.profile.fullName }}</h1>
-      @if (data.profile.headline) {
-        <p class="hero__headline">{{ data.profile.headline }}</p>
-      }
-      @if (data.profile.location) {
-        <p class="hero__location">{{ data.profile.location }}</p>
-      }
-      @if (data.profile.bio) {
-        <p class="hero__bio">{{ data.profile.bio }}</p>
-      }
+    <div class="hero__decoration" aria-hidden="true">
+      <div class="hero__blob hero__blob--one"></div>
+      <div class="hero__blob hero__blob--two"></div>
+    </div>
 
-      <div class="hero__contacts">
-        @if (data.profile.professionalEmail) {
-          <a class="pill-link" [href]="'mailto:' + data.profile.professionalEmail">Email</a>
-        }
-        @if (data.profile.githubUrl) {
-          <a class="pill-link" [href]="data.profile.githubUrl" target="_blank" rel="noopener">GitHub</a>
-        }
-        @if (data.profile.linkedinUrl) {
-          <a class="pill-link" [href]="data.profile.linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
-        }
-        @if (data.profile.websiteUrl) {
-          <a class="pill-link" [href]="data.profile.websiteUrl" target="_blank" rel="noopener">Site</a>
-        }
-        @for (link of data.profile.socialLinks; track link.url) {
-          <a class="pill-link" [href]="link.url" target="_blank" rel="noopener">{{ link.platform }}</a>
+    <div class="hero__inner">
+      <div class="hero__avatar reveal">
+        @if (data.profile.photoUrl) {
+          <img [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
+        } @else {
+          <svg viewBox="0 0 96 96" fill="none">
+            <circle cx="48" cy="38" r="16" fill="currentColor" opacity="0.35" />
+            <path d="M16 90c0-17.7 14.3-32 32-32s32 14.3 32 32" fill="currentColor" opacity="0.35" />
+          </svg>
         }
       </div>
 
-      <div class="hero__share">
-        <span class="hero__share-label">Compartilhar:</span>
-        <a class="pill-link" [href]="linkedInShareUrl()" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="pill-link" [href]="whatsappShareUrl(data)" target="_blank" rel="noopener">WhatsApp</a>
-        <a class="pill-link" [href]="facebookShareUrl()" target="_blank" rel="noopener">Facebook</a>
-        <a class="pill-link" [href]="twitterShareUrl(data)" target="_blank" rel="noopener">X</a>
-        <button type="button" class="pill-link pill-link--action" (click)="copyLink()">
+      <h1 class="hero__name reveal">{{ data.profile.fullName }}</h1>
+      @if (data.profile.headline) {
+        <p class="hero__headline reveal">{{ data.profile.headline }}</p>
+      }
+      @if (data.profile.location) {
+        <p class="hero__location reveal">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M10 18s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10Z" stroke-linejoin="round" />
+            <circle cx="10" cy="8" r="2" />
+          </svg>
+          {{ data.profile.location }}
+        </p>
+      }
+      @if (data.profile.bio) {
+        <p class="hero__bio reveal">{{ data.profile.bio }}</p>
+      }
+
+      <div class="hero__contacts reveal">
+        @if (data.profile.professionalEmail) {
+          <a class="icon-link" [href]="'mailto:' + data.profile.professionalEmail" aria-label="Enviar email">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="2.5" y="4.5" width="15" height="11" rx="1.6" />
+              <path d="M3 5.5 10 11 17 5.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        }
+        @if (data.profile.githubUrl) {
+          <a class="icon-link" [href]="data.profile.githubUrl" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M10 2a8 8 0 0 0-2.5 15.6c.4.1.5-.2.5-.4v-1.4c-2 .4-2.5-.5-2.7-.9-.1-.2-.5-.9-.8-1.1-.3-.1-.7-.5 0-.5.6 0 1 .6 1.2.8.7 1.2 1.8.8 2.2.6.1-.5.3-.8.5-1-1.8-.2-3.6-.9-3.6-3.9 0-.9.3-1.6.8-2.1-.1-.2-.3-1 .1-2.1 0 0 .7-.2 2.2.8a7.5 7.5 0 0 1 4 0c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.5.8 1.2.8 2.1 0 3-1.8 3.7-3.6 3.9.3.3.6.8.6 1.6v2.4c0 .2.1.5.6.4A8 8 0 0 0 10 2Z"
+              />
+            </svg>
+          </a>
+        }
+        @if (data.profile.linkedinUrl) {
+          <a class="icon-link" [href]="data.profile.linkedinUrl" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <rect x="2" y="2" width="16" height="16" rx="3" />
+              <rect x="5.5" y="8" width="2" height="7" fill="var(--color-primary-900)" />
+              <circle cx="6.5" cy="5.3" r="1.2" fill="var(--color-primary-900)" />
+              <path
+                d="M9.5 15V8h2v1c.5-.7 1.2-1.2 2.3-1.2 1.8 0 2.7 1.2 2.7 3.3V15h-2v-3.5c0-1-.4-1.7-1.3-1.7-.7 0-1.2.5-1.4 1-.1.2-.1.4-.1.7V15h-2Z"
+                fill="var(--color-primary-900)"
+              />
+            </svg>
+          </a>
+        }
+        @if (data.profile.websiteUrl) {
+          <a class="icon-link" [href]="data.profile.websiteUrl" target="_blank" rel="noopener" aria-label="Site pessoal">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="10" cy="10" r="7.5" />
+              <path d="M2.5 10h15M10 2.5c2.2 2 3.5 4.8 3.5 7.5s-1.3 5.5-3.5 7.5c-2.2-2-3.5-4.8-3.5-7.5S7.8 4.5 10 2.5Z" />
+            </svg>
+          </a>
+        }
+        @for (link of data.profile.socialLinks; track link.url) {
+          <a class="icon-link" [href]="link.url" target="_blank" rel="noopener" [attr.aria-label]="link.platform">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M8.2 11.8 11.8 8.2" stroke-linecap="round" />
+              <path
+                d="M9 6.2 10.4 4.8a3 3 0 0 1 4.2 4.2L13.2 10.4M11 13.8 9.6 15.2a3 3 0 0 1-4.2-4.2l1.4-1.4"
+                stroke-linecap="round"
+              />
+            </svg>
+          </a>
+        }
+      </div>
+
+      <div class="hero__share reveal">
+        <span class="hero__share-label">Compartilhar</span>
+        <a class="icon-link icon-link--sm" [href]="linkedInShareUrl()" target="_blank" rel="noopener" aria-label="Compartilhar no LinkedIn">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <rect x="2" y="2" width="16" height="16" rx="3" />
+            <rect x="5.5" y="8" width="2" height="7" fill="var(--color-primary-900)" />
+            <circle cx="6.5" cy="5.3" r="1.2" fill="var(--color-primary-900)" />
+            <path
+              d="M9.5 15V8h2v1c.5-.7 1.2-1.2 2.3-1.2 1.8 0 2.7 1.2 2.7 3.3V15h-2v-3.5c0-1-.4-1.7-1.3-1.7-.7 0-1.2.5-1.4 1-.1.2-.1.4-.1.7V15h-2Z"
+              fill="var(--color-primary-900)"
+            />
+          </svg>
+        </a>
+        <a class="icon-link icon-link--sm" [href]="whatsappShareUrl(data)" target="_blank" rel="noopener" aria-label="Compartilhar no WhatsApp">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M10 2.5a7.5 7.5 0 0 0-6.5 11.2L2.5 17.5l3.9-1a7.5 7.5 0 1 0 3.6-14Zm4.4 10.6c-.2.5-1.1 1-1.5 1-.4 0-.9.1-2.9-.9-2.4-1.2-3.9-3.6-4-3.8-.1-.2-.9-1.2-.9-2.3s.6-1.6.8-1.9c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2.1.3 0 .5l-.4.5c-.1.2-.2.3-.1.5.2.3.7 1.1 1.5 1.8.9.8 1.7 1.1 2 1.2.2.1.4.1.5-.1l.5-.6c.2-.2.3-.2.5-.1l1.6.8c.2.1.3.1.4.2.1.2.1.9-.1 1.4Z"
+            />
+          </svg>
+        </a>
+        <a class="icon-link icon-link--sm" [href]="facebookShareUrl()" target="_blank" rel="noopener" aria-label="Compartilhar no Facebook">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M13 3.5h-1.8c-1.9 0-3.2 1.2-3.2 3.3v1.9H6v2.7h2v6.1h2.8v-6.1h2.1l.3-2.7h-2.4V7c0-.8.3-1.3 1.4-1.3H13V3.5Z" />
+          </svg>
+        </a>
+        <a class="icon-link icon-link--sm" [href]="twitterShareUrl(data)" target="_blank" rel="noopener" aria-label="Compartilhar no X">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 3h3l3 4.2L13.4 3H16l-5 5.8L16.3 17H13.3l-3.4-4.6L6.4 17H3.7l5.3-6.1L4 3Z" />
+          </svg>
+        </a>
+        <button type="button" class="btn btn-primary btn-sm" (click)="copyLink()">
           {{ linkCopied() ? 'Link copiado!' : 'Copiar link' }}
         </button>
       </div>
@@ -80,10 +157,10 @@
   <main class="page">
     @if (data.experiences.length > 0) {
       <section class="section" id="experience">
-        <h2 class="section__title">Experiência</h2>
+        <h2 class="section__title reveal">Experiência</h2>
         <ol class="timeline">
           @for (experience of data.experiences; track experience.company + experience.role) {
-            <li class="timeline__item">
+            <li class="timeline__item reveal">
               <div class="card">
                 <h3>{{ experience.role }} · {{ experience.company }}</h3>
                 <p class="card__period">
@@ -111,12 +188,21 @@
 
     @if (data.projects.length > 0) {
       <section class="section" id="projects">
-        <h2 class="section__title">Projetos</h2>
+        <h2 class="section__title reveal">Projetos</h2>
         <div class="project-grid">
           @for (project of data.projects; track project.slug) {
-            <article class="card project-card">
+            <article class="card project-card reveal">
               @if (project.imageUrl) {
                 <img class="project-card__image" [src]="project.imageUrl" [alt]="project.name" />
+              } @else {
+                <div class="project-card__image project-card__image--placeholder" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4">
+                    <path
+                      d="M2.5 5.8c0-.7.6-1.3 1.3-1.3H8l1.5 2h6.7c.7 0 1.3.6 1.3 1.3v6.9c0 .7-.6 1.3-1.3 1.3H3.8c-.7 0-1.3-.6-1.3-1.3z"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               }
               <div class="project-card__body">
                 <h3>
@@ -153,10 +239,10 @@
 
     @if (data.skills.length > 0) {
       <section class="section" id="skills">
-        <h2 class="section__title">Habilidades</h2>
+        <h2 class="section__title reveal">Habilidades</h2>
         <div class="skill-groups">
           @for (group of skillGroups(data.skills); track group.category) {
-            <div class="card skill-group">
+            <div class="card skill-group reveal">
               <h3>{{ group.label }}</h3>
               <ul class="tags">
                 @for (skill of group.skills; track skill.name) {
@@ -171,10 +257,10 @@
 
     @if (data.educations.length > 0) {
       <section class="section" id="education">
-        <h2 class="section__title">Formação</h2>
+        <h2 class="section__title reveal">Formação</h2>
         <ol class="timeline">
           @for (education of data.educations; track education.institution + education.course) {
-            <li class="timeline__item">
+            <li class="timeline__item reveal">
               <div class="card">
                 <h3>{{ education.course }} · {{ education.institution }}</h3>
                 @if (education.degree) {
@@ -192,10 +278,16 @@
 
     @if (data.certifications.length > 0) {
       <section class="section" id="certifications">
-        <h2 class="section__title">Certificações</h2>
+        <h2 class="section__title reveal">Certificações</h2>
         <div class="project-grid">
           @for (certification of data.certifications; track certification.name + certification.issuingOrganization) {
-            <article class="card">
+            <article class="card certification-card reveal">
+              <div class="certification-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
+                  <circle cx="10" cy="7.5" r="4.5" />
+                  <path d="M7.3 11.3 6.5 17l3.5-2 3.5 2-.8-5.7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
               <h3>{{ certification.name }}</h3>
               <p class="card__period">{{ certification.issuingOrganization }}</p>
               @if (certification.credentialUrl) {
@@ -211,5 +303,8 @@
   <footer class="site-footer">
     <app-logo />
     <p>Portfólio construído com DevPortfolio.</p>
+    <a href="https://github.com/ferrazsergio/devportfolio" target="_blank" rel="noopener">
+      Crie o seu — é open source
+    </a>
   </footer>
 }
