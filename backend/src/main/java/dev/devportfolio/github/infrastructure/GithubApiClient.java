@@ -3,6 +3,7 @@ package dev.devportfolio.github.infrastructure;
 import dev.devportfolio.github.domain.GithubTokenInvalidException;
 import dev.devportfolio.shared.domain.ExternalServiceException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -70,9 +71,7 @@ public class GithubApiClient {
         return restClient.get().uri(apiBaseUrl + "/user").header("Authorization", "Bearer " + accessToken)
                 .header("Accept", "application/vnd.github+json")
                 .exchange((request, response) -> {
-                    if (response.getStatusCode().value() == 401) {
-                        throw new GithubTokenInvalidException();
-                    }
+                    requireSuccessOrThrow(response);
                     return response.bodyTo(GithubUserDto.class);
                 });
     }
@@ -90,12 +89,26 @@ public class GithubApiClient {
         GithubRepoDto[] repos = restClient.get().uri(apiBaseUrl + "/user/repos?per_page=100&sort=updated")
                 .header("Authorization", "Bearer " + accessToken).header("Accept", "application/vnd.github+json")
                 .exchange((request, response) -> {
-                    if (response.getStatusCode().value() == 401) {
-                        throw new GithubTokenInvalidException();
-                    }
+                    requireSuccessOrThrow(response);
                     return response.bodyTo(GithubRepoDto[].class);
                 });
         return repos == null ? List.of() : Arrays.asList(repos);
+    }
+
+    /**
+     * `.exchange()` não lança automaticamente em respostas de erro como `.retrieve()`
+     * faz — precisa ser verificado explicitamente, senão um corpo de erro vazio (ex.:
+     * 500 sem corpo) é interpretado como sucesso com dado nulo/vazio.
+     */
+    private static void requireSuccessOrThrow(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse response)
+            throws IOException {
+        int status = response.getStatusCode().value();
+        if (status == 401) {
+            throw new GithubTokenInvalidException();
+        }
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new ExternalServiceException("GitHub respondeu com status " + status + ".");
+        }
     }
 
     @SuppressWarnings("unused")
