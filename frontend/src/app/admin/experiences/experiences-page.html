@@ -70,8 +70,8 @@
       @for (item of items(); track item.id; let i = $index) {
         <li class="list__item">
           <div class="list__order">
-            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0">↑</button>
-            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1">↓</button>
+            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0" aria-label="Mover para cima">↑</button>
+            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1" aria-label="Mover para baixo">↓</button>
           </div>
           <div>
             <strong>{{ item.role }}</strong> · {{ item.company }}

@@ -27,7 +27,7 @@
       @for (item of items(); track item.id) {
         <li class="list__item">
           <span>{{ item.platform }}</span>
-          <a class="list__muted" [href]="item.url" target="_blank" rel="noopener">{{ item.url }}</a>
+          <a class="list__muted" [href]="item.url" [title]="item.url" target="_blank" rel="noopener">{{ item.url }}</a>
           <span class="list__actions">
             <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
             <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>

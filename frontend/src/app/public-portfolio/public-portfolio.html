@@ -8,6 +8,11 @@
     <p>Esse portfólio não existe ou ainda não foi publicado.</p>
   </div>
 } @else if (portfolio(); as data) {
+  <a class="skip-link" href="#main-content">Pular para conteúdo</a>
+  <div class="theme-toggle-fixed">
+    <app-theme-toggle />
+  </div>
+
   <header class="hero">
     <div class="hero__decoration" aria-hidden="true">
       <div class="hero__blob hero__blob--one"></div>
@@ -154,7 +159,7 @@
     </nav>
   }
 
-  <main class="page">
+  <main class="page" id="main-content">
     @if (data.experiences.length > 0) {
       <section class="section" id="experience">
         <h2 class="section__title reveal">Experiência</h2>

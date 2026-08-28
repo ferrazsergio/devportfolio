@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LogoComponent } from '../../core/ui/logo/logo';
+import { ThemeToggleComponent } from '../../core/ui/theme-toggle/theme-toggle';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-admin-shell',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, LogoComponent],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, LogoComponent, ThemeToggleComponent],
   templateUrl: './admin-shell.html',
   styleUrl: './admin-shell.css',
 })

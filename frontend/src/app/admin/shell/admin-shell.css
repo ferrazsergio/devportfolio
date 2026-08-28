@@ -13,7 +13,8 @@
   gap: var(--space-6);
   padding: var(--space-6) var(--space-5);
   background: var(--color-primary-900);
-  color: var(--color-neutral-300);
+  color: var(--color-text-on-dark);
+  border-right: 1px solid var(--color-border);
 }
 
 .sidebar__brand {
@@ -62,7 +63,7 @@
   gap: var(--space-3);
   padding: 0.6rem var(--space-3);
   border-radius: var(--radius-md);
-  color: var(--color-neutral-300);
+  color: var(--color-text-on-dark);
   font-size: var(--text-sm);
   font-weight: 500;
   text-decoration: none;

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LogoComponent } from '../core/ui/logo/logo';
+import { ThemeToggleComponent } from '../core/ui/theme-toggle/theme-toggle';
 import { PublicPortfolioApiService } from './public-portfolio-api.service';
 import { ProjectStatus, PublicPortfolio, PublicSkill, SkillCategory } from './public-portfolio.model';
 
@@ -35,7 +36,7 @@ export interface SkillGroup {
 
 @Component({
   selector: 'app-public-portfolio',
-  imports: [LogoComponent],
+  imports: [LogoComponent, ThemeToggleComponent],
   templateUrl: './public-portfolio.html',
   styleUrl: './public-portfolio.css',
 })
