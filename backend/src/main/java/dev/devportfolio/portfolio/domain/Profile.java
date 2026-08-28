@@ -71,11 +71,10 @@ public class Profile {
         this.portfolioId = portfolioId;
     }
 
-    public void update(String fullName, String username, String photoUrl, String headline, String bio, String location,
+    public void update(String fullName, String username, String headline, String bio, String location,
             String professionalEmail, String phone, String githubUrl, String linkedinUrl, String websiteUrl) {
         this.fullName = fullName;
         this.username = username;
-        this.photoUrl = photoUrl;
         this.headline = headline;
         this.bio = bio;
         this.location = location;
@@ -104,6 +103,10 @@ public class Profile {
 
     public String getPhotoUrl() {
         return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getHeadline() {

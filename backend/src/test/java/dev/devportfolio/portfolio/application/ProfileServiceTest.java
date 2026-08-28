@@ -38,7 +38,7 @@ class ProfileServiceTest {
         when(profileRepository.existsByUsernameAndPortfolioIdNot("ana-souza", PORTFOLIO_ID)).thenReturn(false);
 
         Profile result = profileService.update(OWNER_ID, "Ana Souza", "ana-souza", null, null, null, null, null,
-                null, null, null, null);
+                null, null, null);
 
         assertThat(result.getUsername()).isEqualTo("ana-souza");
         assertThat(result.getFullName()).isEqualTo("Ana Souza");
@@ -52,6 +52,6 @@ class ProfileServiceTest {
         when(profileRepository.existsByUsernameAndPortfolioIdNot("ana-souza", PORTFOLIO_ID)).thenReturn(true);
 
         assertThatThrownBy(() -> profileService.update(OWNER_ID, "Ana Souza", "ana-souza", null, null, null, null,
-                null, null, null, null, null)).isInstanceOf(UsernameAlreadyInUseException.class);
+                null, null, null, null)).isInstanceOf(UsernameAlreadyInUseException.class);
     }
 }

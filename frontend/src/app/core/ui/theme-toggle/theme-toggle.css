@@ -19,6 +19,11 @@
     box-shadow var(--duration-fast) var(--ease-standard);
 }
 
+.theme-toggle__icon {
+  display: inline-flex;
+  transform-origin: center;
+}
+
 .theme-toggle svg {
   width: 18px;
   height: 18px;

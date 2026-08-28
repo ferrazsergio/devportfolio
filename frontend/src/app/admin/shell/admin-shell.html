@@ -79,10 +79,7 @@
   <div class="shell__main">
     <header class="topbar">
       <app-theme-toggle />
-      @if (currentUser(); as user) {
-        <span class="topbar__user">{{ user.name }}</span>
-      }
-      <button type="button" class="btn btn-secondary" (click)="logout()">Sair</button>
+      <app-user-menu />
     </header>
 
     <main class="shell__content" id="main-content">

@@ -1,0 +1,27 @@
+<div class="user-menu">
+  <button
+    type="button"
+    class="user-menu__trigger"
+    (click)="toggle()"
+    [attr.aria-expanded]="open()"
+    aria-haspopup="menu"
+  >
+    <span class="user-menu__avatar">
+      @if (photoUrl(); as photo) {
+        <img [src]="photo" alt="" />
+      } @else {
+        {{ initials() }}
+      }
+    </span>
+    @if (currentUser(); as user) {
+      <span class="user-menu__name">{{ user.name }}</span>
+    }
+  </button>
+
+  @if (open()) {
+    <div class="user-menu__panel" role="menu">
+      <a routerLink="/admin/profile" role="menuitem" (click)="open.set(false)">Editar perfil</a>
+      <button type="button" role="menuitem" (click)="logout()">Sair</button>
+    </div>
+  }
+</div>

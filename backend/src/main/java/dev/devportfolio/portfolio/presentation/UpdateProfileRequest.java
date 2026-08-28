@@ -12,7 +12,6 @@ public record UpdateProfileRequest(
                 message = "Nome de usuário deve ter entre 3 e 50 caracteres, apenas letras minúsculas, números e hífen.")
         String username,
 
-        String photoUrl,
         String headline,
         String bio,
         String location,

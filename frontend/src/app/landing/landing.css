@@ -222,6 +222,7 @@
 }
 
 .landing-footer {
+  --logo-wordmark-color: var(--color-white);
   background: var(--color-primary-900);
   color: var(--color-text-on-dark-muted);
   padding: var(--space-8) var(--space-5);
@@ -230,10 +231,6 @@
   align-items: center;
   gap: var(--space-3);
   text-align: center;
-}
-
-.landing-footer .logo__wordmark {
-  color: var(--color-white);
 }
 
 .landing-footer p {

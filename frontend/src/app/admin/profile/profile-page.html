@@ -39,10 +39,47 @@
           <input type="text" formControlName="location" />
         </label>
 
-        <label>
-          Foto (URL)
-          <input type="text" formControlName="photoUrl" />
-        </label>
+        <div class="grid__full photo-field">
+          <span class="field-label">Foto</span>
+          <div class="photo-field__row">
+            <div class="photo-field__preview">
+              @if (profile()?.photoUrl; as photoUrl) {
+                <img [src]="photoUrl" alt="" />
+              } @else {
+                <svg viewBox="0 0 96 96" fill="none" aria-hidden="true">
+                  <circle cx="48" cy="38" r="16" fill="currentColor" opacity="0.35" />
+                  <path d="M16 90c0-17.7 14.3-32 32-32s32 14.3 32 32" fill="currentColor" opacity="0.35" />
+                </svg>
+              }
+            </div>
+            <div class="photo-field__actions">
+              <label class="btn btn-secondary">
+                {{ uploadingPhoto() ? 'Enviando…' : 'Enviar foto' }}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  (change)="onPhotoSelected($event)"
+                  [disabled]="uploadingPhoto()"
+                  hidden
+                />
+              </label>
+              @if (profile()?.photoUrl) {
+                <button
+                  type="button"
+                  class="btn btn-icon"
+                  (click)="removePhoto()"
+                  [disabled]="uploadingPhoto()"
+                >
+                  Remover foto
+                </button>
+              }
+            </div>
+          </div>
+          @if (photoError()) {
+            <p class="alert alert-danger">{{ photoError() }}</p>
+          }
+          <small>JPEG, PNG ou WebP. Até 5MB.</small>
+        </div>
 
         <label>
           Email profissional

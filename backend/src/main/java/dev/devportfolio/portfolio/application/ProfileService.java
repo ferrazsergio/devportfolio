@@ -11,7 +11,9 @@ public interface ProfileService {
     /** Usada pelo módulo publicpage (RF09) — não exige autenticação/posse. */
     Optional<Profile> findByUsername(String username);
 
-    Profile update(UUID ownerUserId, String fullName, String username, String photoUrl, String headline, String bio,
+    Profile update(UUID ownerUserId, String fullName, String username, String headline, String bio,
             String location, String professionalEmail, String phone, String githubUrl, String linkedinUrl,
             String websiteUrl);
+
+    Profile updatePhoto(UUID ownerUserId, String photoUrl);
 }

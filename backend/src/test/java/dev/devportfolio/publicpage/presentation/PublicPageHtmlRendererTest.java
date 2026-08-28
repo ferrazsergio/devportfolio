@@ -19,8 +19,9 @@ class PublicPageHtmlRendererTest {
     @Test
     void includesTitleDescriptionCanonicalAndOpenGraphTags() {
         Profile profile = new Profile(UUID.randomUUID());
-        profile.update("Ana Souza", "ana-souza", "https://example.com/photo.jpg", "Desenvolvedora Java", "Bio longa",
+        profile.update("Ana Souza", "ana-souza", "Desenvolvedora Java", "Bio longa",
                 "São Paulo", null, null, null, null, null);
+        profile.setPhotoUrl("https://example.com/photo.jpg");
 
         String html = renderer.render(viewWithProfile(profile), "https://devportfolio.example", "ana-souza");
 
@@ -36,7 +37,7 @@ class PublicPageHtmlRendererTest {
     @Test
     void escapesUserSuppliedContentToPreventHtmlInjection() {
         Profile profile = new Profile(UUID.randomUUID());
-        profile.update("Ana <script>alert(1)</script>", "ana-souza", null, "\"Full-Stack\" & <b>bold</b>", null, null,
+        profile.update("Ana <script>alert(1)</script>", "ana-souza", "\"Full-Stack\" & <b>bold</b>", null, null,
                 null, null, null, null, null);
 
         String html = renderer.render(viewWithProfile(profile), "https://devportfolio.example", "ana-souza");
@@ -50,7 +51,7 @@ class PublicPageHtmlRendererTest {
     @Test
     void fallsBackToUsernameAndDefaultDescriptionWhenProfileFieldsAreBlank() {
         Profile profile = new Profile(UUID.randomUUID());
-        profile.update(null, "sem-nome", null, null, null, null, null, null, null, null, null);
+        profile.update(null, "sem-nome", null, null, null, null, null, null, null, null);
 
         String html = renderer.render(viewWithProfile(profile), "https://devportfolio.example", "sem-nome");
 

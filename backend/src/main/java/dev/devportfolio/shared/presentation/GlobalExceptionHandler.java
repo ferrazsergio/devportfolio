@@ -16,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 /**
  * Traduz exceções para o payload de erro padronizado (traceId, message, errors[]),
@@ -59,6 +60,12 @@ public class GlobalExceptionHandler {
         String traceId = traceId();
         log.warn("Falha ao chamar serviço externo, traceId={}", traceId, ex);
         return new ErrorResponse(traceId, ex.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMaxUploadSize(MaxUploadSizeExceededException ex) {
+        return new ErrorResponse(traceId(), "Arquivo muito grande.", List.of());
     }
 
     @ExceptionHandler(AuthenticationException.class)

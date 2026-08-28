@@ -14,5 +14,14 @@
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: var(--text-lg);
-  color: var(--color-heading);
+  /*
+   * --logo-wordmark-color permite que um ancestral force uma cor fixa (ex:
+   * texto branco sobre um fundo de marca sempre escuro, como rodapés e a
+   * sidebar do admin). Um seletor comum do tipo ".site-footer .logo__wordmark"
+   * não funciona aqui porque esse <span> pertence ao template do LogoComponent
+   * — o encapsulamento de estilo do Angular escopa cada CSS ao seu próprio
+   * componente, então a regra do componente pai nunca chega a bater. Custom
+   * properties, por outro lado, herdam normalmente pela árvore do DOM.
+   */
+  color: var(--logo-wordmark-color, var(--color-heading));
 }

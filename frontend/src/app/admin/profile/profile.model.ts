@@ -15,7 +15,6 @@ export interface Profile {
 export interface UpdateProfileRequest {
   fullName: string;
   username: string;
-  photoUrl: string | null;
   headline: string | null;
   bio: string | null;
   location: string | null;

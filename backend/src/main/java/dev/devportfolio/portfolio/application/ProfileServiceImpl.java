@@ -34,7 +34,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public Profile update(UUID ownerUserId, String fullName, String username, String photoUrl, String headline,
+    public Profile update(UUID ownerUserId, String fullName, String username, String headline,
             String bio, String location, String professionalEmail, String phone, String githubUrl,
             String linkedinUrl, String websiteUrl) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
@@ -45,8 +45,16 @@ public class ProfileServiceImpl implements ProfileService {
             throw new UsernameAlreadyInUseException();
         }
 
-        profile.update(fullName, username, photoUrl, headline, bio, location, professionalEmail, phone, githubUrl,
+        profile.update(fullName, username, headline, bio, location, professionalEmail, phone, githubUrl,
                 linkedinUrl, websiteUrl);
+        return profile;
+    }
+
+    @Override
+    @Transactional
+    public Profile updatePhoto(UUID ownerUserId, String photoUrl) {
+        Profile profile = getByOwner(ownerUserId);
+        profile.setPhotoUrl(photoUrl);
         return profile;
     }
 }
