@@ -39,6 +39,9 @@ public class Education {
 
     private String description;
 
+    @Column(name = "description_en")
+    private String descriptionEn;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -52,7 +55,7 @@ public class Education {
     }
 
     public Education(UUID portfolioId, String institution, String course, String degree, LocalDate startDate,
-            LocalDate endDate, String description) {
+            LocalDate endDate, String description, String descriptionEn) {
         this.portfolioId = portfolioId;
         this.institution = institution;
         this.course = course;
@@ -60,16 +63,18 @@ public class Education {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+        this.descriptionEn = descriptionEn;
     }
 
     public void update(String institution, String course, String degree, LocalDate startDate, LocalDate endDate,
-            String description) {
+            String description, String descriptionEn) {
         this.institution = institution;
         this.course = course;
         this.degree = degree;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+        this.descriptionEn = descriptionEn;
     }
 
     public UUID getId() {
@@ -102,5 +107,9 @@ public class Education {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
     }
 }

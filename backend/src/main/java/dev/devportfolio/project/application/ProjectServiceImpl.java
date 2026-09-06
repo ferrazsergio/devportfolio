@@ -7,10 +7,13 @@ import dev.devportfolio.project.domain.ProjectSlugAlreadyInUseException;
 import dev.devportfolio.project.domain.ProjectStatus;
 import dev.devportfolio.shared.domain.NotFoundException;
 import dev.devportfolio.skill.application.SkillService;
+import dev.devportfolio.translation.application.ContentTranslationService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +23,16 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final PortfolioService portfolioService;
     private final SkillService skillService;
+    private final MessageSource messageSource;
+    private final ContentTranslationService translationService;
 
     public ProjectServiceImpl(ProjectRepository projectRepository, PortfolioService portfolioService,
-            SkillService skillService) {
+            SkillService skillService, MessageSource messageSource, ContentTranslationService translationService) {
         this.projectRepository = projectRepository;
         this.portfolioService = portfolioService;
         this.skillService = skillService;
+        this.messageSource = messageSource;
+        this.translationService = translationService;
     }
 
     @Override
@@ -48,11 +55,15 @@ public class ProjectServiceImpl implements ProjectService {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         requireOwnedTechnologies(portfolioId, technologyIds);
         if (projectRepository.existsByPortfolioIdAndSlug(portfolioId, slug)) {
-            throw new ProjectSlugAlreadyInUseException();
+            throw new ProjectSlugAlreadyInUseException(
+                    messageSource.getMessage("error.project.slugAlreadyInUse", null, LocaleContextHolder.getLocale()));
         }
         int nextOrder = projectRepository.findByPortfolioIdOrderByOrderAsc(portfolioId).size();
-        return projectRepository.save(new Project(portfolioId, name, slug, shortDescription, fullDescription,
-                imageUrl, githubUrl, demoUrl, date, status, featured, nextOrder, technologyIds));
+        String shortDescriptionEn = translationService.translateToEnglish(shortDescription).orElse(null);
+        String fullDescriptionEn = translationService.translateToEnglish(fullDescription).orElse(null);
+        return projectRepository.save(new Project(portfolioId, name, slug, shortDescription, shortDescriptionEn,
+                fullDescription, fullDescriptionEn, imageUrl, githubUrl, demoUrl, date, status, featured, nextOrder,
+                technologyIds));
     }
 
     @Override
@@ -63,12 +74,16 @@ public class ProjectServiceImpl implements ProjectService {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         requireOwnedTechnologies(portfolioId, technologyIds);
         Project project = projectRepository.findByIdAndPortfolioId(projectId, portfolioId)
-                .orElseThrow(() -> new NotFoundException("Projeto não encontrado."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.project.notFound", null, LocaleContextHolder.getLocale())));
         if (projectRepository.existsByPortfolioIdAndSlugAndIdNot(portfolioId, slug, projectId)) {
-            throw new ProjectSlugAlreadyInUseException();
+            throw new ProjectSlugAlreadyInUseException(
+                    messageSource.getMessage("error.project.slugAlreadyInUse", null, LocaleContextHolder.getLocale()));
         }
-        project.update(name, slug, shortDescription, fullDescription, imageUrl, githubUrl, demoUrl, date, status,
-                featured, technologyIds);
+        String shortDescriptionEn = translationService.translateToEnglish(shortDescription).orElse(null);
+        String fullDescriptionEn = translationService.translateToEnglish(fullDescription).orElse(null);
+        project.update(name, slug, shortDescription, shortDescriptionEn, fullDescription, fullDescriptionEn, imageUrl,
+                githubUrl, demoUrl, date, status, featured, technologyIds);
         return project;
     }
 
@@ -77,7 +92,8 @@ public class ProjectServiceImpl implements ProjectService {
     public void delete(UUID ownerUserId, UUID projectId) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         Project project = projectRepository.findByIdAndPortfolioId(projectId, portfolioId)
-                .orElseThrow(() -> new NotFoundException("Projeto não encontrado."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.project.notFound", null, LocaleContextHolder.getLocale())));
         projectRepository.delete(project);
     }
 
@@ -87,7 +103,8 @@ public class ProjectServiceImpl implements ProjectService {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         for (int index = 0; index < orderedIds.size(); index++) {
             Project project = projectRepository.findByIdAndPortfolioId(orderedIds.get(index), portfolioId)
-                    .orElseThrow(() -> new NotFoundException("Projeto não encontrado."));
+                    .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.project.notFound", null, LocaleContextHolder.getLocale())));
             project.reorder(index);
         }
     }
@@ -97,7 +114,8 @@ public class ProjectServiceImpl implements ProjectService {
             return;
         }
         if (skillService.findByPortfolioIdAndIdIn(portfolioId, technologyIds).size() != technologyIds.size()) {
-            throw new NotFoundException("Uma ou mais habilidades informadas não foram encontradas.");
+            throw new NotFoundException(
+                    messageSource.getMessage("error.project.skillsNotFound", null, LocaleContextHolder.getLocale()));
         }
     }
 }

@@ -4,7 +4,7 @@ import dev.devportfolio.shared.domain.ConflictException;
 
 public class ProjectSlugAlreadyInUseException extends ConflictException {
 
-    public ProjectSlugAlreadyInUseException() {
-        super("Você já possui um projeto com esse slug.");
+    public ProjectSlugAlreadyInUseException(String message) {
+        super(message);
     }
 }

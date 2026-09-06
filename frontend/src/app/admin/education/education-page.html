@@ -1,5 +1,5 @@
 <div class="page">
-  <h1 class="page-title">Formação</h1>
+  <h1 class="page-title">{{ 'education.title' | translate }}</h1>
 
   <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
     @if (errorMessage()) {
@@ -7,42 +7,42 @@
     }
     <div class="grid">
       <label>
-        Instituição
+        {{ 'education.institution' | translate }}
         <input type="text" formControlName="institution" />
       </label>
       <label>
-        Curso
+        {{ 'education.course' | translate }}
         <input type="text" formControlName="course" />
       </label>
       <label>
-        Grau
-        <input type="text" formControlName="degree" placeholder="Bacharelado, Técnico…" />
+        {{ 'education.degree' | translate }}
+        <input type="text" formControlName="degree" [placeholder]="'education.degreePlaceholder' | translate" />
       </label>
       <label>
-        Início
+        {{ 'education.startDate' | translate }}
         <input type="date" formControlName="startDate" />
       </label>
       <label>
-        Término
+        {{ 'education.endDate' | translate }}
         <input type="date" formControlName="endDate" />
       </label>
       <label class="grid__full">
-        Descrição
+        {{ 'education.description' | translate }}
         <textarea formControlName="description" rows="2"></textarea>
       </label>
     </div>
     <div class="card-form__actions">
-      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (editingId() ? 'common.save' : 'common.add') | translate }}</button>
       @if (editingId()) {
-        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
       }
     </div>
   </form>
 
   @if (loading()) {
-    <p>Carregando…</p>
+    <p>{{ 'common.loading' | translate }}</p>
   } @else if (items().length === 0) {
-    <p class="empty">Nenhuma formação cadastrada ainda.</p>
+    <p class="empty">{{ 'education.empty' | translate }}</p>
   } @else {
     <ul class="list">
       @for (item of items(); track item.id) {
@@ -54,8 +54,8 @@
             }
           </div>
           <span class="list__actions">
-            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
-            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+            <button type="button" class="btn btn-icon" (click)="edit(item)">{{ 'common.edit' | translate }}</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">{{ 'common.remove' | translate }}</button>
           </span>
         </li>
       }

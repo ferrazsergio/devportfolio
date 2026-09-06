@@ -3,7 +3,7 @@ package dev.devportfolio.portfolio.presentation;
 import jakarta.validation.constraints.NotBlank;
 
 public record SocialLinkRequest(
-        @NotBlank(message = "Plataforma é obrigatória.") String platform,
-        @NotBlank(message = "URL é obrigatória.") String url,
+        @NotBlank(message = "{validation.socialLink.platform.required}") String platform,
+        @NotBlank(message = "{validation.socialLink.url.required}") String url,
         int order) {
 }

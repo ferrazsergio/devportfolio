@@ -1,5 +1,5 @@
 <div class="page">
-  <h1 class="page-title">Experiências</h1>
+  <h1 class="page-title">{{ 'experiences.title' | translate }}</h1>
 
   <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
     @if (errorMessage()) {
@@ -7,37 +7,37 @@
     }
     <div class="grid">
       <label>
-        Empresa
+        {{ 'experiences.company' | translate }}
         <input type="text" formControlName="company" />
       </label>
       <label>
-        Cargo
+        {{ 'experiences.role' | translate }}
         <input type="text" formControlName="role" />
       </label>
       <label>
-        Início
+        {{ 'experiences.startDate' | translate }}
         <input type="date" formControlName="startDate" />
       </label>
       <label>
-        Término
+        {{ 'experiences.endDate' | translate }}
         <input type="date" formControlName="endDate" [attr.disabled]="form.controls.current.value ? true : null" />
       </label>
       <label class="checkbox">
         <input type="checkbox" formControlName="current" />
-        Emprego atual
+        {{ 'experiences.current' | translate }}
       </label>
       <label>
-        Localização
+        {{ 'experiences.location' | translate }}
         <input type="text" formControlName="location" />
       </label>
       <label class="grid__full">
-        Descrição
+        {{ 'experiences.description' | translate }}
         <textarea formControlName="description" rows="2"></textarea>
       </label>
 
       @if (skills().length > 0) {
         <div class="grid__full">
-          <span class="field-label">Tecnologias</span>
+          <span class="field-label">{{ 'experiences.technologies' | translate }}</span>
           <div class="tech-picker">
             @for (skill of skills(); track skill.id) {
               <label class="checkbox">
@@ -54,24 +54,24 @@
       }
     </div>
     <div class="card-form__actions">
-      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (editingId() ? 'common.save' : 'common.add') | translate }}</button>
       @if (editingId()) {
-        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
       }
     </div>
   </form>
 
   @if (loading()) {
-    <p>Carregando…</p>
+    <p>{{ 'common.loading' | translate }}</p>
   } @else if (items().length === 0) {
-    <p class="empty">Nenhuma experiência cadastrada ainda.</p>
+    <p class="empty">{{ 'experiences.empty' | translate }}</p>
   } @else {
     <ul class="list">
       @for (item of items(); track item.id; let i = $index) {
         <li class="list__item">
           <div class="list__order">
-            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0" aria-label="Mover para cima">↑</button>
-            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1" aria-label="Mover para baixo">↓</button>
+            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0" [attr.aria-label]="'common.moveUp' | translate">↑</button>
+            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1" [attr.aria-label]="'common.moveDown' | translate">↓</button>
           </div>
           <div>
             <strong>{{ item.role }}</strong> · {{ item.company }}
@@ -80,8 +80,8 @@
             }
           </div>
           <span class="list__actions">
-            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
-            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+            <button type="button" class="btn btn-icon" (click)="edit(item)">{{ 'common.edit' | translate }}</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">{{ 'common.remove' | translate }}</button>
           </span>
         </li>
       }

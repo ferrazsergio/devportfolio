@@ -5,18 +5,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public record UpdateProfileRequest(
-        @NotBlank(message = "Nome completo é obrigatório.") String fullName,
+        @NotBlank(message = "{validation.profile.fullName.required}") String fullName,
 
-        @NotBlank(message = "Nome de usuário é obrigatório.")
+        @NotBlank(message = "{validation.profile.username.required}")
         @Pattern(regexp = "^[a-z0-9-]{3,50}$",
-                message = "Nome de usuário deve ter entre 3 e 50 caracteres, apenas letras minúsculas, números e hífen.")
+                message = "{validation.profile.username.pattern}")
         String username,
 
         String headline,
         String bio,
         String location,
 
-        @Email(message = "Email profissional deve ser válido.") String professionalEmail,
+        @Email(message = "{validation.profile.professionalEmail.email}") String professionalEmail,
 
         String phone,
         String githubUrl,

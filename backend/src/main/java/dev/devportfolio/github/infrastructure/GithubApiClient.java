@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.net.http.HttpClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -28,11 +30,13 @@ public class GithubApiClient {
     private final String clientSecret;
     private final String oauthBaseUrl;
     private final String apiBaseUrl;
+    private final MessageSource messageSource;
 
     public GithubApiClient(RestClient.Builder builder, @Value("${app.github.client-id}") String clientId,
             @Value("${app.github.client-secret}") String clientSecret,
             @Value("${app.github.oauth-base-url:https://github.com}") String oauthBaseUrl,
-            @Value("${app.github.api-base-url:https://api.github.com}") String apiBaseUrl) {
+            @Value("${app.github.api-base-url:https://api.github.com}") String apiBaseUrl,
+            MessageSource messageSource) {
         // HTTP/1.1 explícito: o HttpClient do JDK tenta HTTP/2 por padrão, o que causa
         // "RST_STREAM"/EOF ao falar com servidores de teste (WireMock/Jetty) que não
         // negociam h2c corretamente. GitHub também atende bem em HTTP/1.1.
@@ -44,6 +48,7 @@ public class GithubApiClient {
         this.clientSecret = clientSecret;
         this.oauthBaseUrl = oauthBaseUrl;
         this.apiBaseUrl = apiBaseUrl;
+        this.messageSource = messageSource;
     }
 
     @CircuitBreaker(name = "github-oauth", fallbackMethod = "exchangeCodeFallback")
@@ -56,14 +61,16 @@ public class GithubApiClient {
                 .retrieve().body(GithubTokenResponse.class);
         if (response == null || response.accessToken() == null) {
             String reason = response != null ? response.errorDescription() : "resposta vazia";
-            throw new ExternalServiceException("Não foi possível concluir a autorização com o GitHub: " + reason);
+            throw new ExternalServiceException(messageSource.getMessage("error.github.authorizationFailed",
+                    new Object[] { reason }, LocaleContextHolder.getLocale()));
         }
         return response;
     }
 
     @SuppressWarnings("unused")
     private GithubTokenResponse exchangeCodeFallback(String code, String redirectUri, Throwable cause) {
-        throw new ExternalServiceException("GitHub indisponível no momento. Tente novamente em instantes.", cause);
+        throw new ExternalServiceException(
+                messageSource.getMessage("error.github.unavailable", null, LocaleContextHolder.getLocale()), cause);
     }
 
     @CircuitBreaker(name = "github-oauth", fallbackMethod = "getAuthenticatedUserFallback")
@@ -81,7 +88,8 @@ public class GithubApiClient {
         if (cause instanceof GithubTokenInvalidException invalid) {
             throw invalid;
         }
-        throw new ExternalServiceException("GitHub indisponível no momento. Tente novamente em instantes.", cause);
+        throw new ExternalServiceException(
+                messageSource.getMessage("error.github.unavailable", null, LocaleContextHolder.getLocale()), cause);
     }
 
     @CircuitBreaker(name = "github-api", fallbackMethod = "listRepositoriesFallback")
@@ -100,14 +108,16 @@ public class GithubApiClient {
      * faz — precisa ser verificado explicitamente, senão um corpo de erro vazio (ex.:
      * 500 sem corpo) é interpretado como sucesso com dado nulo/vazio.
      */
-    private static void requireSuccessOrThrow(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse response)
+    private void requireSuccessOrThrow(RestClient.RequestHeadersSpec.ConvertibleClientHttpResponse response)
             throws IOException {
         int status = response.getStatusCode().value();
         if (status == 401) {
-            throw new GithubTokenInvalidException();
+            throw new GithubTokenInvalidException(
+                    messageSource.getMessage("error.github.tokenInvalid", null, LocaleContextHolder.getLocale()));
         }
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new ExternalServiceException("GitHub respondeu com status " + status + ".");
+            throw new ExternalServiceException(messageSource.getMessage("error.github.statusError",
+                    new Object[] { status }, LocaleContextHolder.getLocale()));
         }
     }
 
@@ -116,7 +126,7 @@ public class GithubApiClient {
         if (cause instanceof GithubTokenInvalidException invalid) {
             throw invalid;
         }
-        throw new ExternalServiceException(
-                "Não foi possível listar os repositórios do GitHub agora. Tente novamente em instantes.", cause);
+        throw new ExternalServiceException(messageSource.getMessage("error.github.listRepositoriesFailed", null,
+                LocaleContextHolder.getLocale()), cause);
     }
 }

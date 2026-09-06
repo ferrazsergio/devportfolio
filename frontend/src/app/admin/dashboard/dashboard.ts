@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { ProfileApiService } from '../profile/profile-api.service';
 import { PortfolioApiService } from './portfolio-api.service';
 import { Portfolio } from './portfolio.model';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

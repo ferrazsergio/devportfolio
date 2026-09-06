@@ -2,12 +2,13 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
 import { LogoComponent } from '../../core/ui/logo/logo';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, LogoComponent],
+  imports: [ReactiveFormsModule, RouterLink, LogoComponent, TranslatePipe],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })

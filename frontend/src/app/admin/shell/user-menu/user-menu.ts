@@ -1,11 +1,12 @@
 import { Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
+import { TranslatePipe } from '../../../core/i18n/translate.pipe';
 import { ProfileApiService } from '../../profile/profile-api.service';
 
 @Component({
   selector: 'app-user-menu',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './user-menu.html',
   styleUrl: './user-menu.css',
 })

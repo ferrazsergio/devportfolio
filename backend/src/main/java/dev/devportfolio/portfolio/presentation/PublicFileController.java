@@ -8,6 +8,8 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -29,16 +31,19 @@ public class PublicFileController {
             "webp", MediaType.valueOf("image/webp"));
 
     private final ProfilePhotoStorage photoStorage;
+    private final MessageSource messageSource;
 
-    public PublicFileController(ProfilePhotoStorage photoStorage) {
+    public PublicFileController(ProfilePhotoStorage photoStorage, MessageSource messageSource) {
         this.photoStorage = photoStorage;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> get(@PathVariable String filename) {
         Path path = photoStorage.resolve(filename);
         if (!Files.isRegularFile(path)) {
-            throw new NotFoundException("Arquivo não encontrado.");
+            throw new NotFoundException(
+                    messageSource.getMessage("error.file.notFound", null, LocaleContextHolder.getLocale()));
         }
 
         String extension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();

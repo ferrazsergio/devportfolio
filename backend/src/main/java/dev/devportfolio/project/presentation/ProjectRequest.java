@@ -9,11 +9,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public record ProjectRequest(
-        @NotBlank(message = "Nome é obrigatório.") String name,
+        @NotBlank(message = "{validation.project.name.required}") String name,
 
-        @NotBlank(message = "Slug é obrigatório.")
+        @NotBlank(message = "{validation.project.slug.required}")
         @Pattern(regexp = "^[a-z0-9-]{3,100}$",
-                message = "Slug deve ter entre 3 e 100 caracteres, apenas letras minúsculas, números e hífen.")
+                message = "{validation.project.slug.pattern}")
         String slug,
 
         String shortDescription,
@@ -23,7 +23,7 @@ public record ProjectRequest(
         String demoUrl,
         LocalDate date,
 
-        @NotNull(message = "Status é obrigatório.") ProjectStatus status,
+        @NotNull(message = "{validation.project.status.required}") ProjectStatus status,
 
         boolean featured,
         Set<UUID> technologyIds) {

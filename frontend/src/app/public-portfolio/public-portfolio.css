@@ -428,4 +428,6 @@
   bottom: var(--space-5);
   right: var(--space-5);
   z-index: 20;
+  display: flex;
+  gap: var(--space-2);
 }

@@ -1,27 +1,27 @@
 <div class="page">
-  <h1 class="page-title">Links sociais</h1>
+  <h1 class="page-title">{{ 'socialLinks.title' | translate }}</h1>
 
   <form class="inline-form" [formGroup]="form" (ngSubmit)="submit()">
     @if (errorMessage()) {
       <p class="alert alert-danger">{{ errorMessage() }}</p>
     }
     <div class="inline-form__fields">
-      <input type="text" formControlName="platform" placeholder="Plataforma (ex.: Twitter)" />
-      <input type="text" formControlName="url" placeholder="https://…" class="inline-form__url" />
+      <input type="text" formControlName="platform" [placeholder]="'socialLinks.platformPlaceholder' | translate" />
+      <input type="text" formControlName="url" [placeholder]="'socialLinks.urlPlaceholder' | translate" class="inline-form__url" />
       <input type="number" formControlName="order" class="inline-form__order" />
       <div class="inline-form__actions">
-        <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (editingId() ? 'common.save' : 'common.add') | translate }}</button>
         @if (editingId()) {
-          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
         }
       </div>
     </div>
   </form>
 
   @if (loading()) {
-    <p>Carregando…</p>
+    <p>{{ 'common.loading' | translate }}</p>
   } @else if (items().length === 0) {
-    <p class="empty">Nenhum link social cadastrado ainda.</p>
+    <p class="empty">{{ 'socialLinks.empty' | translate }}</p>
   } @else {
     <ul class="list">
       @for (item of items(); track item.id) {
@@ -29,8 +29,8 @@
           <span>{{ item.platform }}</span>
           <a class="list__muted" [href]="item.url" [title]="item.url" target="_blank" rel="noopener">{{ item.url }}</a>
           <span class="list__actions">
-            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
-            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+            <button type="button" class="btn btn-icon" (click)="edit(item)">{{ 'common.edit' | translate }}</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">{{ 'common.remove' | translate }}</button>
           </span>
         </li>
       }

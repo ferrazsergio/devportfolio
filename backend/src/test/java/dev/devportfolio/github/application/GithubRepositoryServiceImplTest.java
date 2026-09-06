@@ -86,8 +86,8 @@ class GithubRepositoryServiceImplTest {
         GithubRepoDto repo = new GithubRepoDto(1L, "devportfolio", "ana-souza/devportfolio", "Meu portfólio",
                 "https://github.com/ana-souza/devportfolio", "Java", false, false);
         when(apiClient.listRepositories("plain-token")).thenReturn(List.of(repo));
-        Project created = new Project(PORTFOLIO_ID, "devportfolio", "devportfolio", "Meu portfólio", null, null,
-                repo.htmlUrl(), null, null, ProjectStatus.IN_PROGRESS, false, 0, Set.of());
+        Project created = new Project(PORTFOLIO_ID, "devportfolio", "devportfolio", "Meu portfólio", null, null, null,
+                null, repo.htmlUrl(), null, null, ProjectStatus.IN_PROGRESS, false, 0, Set.of());
         when(projectService.create(OWNER_ID, "devportfolio", "devportfolio", "Meu portfólio", null, null,
                 repo.htmlUrl(), null, null, ProjectStatus.IN_PROGRESS, false, Set.of())).thenReturn(created);
 
@@ -117,7 +117,7 @@ class GithubRepositoryServiceImplTest {
         when(apiClient.listRepositories("plain-token")).thenReturn(List.of(repo));
         when(projectService.create(OWNER_ID, "devportfolio", "devportfolio", "desc", null, null, repo.htmlUrl(),
                 null, null, ProjectStatus.IN_PROGRESS, false, Set.of()))
-                .thenThrow(new ProjectSlugAlreadyInUseException());
+                .thenThrow(new ProjectSlugAlreadyInUseException("Você já possui um projeto com esse slug."));
 
         GithubImportResult result = service.importRepositories(OWNER_ID, List.of("ana-souza/devportfolio"));
 

@@ -1,0 +1,8 @@
+<button
+  type="button"
+  class="locale-toggle"
+  (click)="localeService.toggle()"
+  [attr.aria-label]="'locale.toggle' | translate"
+>
+  {{ localeService.locale() === 'pt' ? 'PT' : 'EN' }}
+</button>

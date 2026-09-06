@@ -7,6 +7,8 @@ import dev.devportfolio.portfolio.domain.Profile;
 import dev.devportfolio.portfolio.domain.ProfileRepository;
 import dev.devportfolio.shared.domain.NotFoundException;
 import java.util.UUID;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +17,13 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     private final PortfolioRepository portfolioRepository;
     private final ProfileRepository profileRepository;
+    private final MessageSource messageSource;
 
-    public PortfolioServiceImpl(PortfolioRepository portfolioRepository, ProfileRepository profileRepository) {
+    public PortfolioServiceImpl(PortfolioRepository portfolioRepository, ProfileRepository profileRepository,
+            MessageSource messageSource) {
         this.portfolioRepository = portfolioRepository;
         this.profileRepository = profileRepository;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -33,20 +38,23 @@ public class PortfolioServiceImpl implements PortfolioService {
     public UUID requirePortfolioId(UUID ownerUserId) {
         return portfolioRepository.findByOwnerUserId(ownerUserId)
                 .map(Portfolio::getId)
-                .orElseThrow(() -> new NotFoundException("Portfólio não encontrado."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.portfolio.notFound", null, LocaleContextHolder.getLocale())));
     }
 
     @Override
     public Portfolio getByOwner(UUID ownerUserId) {
         return portfolioRepository.findByOwnerUserId(ownerUserId)
-                .orElseThrow(() -> new NotFoundException("Portfólio não encontrado."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.portfolio.notFound", null, LocaleContextHolder.getLocale())));
     }
 
     @Override
     @Transactional
     public Portfolio updateStatus(UUID ownerUserId, PortfolioStatus status) {
         Portfolio portfolio = portfolioRepository.findByOwnerUserId(ownerUserId)
-                .orElseThrow(() -> new NotFoundException("Portfólio não encontrado."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.portfolio.notFound", null, LocaleContextHolder.getLocale())));
         portfolio.updateStatus(status);
         return portfolio;
     }

@@ -30,6 +30,13 @@ app:
   public-base-url: ${APP_PUBLIC_BASE_URL:http://localhost:4200}
   storage:
     path: ${APP_STORAGE_PATH:/app/uploads}
+  translation:
+    deepl:
+      # Vazio = tradução automática do conteúdo desligada (não é erro, é opcional —
+      # ver ContentTranslationServiceImpl). Plano free do DeepL usa api-free.deepl.com;
+      # plano pago usa api.deepl.com.
+      api-key: ${DEEPL_API_KEY:}
+      base-url: ${DEEPL_API_BASE_URL:https://api-free.deepl.com}
   github:
     client-id: ${GITHUB_CLIENT_ID:}
     client-secret: ${GITHUB_CLIENT_SECRET:}
@@ -64,4 +71,6 @@ resilience4j:
       github-oauth:
         base-config: default
       github-api:
+        base-config: default
+      deepl-translation:
         base-config: default

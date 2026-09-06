@@ -1,10 +1,11 @@
 import { Component, ElementRef, inject } from '@angular/core';
 import gsap from 'gsap';
 import { ThemeService } from '../../theme/theme.service';
+import { TranslatePipe } from '../../i18n/translate.pipe';
 
 @Component({
   selector: 'app-theme-toggle',
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './theme-toggle.html',
   styleUrl: './theme-toggle.css',
 })

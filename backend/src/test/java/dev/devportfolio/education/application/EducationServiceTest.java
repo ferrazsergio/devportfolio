@@ -9,6 +9,7 @@ import dev.devportfolio.education.domain.Education;
 import dev.devportfolio.education.domain.EducationRepository;
 import dev.devportfolio.portfolio.application.PortfolioService;
 import dev.devportfolio.shared.domain.NotFoundException;
+import dev.devportfolio.translation.application.ContentTranslationService;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class EducationServiceTest {
@@ -30,6 +32,12 @@ class EducationServiceTest {
     @Mock
     private PortfolioService portfolioService;
 
+    @Mock
+    private MessageSource messageSource;
+
+    @Mock
+    private ContentTranslationService translationService;
+
     @InjectMocks
     private EducationServiceImpl educationService;
 
@@ -37,7 +45,7 @@ class EducationServiceTest {
     void createsEducationUnderCallersPortfolio() {
         when(portfolioService.requirePortfolioId(OWNER_ID)).thenReturn(PORTFOLIO_ID);
         Education saved = new Education(PORTFOLIO_ID, "USP", "Ciência da Computação", "Bacharelado",
-                LocalDate.of(2015, 1, 1), LocalDate.of(2019, 12, 1), null);
+                LocalDate.of(2015, 1, 1), LocalDate.of(2019, 12, 1), null, null);
         when(educationRepository.save(any(Education.class))).thenReturn(saved);
 
         Education result = educationService.create(OWNER_ID, "USP", "Ciência da Computação", "Bacharelado",

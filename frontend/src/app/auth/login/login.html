@@ -3,22 +3,22 @@
     <div class="auth-card__brand">
       <app-logo [showWordmark]="false" />
     </div>
-    <h1>Entrar</h1>
+    <h1>{{ 'auth.login.title' | translate }}</h1>
 
     @if (errorMessage()) {
       <p class="alert alert-danger">{{ errorMessage() }}</p>
     }
     @if (justRegistered() && !errorMessage()) {
-      <p class="alert alert-success">Cadastro realizado! Faça login para continuar.</p>
+      <p class="alert alert-success">{{ 'auth.login.registeredSuccess' | translate }}</p>
     }
 
     <label>
-      Email
+      {{ 'auth.login.email' | translate }}
       <input type="email" formControlName="email" autocomplete="email" />
     </label>
 
     <label>
-      Senha
+      {{ 'auth.login.password' | translate }}
       <div class="password-field">
         <input
           [type]="showPassword() ? 'text' : 'password'"
@@ -29,7 +29,7 @@
           type="button"
           class="password-field__toggle"
           (click)="showPassword.set(!showPassword())"
-          [attr.aria-label]="showPassword() ? 'Ocultar senha' : 'Mostrar senha'"
+          [attr.aria-label]="(showPassword() ? 'auth.login.hidePassword' : 'auth.login.showPassword') | translate"
         >
           @if (showPassword()) {
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6">
@@ -48,11 +48,11 @@
     </label>
 
     <button type="submit" class="btn btn-primary" [disabled]="submitting()">
-      {{ submitting() ? 'Entrando…' : 'Entrar' }}
+      {{ (submitting() ? 'auth.login.submitting' : 'auth.login.submit') | translate }}
     </button>
 
     <p class="auth-card__footer">
-      Não tem conta? <a routerLink="/register">Cadastre-se</a>
+      {{ 'auth.login.noAccount' | translate }} <a routerLink="/register">{{ 'auth.login.registerLink' | translate }}</a>
     </p>
   </form>
 </div>

@@ -3,6 +3,11 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LocaleService } from '../core/i18n/locale.service';
+import { LocaleToggleComponent } from '../core/i18n/locale-toggle/locale-toggle';
+import { TranslatePipe } from '../core/i18n/translate.pipe';
+import { en } from '../core/i18n/translations/en';
+import { pt } from '../core/i18n/translations/pt';
 import { LogoComponent } from '../core/ui/logo/logo';
 import { ThemeToggleComponent } from '../core/ui/theme-toggle/theme-toggle';
 import { PublicPortfolioApiService } from './public-portfolio-api.service';
@@ -36,7 +41,7 @@ export interface SkillGroup {
 
 @Component({
   selector: 'app-public-portfolio',
-  imports: [LogoComponent, ThemeToggleComponent],
+  imports: [LogoComponent, ThemeToggleComponent, LocaleToggleComponent, TranslatePipe],
   templateUrl: './public-portfolio.html',
   styleUrl: './public-portfolio.css',
 })
@@ -46,6 +51,7 @@ export class PublicPortfolioComponent implements OnDestroy {
   private readonly title = inject(Title);
   private readonly meta = inject(Meta);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly localeService = inject(LocaleService);
 
   private readonly scrollTriggers: ScrollTrigger[] = [];
   private readonly reduceMotion =
@@ -132,7 +138,8 @@ export class PublicPortfolioComponent implements OnDestroy {
   protected formatPeriod(startDate: string, endDate: string | null, current: boolean): string {
     const start = this.formatDate(startDate);
     if (current) {
-      return `${start} — atual`;
+      const dictionary = this.localeService.locale() === 'en' ? en : pt;
+      return `${start} — ${dictionary.publicPortfolio.periodCurrent}`;
     }
     return endDate ? `${start} — ${this.formatDate(endDate)}` : start;
   }

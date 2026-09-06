@@ -1,46 +1,46 @@
 @if (loading()) {
-  <p>Carregando…</p>
+  <p>{{ 'common.loading' | translate }}</p>
 } @else {
   <div class="page">
-    <h1 class="page-title">Perfil</h1>
+    <h1 class="page-title">{{ 'profile.title' | translate }}</h1>
 
     <form class="card-form" [formGroup]="form" (ngSubmit)="submit()">
       @if (errorMessage()) {
         <p class="alert alert-danger">{{ errorMessage() }}</p>
       }
       @if (savedMessage()) {
-        <p class="alert alert-success">Perfil atualizado.</p>
+        <p class="alert alert-success">{{ 'profile.updated' | translate }}</p>
       }
 
       <div class="grid">
         <label>
-          Nome completo
+          {{ 'profile.fullName' | translate }}
           <input type="text" formControlName="fullName" />
         </label>
 
         <label>
-          Nome de usuário (URL pública)
+          {{ 'profile.username' | translate }}
           <input type="text" formControlName="username" placeholder="seu-usuario" />
-          <small>Letras minúsculas, números e hífen. 3 a 50 caracteres.</small>
+          <small>{{ 'profile.usernameHint' | translate }}</small>
         </label>
 
         <label class="grid__full">
-          Título profissional
-          <input type="text" formControlName="headline" placeholder="Ex.: Desenvolvedor Java" />
+          {{ 'profile.headline' | translate }}
+          <input type="text" formControlName="headline" [placeholder]="'profile.headlinePlaceholder' | translate" />
         </label>
 
         <label class="grid__full">
-          Biografia
+          {{ 'profile.bio' | translate }}
           <textarea formControlName="bio" rows="4"></textarea>
         </label>
 
         <label>
-          Localização
+          {{ 'profile.location' | translate }}
           <input type="text" formControlName="location" />
         </label>
 
         <div class="grid__full photo-field">
-          <span class="field-label">Foto</span>
+          <span class="field-label">{{ 'profile.photo' | translate }}</span>
           <div class="photo-field__row">
             <div class="photo-field__preview">
               @if (profile()?.photoUrl; as photoUrl) {
@@ -54,7 +54,7 @@
             </div>
             <div class="photo-field__actions">
               <label class="btn btn-secondary">
-                {{ uploadingPhoto() ? 'Enviando…' : 'Enviar foto' }}
+                {{ (uploadingPhoto() ? 'profile.photoUploading' : 'profile.photoUpload') | translate }}
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
@@ -70,7 +70,7 @@
                   (click)="removePhoto()"
                   [disabled]="uploadingPhoto()"
                 >
-                  Remover foto
+                  {{ 'profile.photoRemove' | translate }}
                 </button>
               }
             </div>
@@ -78,38 +78,38 @@
           @if (photoError()) {
             <p class="alert alert-danger">{{ photoError() }}</p>
           }
-          <small>JPEG, PNG ou WebP. Até 5MB.</small>
+          <small>{{ 'profile.photoHint' | translate }}</small>
         </div>
 
         <label>
-          Email profissional
+          {{ 'profile.professionalEmail' | translate }}
           <input type="email" formControlName="professionalEmail" />
         </label>
 
         <label>
-          Telefone
+          {{ 'profile.phone' | translate }}
           <input type="text" formControlName="phone" />
         </label>
 
         <label>
-          GitHub
+          {{ 'profile.github' | translate }}
           <input type="text" formControlName="githubUrl" />
         </label>
 
         <label>
-          LinkedIn
+          {{ 'profile.linkedin' | translate }}
           <input type="text" formControlName="linkedinUrl" />
         </label>
 
         <label>
-          Site
+          {{ 'profile.website' | translate }}
           <input type="text" formControlName="websiteUrl" />
         </label>
       </div>
 
       <div class="card-form__actions">
         <button type="submit" class="btn btn-primary" [disabled]="saving()">
-          {{ saving() ? 'Salvando…' : 'Salvar' }}
+          {{ (saving() ? 'common.saving' : 'common.save') | translate }}
         </button>
       </div>
     </form>

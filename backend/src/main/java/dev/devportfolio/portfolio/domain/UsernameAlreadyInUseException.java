@@ -4,7 +4,7 @@ import dev.devportfolio.shared.domain.ConflictException;
 
 public class UsernameAlreadyInUseException extends ConflictException {
 
-    public UsernameAlreadyInUseException() {
-        super("Este nome de usuário já está em uso.");
+    public UsernameAlreadyInUseException(String message) {
+        super(message);
     }
 }

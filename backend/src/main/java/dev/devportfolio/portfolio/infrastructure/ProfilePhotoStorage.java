@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,18 +29,22 @@ public class ProfilePhotoStorage {
             "image/webp", "webp");
 
     private final Path storageDir;
+    private final MessageSource messageSource;
 
-    public ProfilePhotoStorage(@Value("${app.storage.path}") String storagePath) {
+    public ProfilePhotoStorage(@Value("${app.storage.path}") String storagePath, MessageSource messageSource) {
         this.storageDir = Path.of(storagePath);
+        this.messageSource = messageSource;
     }
 
     public String store(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new DomainValidationException("Nenhum arquivo enviado.");
+            throw new DomainValidationException(
+                    messageSource.getMessage("error.profilePhoto.empty", null, LocaleContextHolder.getLocale()));
         }
         String extension = ALLOWED_CONTENT_TYPES.get(file.getContentType());
         if (extension == null) {
-            throw new DomainValidationException("Formato inválido. Envie uma imagem JPEG, PNG ou WebP.");
+            throw new DomainValidationException(
+                    messageSource.getMessage("error.profilePhoto.invalidFormat", null, LocaleContextHolder.getLocale()));
         }
 
         String filename = UUID.randomUUID() + "." + extension;
@@ -64,7 +70,8 @@ public class ProfilePhotoStorage {
 
     public Path resolve(String filename) {
         if (!isSafeFilename(filename)) {
-            throw new DomainValidationException("Nome de arquivo inválido.");
+            throw new DomainValidationException(
+                    messageSource.getMessage("error.profilePhoto.invalidFilename", null, LocaleContextHolder.getLocale()));
         }
         return storageDir.resolve(filename);
     }

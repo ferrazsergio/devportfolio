@@ -1,13 +1,13 @@
 <div class="page">
-  <h1 class="page-title">Projetos</h1>
+  <h1 class="page-title">{{ 'projects.title' | translate }}</h1>
 
   <section class="card github-card">
     <div class="github-card__header">
-      <h2>GitHub</h2>
+      <h2>{{ 'projects.githubTitle' | translate }}</h2>
       @if (githubStatus()?.connected) {
-        <span class="badge badge-success">Conectado como &commat;{{ githubStatus()?.githubUsername }}</span>
+        <span class="badge badge-success">{{ 'projects.githubConnectedAs' | translate }} &commat;{{ githubStatus()?.githubUsername }}</span>
       } @else {
-        <span class="badge badge-neutral">Não conectado</span>
+        <span class="badge badge-neutral">{{ 'projects.githubNotConnected' | translate }}</span>
       }
     </div>
 
@@ -18,14 +18,14 @@
     @if (githubStatus()?.connected) {
       <div class="github-card__actions">
         <button type="button" class="btn btn-secondary" (click)="loadGithubRepos()" [disabled]="githubLoadingRepos()">
-          {{ githubLoadingRepos() ? 'Carregando…' : 'Importar repositórios' }}
+          {{ (githubLoadingRepos() ? 'projects.githubImporting' : 'projects.githubImportRepos') | translate }}
         </button>
-        <button type="button" class="btn btn-danger" (click)="disconnectGithub()">Desconectar</button>
+        <button type="button" class="btn btn-danger" (click)="disconnectGithub()">{{ 'projects.githubDisconnect' | translate }}</button>
       </div>
 
       @if (githubRepos(); as repos) {
         @if (repos.length === 0) {
-          <p class="empty">Nenhum repositório público encontrado.</p>
+          <p class="empty">{{ 'projects.githubNoRepos' | translate }}</p>
         } @else {
           <ul class="list github-repo-list">
             @for (repo of repos; track repo.fullName) {
@@ -54,15 +54,15 @@
               (click)="importSelectedGithubRepos()"
               [disabled]="githubImporting()"
             >
-              {{ githubImporting() ? 'Importando…' : 'Importar selecionados' }}
+              {{ (githubImporting() ? 'projects.githubImportingSelected' : 'projects.githubImportSelected') | translate }}
             </button>
           </div>
         }
       }
     } @else {
-      <p class="empty">Conecte sua conta do GitHub para importar repositórios como projetos.</p>
+      <p class="empty">{{ 'projects.githubConnectPrompt' | translate }}</p>
       <div class="github-card__actions">
-        <button type="button" class="btn btn-primary" (click)="connectGithub()">Conectar com GitHub</button>
+        <button type="button" class="btn btn-primary" (click)="connectGithub()">{{ 'projects.githubConnect' | translate }}</button>
       </div>
     }
   </section>
@@ -73,15 +73,15 @@
     }
     <div class="grid">
       <label>
-        Nome
+        {{ 'projects.name' | translate }}
         <input type="text" formControlName="name" />
       </label>
       <label>
-        Slug (URL)
-        <input type="text" formControlName="slug" placeholder="meu-projeto" />
+        {{ 'projects.slug' | translate }}
+        <input type="text" formControlName="slug" [placeholder]="'projects.slugPlaceholder' | translate" />
       </label>
       <label>
-        Status
+        {{ 'projects.status' | translate }}
         <select formControlName="status">
           @for (option of statuses; track option.value) {
             <option [value]="option.value">{{ option.label }}</option>
@@ -89,37 +89,37 @@
         </select>
       </label>
       <label>
-        Data
+        {{ 'projects.date' | translate }}
         <input type="date" formControlName="date" />
       </label>
       <label class="grid__full">
-        Descrição curta
+        {{ 'projects.shortDescription' | translate }}
         <input type="text" formControlName="shortDescription" />
       </label>
       <label class="grid__full">
-        Descrição completa
+        {{ 'projects.fullDescription' | translate }}
         <textarea formControlName="fullDescription" rows="3"></textarea>
       </label>
       <label>
-        Imagem (URL)
+        {{ 'projects.imageUrl' | translate }}
         <input type="text" formControlName="imageUrl" />
       </label>
       <label>
-        GitHub
+        {{ 'projects.github' | translate }}
         <input type="text" formControlName="githubUrl" />
       </label>
       <label>
-        Demo
+        {{ 'projects.demo' | translate }}
         <input type="text" formControlName="demoUrl" />
       </label>
       <label class="checkbox">
         <input type="checkbox" formControlName="featured" />
-        Projeto em destaque
+        {{ 'projects.featured' | translate }}
       </label>
 
       @if (skills().length > 0) {
         <div class="grid__full">
-          <span class="field-label">Tecnologias</span>
+          <span class="field-label">{{ 'projects.technologies' | translate }}</span>
           <div class="tech-picker">
             @for (skill of skills(); track skill.id) {
               <label class="checkbox">
@@ -136,29 +136,29 @@
       }
     </div>
     <div class="card-form__actions">
-      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ editingId() ? 'Salvar' : 'Adicionar' }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (editingId() ? 'common.save' : 'common.add') | translate }}</button>
       @if (editingId()) {
-        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
       }
     </div>
   </form>
 
   @if (loading()) {
-    <p>Carregando…</p>
+    <p>{{ 'common.loading' | translate }}</p>
   } @else if (items().length === 0) {
-    <p class="empty">Nenhum projeto cadastrado ainda.</p>
+    <p class="empty">{{ 'projects.empty' | translate }}</p>
   } @else {
     <ul class="list">
       @for (item of items(); track item.id; let i = $index) {
         <li class="list__item">
           <div class="list__order">
-            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0" aria-label="Mover para cima">↑</button>
-            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1" aria-label="Mover para baixo">↓</button>
+            <button type="button" class="btn btn-icon" (click)="moveUp(i)" [disabled]="i === 0" [attr.aria-label]="'common.moveUp' | translate">↑</button>
+            <button type="button" class="btn btn-icon" (click)="moveDown(i)" [disabled]="i === items().length - 1" [attr.aria-label]="'common.moveDown' | translate">↓</button>
           </div>
           <div>
             <strong>{{ item.name }}</strong>
             @if (item.featured) {
-              <span class="badge badge-warning">destaque</span>
+              <span class="badge badge-warning">{{ 'projects.featuredBadge' | translate }}</span>
             }
             <div class="list__muted">
               {{ statusLabel(item.status) }}
@@ -168,8 +168,8 @@
             </div>
           </div>
           <span class="list__actions">
-            <button type="button" class="btn btn-icon" (click)="edit(item)">Editar</button>
-            <button type="button" class="btn btn-danger" (click)="remove(item)">Remover</button>
+            <button type="button" class="btn btn-icon" (click)="edit(item)">{{ 'common.edit' | translate }}</button>
+            <button type="button" class="btn btn-danger" (click)="remove(item)">{{ 'common.remove' | translate }}</button>
           </span>
         </li>
       }

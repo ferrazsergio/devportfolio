@@ -1,10 +1,11 @@
-<a class="skip-link" href="#main-content">Pular para conteúdo</a>
+<a class="skip-link" href="#main-content">{{ 'skipLink' | translate }}</a>
 <header class="landing-nav">
   <app-logo />
   <nav class="landing-nav__links">
-    <a [href]="githubUrl" target="_blank" rel="noopener">Ver no GitHub</a>
-    <a routerLink="/login">Entrar</a>
-    <a routerLink="/register" class="btn btn-primary">Cadastre-se</a>
+    <a [href]="githubUrl" target="_blank" rel="noopener">{{ 'landing.navGithub' | translate }}</a>
+    <a routerLink="/login">{{ 'landing.navLogin' | translate }}</a>
+    <a routerLink="/register" class="btn btn-primary">{{ 'landing.navRegister' | translate }}</a>
+    <app-locale-toggle />
     <app-theme-toggle />
   </nav>
 </header>
@@ -16,36 +17,35 @@
       <div class="hero__blob hero__blob--two"></div>
     </div>
     <div class="hero__inner">
-      <h1 class="reveal">O portfólio open-source para desenvolvedores</h1>
+      <h1 class="reveal">{{ 'landing.heroTitle' | translate }}</h1>
       <p class="reveal">
-        Gerencie sua trajetória profissional, mostre seus projetos e mantenha seus dados sob seu controle.
-        Hospede você mesmo com Docker, sem depender de uma plataforma de terceiros.
+        {{ 'landing.heroDescription' | translate }}
       </p>
       <div class="hero__actions reveal">
-        <a routerLink="/register" class="btn btn-primary btn-lg">Criar minha conta</a>
-        <a [href]="githubUrl" target="_blank" rel="noopener" class="btn btn-secondary btn-lg">Ver no GitHub</a>
+        <a routerLink="/register" class="btn btn-primary btn-lg">{{ 'landing.heroCreateAccount' | translate }}</a>
+        <a [href]="githubUrl" target="_blank" rel="noopener" class="btn btn-secondary btn-lg">{{ 'landing.heroGithub' | translate }}</a>
       </div>
     </div>
   </section>
 
   <section class="section features">
-    <h2 class="reveal">Tudo que você precisa pra mostrar seu trabalho</h2>
+    <h2 class="reveal">{{ 'landing.featuresTitle' | translate }}</h2>
     <div class="features__grid">
       <div class="card feature-card reveal">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
           <circle cx="10" cy="6.5" r="3.2" />
           <path d="M3.5 17c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6" stroke-linecap="round" />
         </svg>
-        <h3>Perfil</h3>
-        <p>Sua apresentação profissional completa: nome, foto, headline, bio e links sociais.</p>
+        <h3>{{ 'landing.featureProfileTitle' | translate }}</h3>
+        <p>{{ 'landing.featureProfileText' | translate }}</p>
       </div>
       <div class="card feature-card reveal">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
           <rect x="2.5" y="6.5" width="15" height="10" rx="1.6" />
           <path d="M7 6.5V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" stroke-linecap="round" />
         </svg>
-        <h3>Experiências</h3>
-        <p>Sua trajetória profissional, com tecnologias usadas em cada posição.</p>
+        <h3>{{ 'landing.featureExperiencesTitle' | translate }}</h3>
+        <p>{{ 'landing.featureExperiencesText' | translate }}</p>
       </div>
       <div class="card feature-card reveal">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -54,8 +54,8 @@
             stroke-linejoin="round"
           />
         </svg>
-        <h3>Projetos</h3>
-        <p>Destaque seus melhores projetos, com link para código e demo ao vivo.</p>
+        <h3>{{ 'landing.featureProjectsTitle' | translate }}</h3>
+        <p>{{ 'landing.featureProjectsText' | translate }}</p>
       </div>
       <div class="card feature-card reveal">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -64,45 +64,44 @@
             stroke-linejoin="round"
           />
         </svg>
-        <h3>Habilidades</h3>
-        <p>Organizadas por categoria: backend, frontend, cloud, DevOps e mais.</p>
+        <h3>{{ 'landing.featureSkillsTitle' | translate }}</h3>
+        <p>{{ 'landing.featureSkillsText' | translate }}</p>
       </div>
       <div class="card feature-card reveal">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
           <path d="M2 7.5 10 3.5l8 4-8 4-8-4Z" stroke-linejoin="round" />
           <path d="M5.5 9.5v3.8c0 1 2 2.2 4.5 2.2s4.5-1.2 4.5-2.2V9.5" stroke-linecap="round" />
         </svg>
-        <h3>Formação &amp; certificações</h3>
-        <p>Sua educação formal e certificações, em uma linha do tempo clara.</p>
+        <h3>{{ 'landing.featureEducationTitle' | translate }}</h3>
+        <p>{{ 'landing.featureEducationText' | translate }}</p>
       </div>
     </div>
   </section>
 
   <section class="section open-source reveal">
     <div>
-      <h2>Open source e self-hosted</h2>
+      <h2>{{ 'landing.openSourceTitle' | translate }}</h2>
       <p>
-        Código aberto sob licença MIT. Rode no seu próprio servidor com Docker Compose e mantenha total
-        controle sobre seus dados, sem depender de uma plataforma fechada de terceiros.
+        {{ 'landing.openSourceText' | translate }}
       </p>
-      <a [href]="githubUrl" target="_blank" rel="noopener" class="btn btn-dark">Ver o repositório</a>
+      <a [href]="githubUrl" target="_blank" rel="noopener" class="btn btn-dark">{{ 'landing.openSourceCta' | translate }}</a>
     </div>
   </section>
 
   <section class="section docker-workflow reveal">
-    <h2>Clone. Configure. Rode.</h2>
+    <h2>{{ 'landing.dockerTitle' | translate }}</h2>
     <div class="docker-workflow__steps">
       <div class="docker-workflow__step">
         <span class="docker-workflow__number">1</span>
-        <p>Clone o repositório</p>
+        <p>{{ 'landing.dockerStep1' | translate }}</p>
       </div>
       <div class="docker-workflow__step">
         <span class="docker-workflow__number">2</span>
-        <p>Configure as variáveis de ambiente</p>
+        <p>{{ 'landing.dockerStep2' | translate }}</p>
       </div>
       <div class="docker-workflow__step">
         <span class="docker-workflow__number">3</span>
-        <p>Suba os containers</p>
+        <p>{{ 'landing.dockerStep3' | translate }}</p>
       </div>
     </div>
     <pre class="docker-workflow__code"><code>git clone {{ githubUrl }}.git
@@ -112,20 +111,19 @@ docker compose up -d</code></pre>
   </section>
 
   <section class="section seo-sharing reveal">
-    <h2>Pronto pra compartilhar</h2>
+    <h2>{{ 'landing.seoTitle' | translate }}</h2>
     <p>
-      Sua página pública já sai com title, description e Open Graph configurados automaticamente, então
-      o preview aparece certinho ao compartilhar no LinkedIn, WhatsApp ou Twitter.
+      {{ 'landing.seoText' | translate }}
     </p>
   </section>
 </main>
 
 <footer class="landing-footer">
   <app-logo />
-  <p>DevPortfolio é open source sob licença MIT.</p>
+  <p>{{ 'landing.footerText' | translate }}</p>
   <nav class="landing-footer__links">
-    <a [href]="githubUrl" target="_blank" rel="noopener">GitHub</a>
-    <a routerLink="/login">Entrar</a>
-    <a routerLink="/register">Cadastre-se</a>
+    <a [href]="githubUrl" target="_blank" rel="noopener">{{ 'landing.footerGithub' | translate }}</a>
+    <a routerLink="/login">{{ 'landing.footerLogin' | translate }}</a>
+    <a routerLink="/register">{{ 'landing.footerRegister' | translate }}</a>
   </nav>
 </footer>

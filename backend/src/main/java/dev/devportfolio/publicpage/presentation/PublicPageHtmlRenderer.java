@@ -2,6 +2,8 @@ package dev.devportfolio.publicpage.presentation;
 
 import dev.devportfolio.portfolio.domain.Profile;
 import dev.devportfolio.publicpage.application.PublicPortfolioView;
+import java.util.Locale;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
@@ -16,17 +18,24 @@ public class PublicPageHtmlRenderer {
 
     private static final int DESCRIPTION_MAX_LENGTH = 200;
 
-    public String render(PublicPortfolioView view, String publicBaseUrl, String username) {
+    private final MessageSource messageSource;
+
+    public PublicPageHtmlRenderer(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    public String render(PublicPortfolioView view, String publicBaseUrl, String username, Locale locale) {
         Profile profile = view.profile();
         String displayName = firstNonBlank(profile.getFullName(), username);
         String title = displayName + " · DevPortfolio";
-        String description = truncate(
-                firstNonBlank(profile.getHeadline(), profile.getBio(), "Portfólio de desenvolvedor(a) no DevPortfolio."));
+        String description = truncate(firstNonBlank(profile.getHeadline(), profile.getBio(),
+                messageSource.getMessage("publicpage.defaultDescription", null, locale)));
         String pageUrl = publicBaseUrl + "/" + username;
         String photoUrl = profile.getPhotoUrl();
+        String htmlLang = locale.getLanguage().equals("en") ? "en" : "pt-BR";
 
         StringBuilder html = new StringBuilder();
-        html.append("<!doctype html>\n<html lang=\"pt-BR\"><head>\n");
+        html.append("<!doctype html>\n<html lang=\"").append(htmlLang).append("\"><head>\n");
         html.append("<meta charset=\"utf-8\">\n");
         html.append("<title>").append(esc(title)).append("</title>\n");
         html.append("<meta name=\"description\" content=\"").append(esc(description)).append("\">\n");
@@ -51,17 +60,21 @@ public class PublicPageHtmlRenderer {
         if (profile.getBio() != null && !profile.getBio().isBlank()) {
             html.append("<p>").append(esc(profile.getBio())).append("</p>\n");
         }
-        html.append("<p><a href=\"").append(esc(pageUrl)).append("\">Ver portfólio completo</a></p>\n");
+        html.append("<p><a href=\"").append(esc(pageUrl)).append("\">")
+                .append(esc(messageSource.getMessage("publicpage.viewFullProfile", null, locale)))
+                .append("</a></p>\n");
         html.append("</body></html>\n");
         return html.toString();
     }
 
-    public String renderNotFound() {
-        return "<!doctype html>\n<html lang=\"pt-BR\"><head><meta charset=\"utf-8\">"
-                + "<title>Portfólio não encontrado · DevPortfolio</title>"
+    public String renderNotFound(Locale locale) {
+        String htmlLang = locale.getLanguage().equals("en") ? "en" : "pt-BR";
+        return "<!doctype html>\n<html lang=\"" + htmlLang + "\"><head><meta charset=\"utf-8\">"
+                + "<title>" + esc(messageSource.getMessage("publicpage.notFound.title", null, locale)) + "</title>"
                 + "<meta name=\"robots\" content=\"noindex\"></head>"
-                + "<body><h1>Portfólio não encontrado</h1>"
-                + "<p>Esse portfólio não existe ou ainda não foi publicado.</p></body></html>\n";
+                + "<body><h1>" + esc(messageSource.getMessage("publicpage.notFound.heading", null, locale)) + "</h1>"
+                + "<p>" + esc(messageSource.getMessage("publicpage.notFound.description", null, locale))
+                + "</p></body></html>\n";
     }
 
     private static String esc(String value) {

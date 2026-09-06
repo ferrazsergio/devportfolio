@@ -40,8 +40,14 @@ public class Project {
     @Column(name = "short_description")
     private String shortDescription;
 
+    @Column(name = "short_description_en")
+    private String shortDescriptionEn;
+
     @Column(name = "full_description")
     private String fullDescription;
+
+    @Column(name = "full_description_en")
+    private String fullDescriptionEn;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -81,14 +87,16 @@ public class Project {
         // JPA
     }
 
-    public Project(UUID portfolioId, String name, String slug, String shortDescription, String fullDescription,
-            String imageUrl, String githubUrl, String demoUrl, LocalDate date, ProjectStatus status,
-            boolean featured, int order, Set<UUID> technologyIds) {
+    public Project(UUID portfolioId, String name, String slug, String shortDescription, String shortDescriptionEn,
+            String fullDescription, String fullDescriptionEn, String imageUrl, String githubUrl, String demoUrl,
+            LocalDate date, ProjectStatus status, boolean featured, int order, Set<UUID> technologyIds) {
         this.portfolioId = portfolioId;
         this.name = name;
         this.slug = slug;
         this.shortDescription = shortDescription;
+        this.shortDescriptionEn = shortDescriptionEn;
         this.fullDescription = fullDescription;
+        this.fullDescriptionEn = fullDescriptionEn;
         this.imageUrl = imageUrl;
         this.githubUrl = githubUrl;
         this.demoUrl = demoUrl;
@@ -99,13 +107,15 @@ public class Project {
         this.technologyIds = new HashSet<>(technologyIds);
     }
 
-    public void update(String name, String slug, String shortDescription, String fullDescription, String imageUrl,
-            String githubUrl, String demoUrl, LocalDate date, ProjectStatus status, boolean featured,
-            Set<UUID> technologyIds) {
+    public void update(String name, String slug, String shortDescription, String shortDescriptionEn,
+            String fullDescription, String fullDescriptionEn, String imageUrl, String githubUrl, String demoUrl,
+            LocalDate date, ProjectStatus status, boolean featured, Set<UUID> technologyIds) {
         this.name = name;
         this.slug = slug;
         this.shortDescription = shortDescription;
+        this.shortDescriptionEn = shortDescriptionEn;
         this.fullDescription = fullDescription;
+        this.fullDescriptionEn = fullDescriptionEn;
         this.imageUrl = imageUrl;
         this.githubUrl = githubUrl;
         this.demoUrl = demoUrl;
@@ -140,8 +150,16 @@ public class Project {
         return shortDescription;
     }
 
+    public String getShortDescriptionEn() {
+        return shortDescriptionEn;
+    }
+
     public String getFullDescription() {
         return fullDescription;
+    }
+
+    public String getFullDescriptionEn() {
+        return fullDescriptionEn;
     }
 
     public String getImageUrl() {

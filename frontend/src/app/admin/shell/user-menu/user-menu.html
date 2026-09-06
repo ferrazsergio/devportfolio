@@ -20,8 +20,8 @@
 
   @if (open()) {
     <div class="user-menu__panel" role="menu">
-      <a routerLink="/admin/profile" role="menuitem" (click)="open.set(false)">Editar perfil</a>
-      <button type="button" role="menuitem" (click)="logout()">Sair</button>
+      <a routerLink="/admin/profile" role="menuitem" (click)="open.set(false)">{{ 'userMenu.editProfile' | translate }}</a>
+      <button type="button" role="menuitem" (click)="logout()">{{ 'userMenu.logout' | translate }}</button>
     </div>
   }
 </div>

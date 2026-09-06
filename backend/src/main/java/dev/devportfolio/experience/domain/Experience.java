@@ -38,6 +38,9 @@ public class Experience {
 
     private String description;
 
+    @Column(name = "description_en")
+    private String descriptionEn;
+
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
@@ -69,13 +72,15 @@ public class Experience {
         // JPA
     }
 
-    public Experience(UUID portfolioId, String company, String role, String description, LocalDate startDate,
-            LocalDate endDate, boolean current, String location, int order, Set<UUID> technologyIds) {
+    public Experience(UUID portfolioId, String company, String role, String description, String descriptionEn,
+            LocalDate startDate, LocalDate endDate, boolean current, String location, int order,
+            Set<UUID> technologyIds) {
         validate(startDate, endDate, current);
         this.portfolioId = portfolioId;
         this.company = company;
         this.role = role;
         this.description = description;
+        this.descriptionEn = descriptionEn;
         this.startDate = startDate;
         this.endDate = endDate;
         this.current = current;
@@ -84,12 +89,13 @@ public class Experience {
         this.technologyIds = new HashSet<>(technologyIds);
     }
 
-    public void update(String company, String role, String description, LocalDate startDate, LocalDate endDate,
-            boolean current, String location, Set<UUID> technologyIds) {
+    public void update(String company, String role, String description, String descriptionEn, LocalDate startDate,
+            LocalDate endDate, boolean current, String location, Set<UUID> technologyIds) {
         validate(startDate, endDate, current);
         this.company = company;
         this.role = role;
         this.description = description;
+        this.descriptionEn = descriptionEn;
         this.startDate = startDate;
         this.endDate = endDate;
         this.current = current;
@@ -129,6 +135,10 @@ public class Experience {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
     }
 
     public LocalDate getStartDate() {

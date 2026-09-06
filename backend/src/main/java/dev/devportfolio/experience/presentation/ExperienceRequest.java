@@ -7,10 +7,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public record ExperienceRequest(
-        @NotBlank(message = "Empresa é obrigatória.") String company,
-        @NotBlank(message = "Cargo é obrigatório.") String role,
+        @NotBlank(message = "{validation.experience.company.required}") String company,
+        @NotBlank(message = "{validation.experience.role.required}") String role,
         String description,
-        @NotNull(message = "Data de início é obrigatória.") LocalDate startDate,
+        @NotNull(message = "{validation.experience.startDate.required}") LocalDate startDate,
         LocalDate endDate,
         boolean current,
         String location,

@@ -9,6 +9,8 @@ import dev.devportfolio.skill.domain.SkillRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +19,13 @@ public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
     private final PortfolioService portfolioService;
+    private final MessageSource messageSource;
 
-    public SkillServiceImpl(SkillRepository skillRepository, PortfolioService portfolioService) {
+    public SkillServiceImpl(SkillRepository skillRepository, PortfolioService portfolioService,
+            MessageSource messageSource) {
         this.skillRepository = skillRepository;
         this.portfolioService = portfolioService;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -40,7 +45,8 @@ public class SkillServiceImpl implements SkillService {
     public Skill create(UUID ownerUserId, String name, SkillCategory category) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         if (skillRepository.existsByPortfolioIdAndNameIgnoreCase(portfolioId, name)) {
-            throw new SkillAlreadyExistsException();
+            throw new SkillAlreadyExistsException(
+                    messageSource.getMessage("error.skill.alreadyExists", null, LocaleContextHolder.getLocale()));
         }
         return skillRepository.save(new Skill(portfolioId, name, category));
     }
@@ -50,9 +56,11 @@ public class SkillServiceImpl implements SkillService {
     public Skill update(UUID ownerUserId, UUID skillId, String name, SkillCategory category) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         Skill skill = skillRepository.findByIdAndPortfolioId(skillId, portfolioId)
-                .orElseThrow(() -> new NotFoundException("Habilidade não encontrada."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.skill.notFound", null, LocaleContextHolder.getLocale())));
         if (skillRepository.existsByPortfolioIdAndNameIgnoreCaseAndIdNot(portfolioId, name, skillId)) {
-            throw new SkillAlreadyExistsException();
+            throw new SkillAlreadyExistsException(
+                    messageSource.getMessage("error.skill.alreadyExists", null, LocaleContextHolder.getLocale()));
         }
         skill.update(name, category);
         return skill;
@@ -63,7 +71,8 @@ public class SkillServiceImpl implements SkillService {
     public void delete(UUID ownerUserId, UUID skillId) {
         UUID portfolioId = portfolioService.requirePortfolioId(ownerUserId);
         Skill skill = skillRepository.findByIdAndPortfolioId(skillId, portfolioId)
-                .orElseThrow(() -> new NotFoundException("Habilidade não encontrada."));
+                .orElseThrow(() -> new NotFoundException(
+                        messageSource.getMessage("error.skill.notFound", null, LocaleContextHolder.getLocale())));
         skillRepository.delete(skill);
     }
 

@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
 import { SkillApiService } from './skill-api.service';
 import { SKILL_CATEGORIES, Skill } from './skill.model';
 
 @Component({
   selector: 'app-skills-page',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './skills-page.html',
   styleUrl: './skills-page.css',
 })

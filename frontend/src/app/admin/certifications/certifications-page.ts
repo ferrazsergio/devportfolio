@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
 import { CertificationApiService } from './certification-api.service';
 import { Certification } from './certification.model';
 
 @Component({
   selector: 'app-certifications-page',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './certifications-page.html',
   styleUrl: './certifications-page.css',
 })

@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
 import { GithubApiService } from '../github/github-api.service';
 import { GithubRepo, GithubStatus } from '../github/github.model';
@@ -11,7 +12,7 @@ import { PROJECT_STATUSES, Project, ProjectStatus } from './project.model';
 
 @Component({
   selector: 'app-projects-page',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.css',
 })

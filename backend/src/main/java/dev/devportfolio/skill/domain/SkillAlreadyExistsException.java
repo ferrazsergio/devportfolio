@@ -4,7 +4,7 @@ import dev.devportfolio.shared.domain.ConflictException;
 
 public class SkillAlreadyExistsException extends ConflictException {
 
-    public SkillAlreadyExistsException() {
-        super("Você já possui uma habilidade com esse nome.");
+    public SkillAlreadyExistsException(String message) {
+        super(message);
     }
 }

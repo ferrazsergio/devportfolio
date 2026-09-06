@@ -1,12 +1,12 @@
 <div class="page">
-  <h1 class="page-title">Habilidades</h1>
+  <h1 class="page-title">{{ 'skills.title' | translate }}</h1>
 
   <form class="inline-form" [formGroup]="form" (ngSubmit)="submit()">
     @if (errorMessage()) {
       <p class="alert alert-danger">{{ errorMessage() }}</p>
     }
     <div class="inline-form__fields">
-      <input type="text" formControlName="name" placeholder="Nome (ex.: Java)" />
+      <input type="text" formControlName="name" [placeholder]="'skills.namePlaceholder' | translate" />
       <select formControlName="category">
         @for (option of categories; track option.value) {
           <option [value]="option.value">{{ option.label }}</option>
@@ -14,19 +14,19 @@
       </select>
       <div class="inline-form__actions">
         <button type="submit" class="btn btn-primary" [disabled]="saving()">
-          {{ editingId() ? 'Salvar' : 'Adicionar' }}
+          {{ (editingId() ? 'common.save' : 'common.add') | translate }}
         </button>
         @if (editingId()) {
-          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
         }
       </div>
     </div>
   </form>
 
   @if (loading()) {
-    <p>Carregando…</p>
+    <p>{{ 'common.loading' | translate }}</p>
   } @else if (skills().length === 0) {
-    <p class="empty">Nenhuma habilidade cadastrada ainda.</p>
+    <p class="empty">{{ 'skills.empty' | translate }}</p>
   } @else {
     <ul class="list">
       @for (skill of skills(); track skill.id) {
@@ -34,8 +34,8 @@
           <span>{{ skill.name }}</span>
           <span class="badge badge-primary">{{ categoryLabel(skill.category) }}</span>
           <span class="list__actions">
-            <button type="button" class="btn btn-icon" (click)="edit(skill)">Editar</button>
-            <button type="button" class="btn btn-danger" (click)="remove(skill)">Remover</button>
+            <button type="button" class="btn btn-icon" (click)="edit(skill)">{{ 'common.edit' | translate }}</button>
+            <button type="button" class="btn btn-danger" (click)="remove(skill)">{{ 'common.remove' | translate }}</button>
           </span>
         </li>
       }

@@ -13,6 +13,13 @@
         var dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       } catch (e) {}
+      try {
+        var storedLocale = localStorage.getItem('devportfolio:locale');
+        var locale = storedLocale === 'en' || storedLocale === 'pt'
+          ? storedLocale
+          : (navigator.language || '').toLowerCase().indexOf('pt') === 0 ? 'pt' : 'en';
+        document.documentElement.lang = locale === 'en' ? 'en' : 'pt-BR';
+      } catch (e) {}
     })();
   </script>
   <link rel="icon" type="image/x-icon" href="favicon.ico">

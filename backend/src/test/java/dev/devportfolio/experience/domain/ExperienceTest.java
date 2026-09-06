@@ -15,20 +15,20 @@ class ExperienceTest {
 
     @Test
     void currentExperienceCannotHaveEndDate() {
-        assertThatThrownBy(() -> new Experience(PORTFOLIO_ID, "Acme", "Dev", null, LocalDate.of(2020, 1, 1),
+        assertThatThrownBy(() -> new Experience(PORTFOLIO_ID, "Acme", "Dev", null, null, LocalDate.of(2020, 1, 1),
                 LocalDate.of(2021, 1, 1), true, null, 0, Set.of())).isInstanceOf(DomainValidationException.class);
     }
 
     @Test
     void endDateCannotBeBeforeStartDate() {
-        assertThatThrownBy(() -> new Experience(PORTFOLIO_ID, "Acme", "Dev", null, LocalDate.of(2021, 1, 1),
+        assertThatThrownBy(() -> new Experience(PORTFOLIO_ID, "Acme", "Dev", null, null, LocalDate.of(2021, 1, 1),
                 LocalDate.of(2020, 1, 1), false, null, 0, Set.of())).isInstanceOf(DomainValidationException.class);
     }
 
     @Test
     void acceptsValidCurrentExperienceWithoutEndDate() {
-        Experience experience = new Experience(PORTFOLIO_ID, "Acme", "Dev", null, LocalDate.of(2020, 1, 1), null,
-                true, null, 0, Set.of());
+        Experience experience = new Experience(PORTFOLIO_ID, "Acme", "Dev", null, null, LocalDate.of(2020, 1, 1),
+                null, true, null, 0, Set.of());
 
         assertThat(experience.isCurrent()).isTrue();
         assertThat(experience.getEndDate()).isNull();

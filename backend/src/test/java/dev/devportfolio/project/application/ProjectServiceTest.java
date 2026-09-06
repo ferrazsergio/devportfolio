@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {
@@ -36,6 +37,9 @@ class ProjectServiceTest {
     @Mock
     private SkillService skillService;
 
+    @Mock
+    private MessageSource messageSource;
+
     @InjectMocks
     private ProjectServiceImpl projectService;
 
@@ -43,6 +47,8 @@ class ProjectServiceTest {
     void rejectsDuplicateSlugForSameOwner() {
         when(portfolioService.requirePortfolioId(OWNER_ID)).thenReturn(PORTFOLIO_ID);
         when(projectRepository.existsByPortfolioIdAndSlug(PORTFOLIO_ID, "meu-projeto")).thenReturn(true);
+        when(messageSource.getMessage(any(), any(), any()))
+                .thenReturn("Você já possui um projeto com esse slug.");
 
         assertThatThrownBy(() -> projectService.create(OWNER_ID, "Meu Projeto", "meu-projeto", null, null, null,
                 null, null, null, ProjectStatus.IN_PROGRESS, false, Set.of()))
@@ -56,6 +62,8 @@ class ProjectServiceTest {
         UUID foreignSkillId = UUID.randomUUID();
         when(portfolioService.requirePortfolioId(OWNER_ID)).thenReturn(PORTFOLIO_ID);
         when(skillService.findByPortfolioIdAndIdIn(PORTFOLIO_ID, Set.of(foreignSkillId))).thenReturn(List.of());
+        when(messageSource.getMessage(any(), any(), any()))
+                .thenReturn("Uma ou mais habilidades informadas não foram encontradas.");
 
         assertThatThrownBy(() -> projectService.create(OWNER_ID, "Meu Projeto", "meu-projeto", null, null, null,
                 null, null, null, ProjectStatus.IN_PROGRESS, false, Set.of(foreignSkillId)))

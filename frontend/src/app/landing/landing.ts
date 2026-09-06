@@ -2,6 +2,8 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, inject } from '@angula
 import { RouterLink } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TranslatePipe } from '../core/i18n/translate.pipe';
+import { LocaleToggleComponent } from '../core/i18n/locale-toggle/locale-toggle';
 import { LogoComponent } from '../core/ui/logo/logo';
 import { ThemeToggleComponent } from '../core/ui/theme-toggle/theme-toggle';
 
@@ -9,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, LogoComponent, ThemeToggleComponent],
+  imports: [RouterLink, LogoComponent, ThemeToggleComponent, LocaleToggleComponent, TranslatePipe],
   templateUrl: './landing.html',
   styleUrl: './landing.css',
 })

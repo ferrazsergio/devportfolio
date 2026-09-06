@@ -37,7 +37,13 @@ public class Profile {
 
     private String headline;
 
+    @Column(name = "headline_en")
+    private String headlineEn;
+
     private String bio;
+
+    @Column(name = "bio_en")
+    private String bioEn;
 
     private String location;
 
@@ -71,12 +77,15 @@ public class Profile {
         this.portfolioId = portfolioId;
     }
 
-    public void update(String fullName, String username, String headline, String bio, String location,
-            String professionalEmail, String phone, String githubUrl, String linkedinUrl, String websiteUrl) {
+    public void update(String fullName, String username, String headline, String headlineEn, String bio,
+            String bioEn, String location, String professionalEmail, String phone, String githubUrl,
+            String linkedinUrl, String websiteUrl) {
         this.fullName = fullName;
         this.username = username;
         this.headline = headline;
+        this.headlineEn = headlineEn;
         this.bio = bio;
+        this.bioEn = bioEn;
         this.location = location;
         this.professionalEmail = professionalEmail;
         this.phone = phone;
@@ -113,8 +122,16 @@ public class Profile {
         return headline;
     }
 
+    public String getHeadlineEn() {
+        return headlineEn;
+    }
+
     public String getBio() {
         return bio;
+    }
+
+    public String getBioEn() {
+        return bioEn;
     }
 
     public String getLocation() {

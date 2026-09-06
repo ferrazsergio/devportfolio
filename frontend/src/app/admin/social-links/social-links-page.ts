@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
 import { SocialLinkApiService } from './social-link-api.service';
 import { SocialLink } from './social-link.model';
 
 @Component({
   selector: 'app-social-links-page',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './social-links-page.html',
   styleUrl: './social-links-page.css',
 })

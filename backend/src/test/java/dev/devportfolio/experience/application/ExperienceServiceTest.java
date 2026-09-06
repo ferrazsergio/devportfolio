@@ -12,6 +12,7 @@ import dev.devportfolio.shared.domain.NotFoundException;
 import dev.devportfolio.skill.application.SkillService;
 import dev.devportfolio.skill.domain.Skill;
 import dev.devportfolio.skill.domain.SkillCategory;
+import dev.devportfolio.translation.application.ContentTranslationService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 
 @ExtendWith(MockitoExtension.class)
 class ExperienceServiceTest {
@@ -37,6 +39,12 @@ class ExperienceServiceTest {
     @Mock
     private SkillService skillService;
 
+    @Mock
+    private MessageSource messageSource;
+
+    @Mock
+    private ContentTranslationService translationService;
+
     @InjectMocks
     private ExperienceServiceImpl experienceService;
 
@@ -45,6 +53,8 @@ class ExperienceServiceTest {
         UUID foreignSkillId = UUID.randomUUID();
         when(portfolioService.requirePortfolioId(OWNER_ID)).thenReturn(PORTFOLIO_ID);
         when(skillService.findByPortfolioIdAndIdIn(PORTFOLIO_ID, Set.of(foreignSkillId))).thenReturn(List.of());
+        when(messageSource.getMessage(any(), any(), any()))
+                .thenReturn("Uma ou mais habilidades informadas não foram encontradas.");
 
         assertThatThrownBy(() -> experienceService.create(OWNER_ID, "Acme", "Dev", null, LocalDate.of(2020, 1, 1),
                 null, true, null, Set.of(foreignSkillId))).isInstanceOf(NotFoundException.class);
@@ -57,8 +67,8 @@ class ExperienceServiceTest {
         when(skillService.findByPortfolioIdAndIdIn(PORTFOLIO_ID, Set.of(skillId)))
                 .thenReturn(List.of(new Skill(PORTFOLIO_ID, "Java", SkillCategory.BACKEND)));
         when(experienceRepository.findByPortfolioIdOrderByOrderAsc(PORTFOLIO_ID)).thenReturn(List.of());
-        Experience saved = new Experience(PORTFOLIO_ID, "Acme", "Dev", null, LocalDate.of(2020, 1, 1), null, true,
-                null, 0, Set.of(skillId));
+        Experience saved = new Experience(PORTFOLIO_ID, "Acme", "Dev", null, null, LocalDate.of(2020, 1, 1), null,
+                true, null, 0, Set.of(skillId));
         when(experienceRepository.save(any(Experience.class))).thenReturn(saved);
 
         Experience result = experienceService.create(OWNER_ID, "Acme", "Dev", null, LocalDate.of(2020, 1, 1), null,

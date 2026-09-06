@@ -5,6 +5,7 @@ import dev.devportfolio.publicpage.application.PublicPortfolioView;
 import dev.devportfolio.shared.domain.NotFoundException;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,8 +34,8 @@ public class PublicPageController {
     }
 
     @GetMapping("/{username}")
-    public PublicPortfolioResponse getByUsername(@PathVariable String username) {
-        return PublicPortfolioResponse.from(publicPageService.getByUsername(username));
+    public PublicPortfolioResponse getByUsername(@PathVariable String username, Locale locale) {
+        return PublicPortfolioResponse.from(publicPageService.getByUsername(username), locale);
     }
 
     /**
@@ -43,14 +44,14 @@ public class PublicPageController {
      */
     @Hidden
     @GetMapping(value = "/{username}/meta", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<String> getMetaHtml(@PathVariable String username) {
+    public ResponseEntity<String> getMetaHtml(@PathVariable String username, Locale locale) {
         try {
             PublicPortfolioView view = publicPageService.getByUsername(username);
             return ResponseEntity.ok().contentType(TEXT_HTML_UTF8)
-                    .body(htmlRenderer.render(view, publicBaseUrl, username));
+                    .body(htmlRenderer.render(view, publicBaseUrl, username, locale));
         } catch (NotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).contentType(TEXT_HTML_UTF8)
-                    .body(htmlRenderer.renderNotFound());
+                    .body(htmlRenderer.renderNotFound(locale));
         }
     }
 }
