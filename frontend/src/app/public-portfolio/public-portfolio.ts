@@ -3,6 +3,8 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
+import { createMagneticHover } from '../core/animation/magnetic';
 import { LocaleService } from '../core/i18n/locale.service';
 import { LocaleToggleComponent } from '../core/i18n/locale-toggle/locale-toggle';
 import { TranslatePipe } from '../core/i18n/translate.pipe';
@@ -13,7 +15,7 @@ import { ThemeToggleComponent } from '../core/ui/theme-toggle/theme-toggle';
 import { PublicPortfolioApiService } from './public-portfolio-api.service';
 import { ProjectStatus, PublicPortfolio, PublicSkill, SkillCategory } from './public-portfolio.model';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const CATEGORY_LABELS: Record<SkillCategory, string> = {
   BACKEND: 'Backend',
@@ -54,6 +56,8 @@ export class PublicPortfolioComponent implements OnDestroy {
   private readonly localeService = inject(LocaleService);
 
   private readonly scrollTriggers: ScrollTrigger[] = [];
+  private readonly magneticCleanups: (() => void)[] = [];
+  private splitHeroName: SplitText | null = null;
   private readonly reduceMotion =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -81,6 +85,8 @@ export class PublicPortfolioComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.scrollTriggers.forEach((trigger) => trigger.kill());
+    this.magneticCleanups.forEach((cleanup) => cleanup());
+    this.splitHeroName?.revert();
   }
 
   /**
@@ -89,15 +95,46 @@ export class PublicPortfolioComponent implements OnDestroy {
    * já é totalmente visível por padrão via CSS, então nada quebra.
    */
   private initAnimations(): void {
+    const root = this.elementRef.nativeElement;
+
     if (this.reduceMotion) {
+      this.setupMagneticHover(root);
       return;
     }
-    const root = this.elementRef.nativeElement;
+
     const hero = root.querySelector('.hero');
-    const heroReveals = hero?.querySelectorAll('.reveal');
-    if (heroReveals && heroReveals.length > 0) {
+    const heroName = hero?.querySelector('.hero__name');
+    const heroReveals: Element[] = [];
+    hero?.querySelectorAll('.reveal').forEach((el: Element) => {
+      if (!el.classList.contains('hero__name')) {
+        heroReveals.push(el);
+      }
+    });
+
+    const timeline = gsap.timeline();
+
+    // Nome em destaque: revelado palavra por palavra, mesmo tratamento
+    // cinematográfico do título da landing — é o elemento mais importante
+    // do herói, merece mais que um fade genérico.
+    if (heroName) {
+      this.splitHeroName = SplitText.create(heroName, { type: 'words', mask: 'words' });
+      gsap.set(this.splitHeroName.words, { yPercent: 110, opacity: 0 });
+      timeline.to(this.splitHeroName.words, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 0.9,
+        stagger: 0.06,
+        ease: 'expo.out',
+      });
+    }
+
+    if (heroReveals.length > 0) {
       gsap.set(heroReveals, { opacity: 0, y: 24 });
-      gsap.to(heroReveals, { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power2.out' });
+      timeline.to(
+        heroReveals,
+        { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'expo.out' },
+        heroName ? '-=0.55' : 0,
+      );
     }
 
     const blobOne = root.querySelector('.hero__blob--one');
@@ -111,16 +148,32 @@ export class PublicPortfolioComponent implements OnDestroy {
 
     const sectionReveals = root.querySelectorAll('main.page .reveal');
     sectionReveals.forEach((element: Element) => {
-      gsap.set(element, { opacity: 0, y: 24 });
+      gsap.set(element, { opacity: 0, y: 32, scale: 0.97, filter: 'blur(6px)' });
       const trigger = ScrollTrigger.create({
         trigger: element,
         start: 'top 88%',
         once: true,
         onEnter: () =>
-          gsap.to(element, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }),
+          gsap.to(element, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 0.9,
+            ease: 'expo.out',
+          }),
       });
       this.scrollTriggers.push(trigger);
     });
+
+    this.setupMagneticHover(root);
+  }
+
+  private setupMagneticHover(root: HTMLElement): void {
+    const magneticTargets = root.querySelectorAll('.hero__share .btn-primary');
+    magneticTargets.forEach((target) =>
+      this.magneticCleanups.push(createMagneticHover(target as HTMLElement, 0.3)),
+    );
   }
 
   private updateMetaTags(data: PublicPortfolio): void {

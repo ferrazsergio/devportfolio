@@ -373,8 +373,10 @@ textarea {
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--color-neutral-300);
   border-radius: var(--radius-md);
-  background: var(--color-white);
-  transition: border-color var(--duration-fast) var(--ease-standard);
+  background: var(--color-surface);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-standard) var(--ease-standard);
 }
 
 input:focus,
