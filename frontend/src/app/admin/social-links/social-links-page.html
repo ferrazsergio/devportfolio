@@ -8,7 +8,6 @@
     <div class="inline-form__fields">
       <input type="text" formControlName="platform" [placeholder]="'socialLinks.platformPlaceholder' | translate" />
       <input type="text" formControlName="url" [placeholder]="'socialLinks.urlPlaceholder' | translate" class="inline-form__url" />
-      <input type="number" formControlName="order" class="inline-form__order" />
       <div class="inline-form__actions">
         <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (editingId() ? 'common.save' : 'common.add') | translate }}</button>
         @if (editingId()) {
@@ -23,9 +22,30 @@
   } @else if (items().length === 0) {
     <p class="empty">{{ 'socialLinks.empty' | translate }}</p>
   } @else {
+    <p class="hint">{{ 'socialLinks.orderHint' | translate }}</p>
     <ul class="list">
-      @for (item of items(); track item.id) {
+      @for (item of items(); track item.id; let first = $first; let last = $last) {
         <li class="list__item">
+          <span class="list__reorder">
+            <button
+              type="button"
+              class="btn btn-icon"
+              [attr.aria-label]="'socialLinks.moveUp' | translate"
+              [disabled]="first"
+              (click)="moveUp(item)"
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              class="btn btn-icon"
+              [attr.aria-label]="'socialLinks.moveDown' | translate"
+              [disabled]="last"
+              (click)="moveDown(item)"
+            >
+              ↓
+            </button>
+          </span>
           <span>{{ item.platform }}</span>
           <a class="list__muted" [href]="item.url" [title]="item.url" target="_blank" rel="noopener">{{ item.url }}</a>
           <span class="list__actions">

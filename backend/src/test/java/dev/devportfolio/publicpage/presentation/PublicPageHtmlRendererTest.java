@@ -38,7 +38,8 @@ class PublicPageHtmlRendererTest {
         String html = renderer.render(viewWithProfile(profile), "https://devportfolio.example", "ana-souza", PT);
 
         assertThat(html).contains("<title>Ana Souza · DevPortfolio</title>");
-        assertThat(html).contains("<meta name=\"description\" content=\"Desenvolvedora Java\">");
+        assertThat(html).contains(
+                "<meta name=\"description\" content=\"Confira o portfólio de Ana Souza: Desenvolvedora Java. Veja projetos, experiências e habilidades.\">");
         assertThat(html).contains("<link rel=\"canonical\" href=\"https://devportfolio.example/ana-souza\">");
         assertThat(html).contains("<meta property=\"og:title\" content=\"Ana Souza\">");
         assertThat(html).contains("<meta property=\"og:url\" content=\"https://devportfolio.example/ana-souza\">");
@@ -68,7 +69,7 @@ class PublicPageHtmlRendererTest {
         String html = renderer.render(viewWithProfile(profile), "https://devportfolio.example", "sem-nome", PT);
 
         assertThat(html).contains("<title>sem-nome · DevPortfolio</title>");
-        assertThat(html).contains("Portfólio de desenvolvedor(a) no DevPortfolio.");
+        assertThat(html).contains("Confira o portfólio profissional de sem-nome no DevPortfolio.");
         assertThat(html).doesNotContain("og:image");
         assertThat(html).contains("<meta name=\"twitter:card\" content=\"summary\">");
     }

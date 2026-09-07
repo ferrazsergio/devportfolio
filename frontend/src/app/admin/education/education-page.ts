@@ -2,12 +2,13 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { SpellcheckDirective } from '../../core/spellcheck/spellcheck.directive';
 import { EducationApiService } from './education-api.service';
 import { Education } from './education.model';
 
 @Component({
   selector: 'app-education-page',
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe, SpellcheckDirective],
   templateUrl: './education-page.html',
   styleUrl: './education-page.css',
 })

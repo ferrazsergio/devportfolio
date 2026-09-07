@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { SpellcheckDirective } from '../../core/spellcheck/spellcheck.directive';
 import { SkillApiService } from '../skills/skill-api.service';
 import { Skill } from '../skills/skill.model';
 import { ExperienceApiService } from './experience-api.service';
@@ -9,7 +10,7 @@ import { Experience } from './experience.model';
 
 @Component({
   selector: 'app-experiences-page',
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe, SpellcheckDirective],
   templateUrl: './experiences-page.html',
   styleUrl: './experiences-page.css',
 })

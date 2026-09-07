@@ -5,3 +5,24 @@ a.list__muted {
   white-space: nowrap;
   max-width: 320px;
 }
+
+.hint {
+  color: var(--color-neutral-600);
+  font-size: var(--text-sm);
+  margin-bottom: 0.75rem;
+}
+
+.list__reorder {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.list__reorder .btn-icon {
+  padding-inline: 0.4rem;
+  line-height: 1;
+}
+
+.list__reorder .btn-icon:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

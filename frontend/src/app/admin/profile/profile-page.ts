@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { SpellcheckDirective } from '../../core/spellcheck/spellcheck.directive';
 import { ProfileApiService } from './profile-api.service';
 
 const MAX_PHOTO_SIZE_BYTES = 5 * 1024 * 1024;
@@ -9,7 +10,7 @@ const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe, SpellcheckDirective],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })

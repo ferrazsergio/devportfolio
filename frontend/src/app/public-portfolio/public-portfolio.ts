@@ -178,7 +178,11 @@ export class PublicPortfolioComponent implements OnDestroy {
 
   private updateMetaTags(data: PublicPortfolio): void {
     const displayName = data.profile.fullName ?? this.route.snapshot.paramMap.get('username')!;
-    const description = data.profile.headline ?? data.profile.bio ?? 'Portfólio de desenvolvedor(a) no DevPortfolio.';
+    const dictionary = this.localeService.locale() === 'en' ? en : pt;
+    const headlineOrBio = data.profile.headline ?? data.profile.bio;
+    const description = headlineOrBio
+      ? `${dictionary.publicPortfolio.ogDescriptionPrefix} ${displayName}: ${headlineOrBio}. ${dictionary.publicPortfolio.ogDescriptionSuffix}`
+      : `${dictionary.publicPortfolio.ogDescriptionDefault} ${displayName} ${dictionary.publicPortfolio.ogDescriptionDefaultSuffix}`;
     this.title.setTitle(`${displayName} · DevPortfolio`);
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ property: 'og:title', content: displayName });
@@ -232,8 +236,9 @@ export class PublicPortfolioComponent implements OnDestroy {
   }
 
   private shareText(data: PublicPortfolio): string {
-    const name = data.profile.fullName ?? '';
-    return data.profile.headline ? `${name} · ${data.profile.headline}` : name;
+    const dictionary = this.localeService.locale() === 'en' ? en : pt;
+    const invite = dictionary.publicPortfolio.shareInvite;
+    return data.profile.headline ? `${invite} — ${data.profile.headline}` : invite;
   }
 
   protected linkedInShareUrl(): string {

@@ -7,6 +7,10 @@ export const en = {
   locale: {
     toggle: 'Mudar para português',
   },
+  spellcheck: {
+    ignore: 'Ignore',
+    noSuggestions: 'No suggestions',
+  },
   common: {
     loading: 'Loading…',
     save: 'Save',
@@ -139,6 +143,9 @@ export const en = {
     platformPlaceholder: 'Platform (e.g.: Twitter)',
     urlPlaceholder: 'https://…',
     empty: 'No social links added yet.',
+    moveUp: 'Move up',
+    moveDown: 'Move down',
+    orderHint: 'The order of the list below is the display order on your public portfolio — use the arrows to rearrange.',
   },
   auth: {
     login: {
@@ -213,6 +220,11 @@ export const en = {
     shareWhatsapp: 'Share on WhatsApp',
     shareFacebook: 'Share on Facebook',
     shareX: 'Share on X',
+    shareInvite: 'Take a look at my professional portfolio',
+    ogDescriptionPrefix: 'Check out the portfolio of',
+    ogDescriptionSuffix: 'See projects, experience, and skills.',
+    ogDescriptionDefault: 'Check out the professional portfolio of',
+    ogDescriptionDefaultSuffix: 'on DevPortfolio.',
     copyLink: 'Copy link',
     linkCopied: 'Link copied!',
     navExperience: 'Experience',

@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { SpellcheckDirective } from '../../core/spellcheck/spellcheck.directive';
 import { GithubApiService } from '../github/github-api.service';
 import { GithubRepo, GithubStatus } from '../github/github.model';
 import { SkillApiService } from '../skills/skill-api.service';
@@ -12,7 +13,7 @@ import { PROJECT_STATUSES, Project, ProjectStatus } from './project.model';
 
 @Component({
   selector: 'app-projects-page',
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe, SpellcheckDirective],
   templateUrl: './projects-page.html',
   styleUrl: './projects-page.css',
 })

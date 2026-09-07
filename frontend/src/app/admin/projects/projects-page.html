@@ -94,11 +94,11 @@
       </label>
       <label class="grid__full">
         {{ 'projects.shortDescription' | translate }}
-        <input type="text" formControlName="shortDescription" />
+        <input type="text" formControlName="shortDescription" appSpellcheck />
       </label>
       <label class="grid__full">
         {{ 'projects.fullDescription' | translate }}
-        <textarea formControlName="fullDescription" rows="3"></textarea>
+        <textarea formControlName="fullDescription" rows="3" appSpellcheck></textarea>
       </label>
       <label>
         {{ 'projects.imageUrl' | translate }}

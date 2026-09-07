@@ -26,12 +26,12 @@
 
         <label class="grid__full">
           {{ 'profile.headline' | translate }}
-          <input type="text" formControlName="headline" [placeholder]="'profile.headlinePlaceholder' | translate" />
+          <input type="text" formControlName="headline" [placeholder]="'profile.headlinePlaceholder' | translate" appSpellcheck />
         </label>
 
         <label class="grid__full">
           {{ 'profile.bio' | translate }}
-          <textarea formControlName="bio" rows="4"></textarea>
+          <textarea formControlName="bio" rows="4" appSpellcheck></textarea>
         </label>
 
         <label>

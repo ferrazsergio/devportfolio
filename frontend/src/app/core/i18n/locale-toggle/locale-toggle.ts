@@ -1,51 +1,62 @@
-import { Component, ElementRef, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, effect, inject } from '@angular/core';
 import gsap from 'gsap';
-import { LocaleService } from '../locale.service';
+import { Locale, LocaleService } from '../locale.service';
 import { TranslatePipe } from '../translate.pipe';
 
+/**
+ * Switch segmentado (estilo iOS) em vez de um botão único que troca de rótulo —
+ * mostra os dois idiomas o tempo todo (mais informação, menos "flip seco") e o
+ * indicador desliza com uma leve compressão + mola ao trocar.
+ */
 @Component({
   selector: 'app-locale-toggle',
   imports: [TranslatePipe],
   templateUrl: './locale-toggle.html',
   styleUrl: './locale-toggle.css',
 })
-export class LocaleToggleComponent {
+export class LocaleToggleComponent implements AfterViewInit {
   protected readonly localeService = inject(LocaleService);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly reduceMotion =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  private ready = false;
 
-  protected onToggleClick(): void {
+  constructor() {
+    effect(() => {
+      const locale = this.localeService.locale();
+      if (this.ready) {
+        this.slideThumb(locale);
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    const thumb = this.elementRef.nativeElement.querySelector('.locale-switch__thumb');
+    if (thumb) {
+      gsap.set(thumb, { xPercent: this.localeService.locale() === 'en' ? 100 : 0 });
+    }
+    this.ready = true;
+  }
+
+  protected select(locale: Locale): void {
     // A troca de idioma é sempre síncrona — a animação é só um efeito visual
     // por cima, nunca pode atrasar a funcionalidade real.
-    this.localeService.toggle();
+    this.localeService.setLocale(locale);
+  }
 
-    if (this.reduceMotion) {
+  private slideThumb(locale: Locale): void {
+    const thumb = this.elementRef.nativeElement.querySelector('.locale-switch__thumb');
+    if (!thumb) {
       return;
     }
-    requestAnimationFrame(() => {
-      const label = this.elementRef.nativeElement.querySelector('.locale-toggle__label');
-      const button = this.elementRef.nativeElement.querySelector('.locale-toggle');
-      if (!label || !button) {
-        return;
-      }
-      gsap
-        .timeline()
-        .fromTo(
-          label,
-          { rotateX: -90, opacity: 0 },
-          { rotateX: 0, opacity: 1, duration: 0.45, ease: 'back.out(3)' },
-        )
-        .fromTo(
-          button,
-          { boxShadow: '0 0 0 0 var(--color-primary-600)' },
-          {
-            boxShadow: '0 0 0 6px rgba(24, 119, 242, 0)',
-            duration: 0.6,
-            ease: 'power2.out',
-          },
-          0,
-        );
-    });
+    const xPercent = locale === 'en' ? 100 : 0;
+    if (this.reduceMotion) {
+      gsap.set(thumb, { xPercent });
+      return;
+    }
+    gsap
+      .timeline()
+      .to(thumb, { scaleY: 0.8, duration: 0.12, ease: 'power2.out' })
+      .to(thumb, { xPercent, scaleY: 1, duration: 0.5, ease: 'back.out(1.8)' }, '-=0.04');
   }
 }

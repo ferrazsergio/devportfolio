@@ -1,8 +1,19 @@
-<button
-  type="button"
-  class="locale-toggle"
-  (click)="onToggleClick()"
-  [attr.aria-label]="'locale.toggle' | translate"
->
-  <span class="locale-toggle__label">{{ localeService.locale() === 'pt' ? 'PT' : 'EN' }}</span>
-</button>
+<div class="locale-switch" role="group" [attr.aria-label]="'locale.toggle' | translate">
+  <button
+    type="button"
+    class="locale-switch__option"
+    [class.is-active]="localeService.locale() === 'pt'"
+    (click)="select('pt')"
+  >
+    PT
+  </button>
+  <button
+    type="button"
+    class="locale-switch__option"
+    [class.is-active]="localeService.locale() === 'en'"
+    (click)="select('en')"
+  >
+    EN
+  </button>
+  <span class="locale-switch__thumb" aria-hidden="true"></span>
+</div>

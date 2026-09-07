@@ -28,8 +28,11 @@ public class PublicPageHtmlRenderer {
         Profile profile = view.profile();
         String displayName = firstNonBlank(profile.getFullName(), username);
         String title = displayName + " · DevPortfolio";
-        String description = truncate(firstNonBlank(profile.getHeadline(), profile.getBio(),
-                messageSource.getMessage("publicpage.defaultDescription", null, locale)));
+        String headlineOrBio = firstNonBlank(profile.getHeadline(), profile.getBio());
+        String description = truncate(headlineOrBio.isBlank()
+                ? messageSource.getMessage("publicpage.defaultDescription", new Object[] {displayName}, locale)
+                : messageSource.getMessage("publicpage.descriptionWithHeadline",
+                        new Object[] {displayName, headlineOrBio}, locale));
         String pageUrl = publicBaseUrl + "/" + username;
         String photoUrl = profile.getPhotoUrl();
         String htmlLang = locale.getLanguage().equals("en") ? "en" : "pt-BR";

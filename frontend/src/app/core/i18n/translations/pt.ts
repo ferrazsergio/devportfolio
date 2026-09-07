@@ -7,6 +7,10 @@ export const pt = {
   locale: {
     toggle: 'Switch to English',
   },
+  spellcheck: {
+    ignore: 'Ignorar',
+    noSuggestions: 'Sem sugestões',
+  },
   common: {
     loading: 'Carregando…',
     save: 'Salvar',
@@ -139,6 +143,9 @@ export const pt = {
     platformPlaceholder: 'Plataforma (ex.: Twitter)',
     urlPlaceholder: 'https://…',
     empty: 'Nenhum link social cadastrado ainda.',
+    moveUp: 'Mover para cima',
+    moveDown: 'Mover para baixo',
+    orderHint: 'A ordem da lista abaixo é a ordem de exibição no seu portfólio público — use as setas para reorganizar.',
   },
   auth: {
     login: {
@@ -213,6 +220,11 @@ export const pt = {
     shareWhatsapp: 'Compartilhar no WhatsApp',
     shareFacebook: 'Compartilhar no Facebook',
     shareX: 'Compartilhar no X',
+    shareInvite: 'Dá uma olhada no meu portfólio profissional',
+    ogDescriptionPrefix: 'Confira o portfólio de',
+    ogDescriptionSuffix: 'Veja projetos, experiências e habilidades.',
+    ogDescriptionDefault: 'Confira o portfólio profissional de',
+    ogDescriptionDefaultSuffix: 'no DevPortfolio.',
     copyLink: 'Copiar link',
     linkCopied: 'Link copiado!',
     navExperience: 'Experiência',

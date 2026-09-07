@@ -32,7 +32,7 @@
       </label>
       <label class="grid__full">
         {{ 'experiences.description' | translate }}
-        <textarea formControlName="description" rows="2"></textarea>
+        <textarea formControlName="description" rows="2" appSpellcheck></textarea>
       </label>
 
       @if (skills().length > 0) {
