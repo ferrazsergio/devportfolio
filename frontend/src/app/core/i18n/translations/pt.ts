@@ -11,6 +11,16 @@ export const pt = {
     ignore: 'Ignorar',
     noSuggestions: 'Sem sugestões',
   },
+  locationInput: {
+    currentValue: 'Valor atual',
+    selectCountry: 'Selecione o país',
+    selectState: 'Selecione o estado/província',
+    cityPlaceholder: 'Cidade',
+  },
+  phoneInput: {
+    selectCountry: 'País',
+    numberPlaceholder: 'Número',
+  },
   common: {
     loading: 'Carregando…',
     save: 'Salvar',
@@ -68,7 +78,6 @@ export const pt = {
     photoHint: 'JPEG, PNG ou WebP. Até 5MB.',
     professionalEmail: 'Email profissional',
     phone: 'Telefone (WhatsApp)',
-    phoneHint: 'Com código do país, ex.: +55 11 91234-5678 — usado no botão "Chamar no WhatsApp" do seu portfólio público.',
     github: 'GitHub',
     linkedin: 'LinkedIn',
     website: 'Site',

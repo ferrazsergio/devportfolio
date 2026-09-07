@@ -34,10 +34,10 @@
           <textarea formControlName="bio" rows="4" appSpellcheck></textarea>
         </label>
 
-        <label>
-          {{ 'profile.location' | translate }}
-          <input type="text" formControlName="location" />
-        </label>
+        <div class="grid__full">
+          <span class="field-label">{{ 'profile.location' | translate }}</span>
+          <app-location-input formControlName="location" />
+        </div>
 
         <div class="grid__full photo-field">
           <span class="field-label">{{ 'profile.photo' | translate }}</span>
@@ -86,11 +86,10 @@
           <input type="email" formControlName="professionalEmail" />
         </label>
 
-        <label>
-          {{ 'profile.phone' | translate }}
-          <input type="text" formControlName="phone" />
-          <small>{{ 'profile.phoneHint' | translate }}</small>
-        </label>
+        <div>
+          <span class="field-label">{{ 'profile.phone' | translate }}</span>
+          <app-phone-input formControlName="phone" />
+        </div>
 
         <label>
           {{ 'profile.github' | translate }}

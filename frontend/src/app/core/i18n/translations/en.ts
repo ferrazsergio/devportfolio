@@ -11,6 +11,16 @@ export const en = {
     ignore: 'Ignore',
     noSuggestions: 'No suggestions',
   },
+  locationInput: {
+    currentValue: 'Current value',
+    selectCountry: 'Select country',
+    selectState: 'Select state/province',
+    cityPlaceholder: 'City',
+  },
+  phoneInput: {
+    selectCountry: 'Country',
+    numberPlaceholder: 'Number',
+  },
   common: {
     loading: 'Loading…',
     save: 'Save',
@@ -68,7 +78,6 @@ export const en = {
     photoHint: 'JPEG, PNG or WebP. Up to 5MB.',
     professionalEmail: 'Professional email',
     phone: 'Phone (WhatsApp)',
-    phoneHint: 'With country code, e.g.: +1 555 123-4567 — used in the "Chat on WhatsApp" button on your public portfolio.',
     github: 'GitHub',
     linkedin: 'LinkedIn',
     website: 'Website',

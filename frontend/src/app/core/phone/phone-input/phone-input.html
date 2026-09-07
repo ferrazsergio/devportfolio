@@ -1,0 +1,18 @@
+<div class="phone-input">
+  <select
+    class="phone-input__country"
+    [ngModel]="country()"
+    (ngModelChange)="onCountryChange($event)"
+    [attr.aria-label]="'phoneInput.selectCountry' | translate"
+  >
+    @for (code of countries(); track code) {
+      <option [value]="code">{{ countryName(code) }} ({{ callingCode(code) }})</option>
+    }
+  </select>
+  <input
+    type="tel"
+    [value]="nationalNumber()"
+    (input)="onNumberInput($any($event.target).value)"
+    [placeholder]="'phoneInput.numberPlaceholder' | translate"
+  />
+</div>

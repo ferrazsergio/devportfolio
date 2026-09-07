@@ -2,6 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { LocationInputComponent } from '../../core/geo/location-input/location-input';
+import { PhoneInputComponent } from '../../core/phone/phone-input/phone-input';
 import { SpellcheckDirective } from '../../core/spellcheck/spellcheck.directive';
 import { ProfileApiService } from './profile-api.service';
 
@@ -10,7 +12,7 @@ const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ReactiveFormsModule, TranslatePipe, SpellcheckDirective],
+  imports: [ReactiveFormsModule, TranslatePipe, SpellcheckDirective, LocationInputComponent, PhoneInputComponent],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })

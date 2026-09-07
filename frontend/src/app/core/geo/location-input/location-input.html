@@ -1,0 +1,37 @@
+<div class="location-input">
+  @if (rawValue()) {
+    <p class="location-input__hint">{{ 'locationInput.currentValue' | translate }}: {{ rawValue() }}</p>
+  }
+  <div class="location-input__row">
+    <select [ngModel]="selectedCountry()" (ngModelChange)="onCountryChange($event)">
+      <option value="">{{ 'locationInput.selectCountry' | translate }}</option>
+      @for (code of countryCodes(); track code) {
+        <option [value]="code">{{ countryName(code) }}</option>
+      }
+    </select>
+
+    @if (states().length > 0) {
+      <select [ngModel]="selectedState()" (ngModelChange)="onStateChange($event)">
+        <option value="">{{ 'locationInput.selectState' | translate }}</option>
+        @for (state of states(); track state) {
+          <option [value]="state">{{ state }}</option>
+        }
+      </select>
+    }
+
+    @if (selectedCountry() && (selectedState() || states().length === 0)) {
+      <input
+        type="text"
+        [value]="cityValue()"
+        (input)="onCityInput($any($event.target).value)"
+        [attr.list]="instanceId"
+        [placeholder]="'locationInput.cityPlaceholder' | translate"
+      />
+      <datalist [id]="instanceId">
+        @for (city of cities(); track city) {
+          <option [value]="city"></option>
+        }
+      </datalist>
+    }
+  </div>
+</div>
