@@ -10,7 +10,9 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-8);
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -85,6 +87,7 @@
 .hero h1 {
   color: var(--color-white);
   font-size: var(--text-4xl);
+  letter-spacing: -0.02em;
   max-width: 30ch;
   margin: 0 auto var(--space-5);
 }
