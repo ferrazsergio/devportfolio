@@ -216,6 +216,7 @@ export const pt = {
     notFoundText: 'Esse portfólio não existe ou ainda não foi publicado.',
     emailAria: 'Enviar email',
     websiteAria: 'Site pessoal',
+    contactLabel: 'Entrar em contato',
     contactWhatsapp: 'Chamar no WhatsApp',
     contactEmail: 'Enviar email',
     contactWhatsappMessage: 'Olá! Vi seu portfólio no DevPortfolio e gostaria de conversar.',

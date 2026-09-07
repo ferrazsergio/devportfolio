@@ -58,7 +58,9 @@
       }
 
       @if (whatsappContactUrl(data) || data.profile.professionalEmail) {
-        <div class="hero__cta reveal">
+        <div class="hero__cta-block reveal">
+          <span class="hero__cta-label">{{ 'publicPortfolio.contactLabel' | translate }}</span>
+          <div class="hero__cta">
           @if (whatsappContactUrl(data); as waUrl) {
             <a class="btn btn-primary btn-lg" [href]="waUrl" target="_blank" rel="noopener">
               <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -78,6 +80,7 @@
               {{ 'publicPortfolio.contactEmail' | translate }}
             </a>
           }
+          </div>
         </div>
       }
 
@@ -137,12 +140,12 @@
         <span class="hero__share-label">{{ 'publicPortfolio.share' | translate }}</span>
         <a class="icon-link icon-link--sm" [href]="linkedInShareUrl()" target="_blank" rel="noopener" [attr.aria-label]="'publicPortfolio.shareLinkedIn' | translate">
           <svg viewBox="0 0 20 20" fill="currentColor">
-            <rect x="2" y="2" width="16" height="16" rx="3" />
-            <rect x="5.5" y="8" width="2" height="7" fill="var(--color-primary-900)" />
-            <circle cx="6.5" cy="5.3" r="1.2" fill="var(--color-primary-900)" />
+            <rect x="2" y="2" width="16" height="16" rx="3" fill="#0a66c2" />
+            <rect x="5.5" y="8" width="2" height="7" fill="#fff" />
+            <circle cx="6.5" cy="5.3" r="1.2" fill="#fff" />
             <path
               d="M9.5 15V8h2v1c.5-.7 1.2-1.2 2.3-1.2 1.8 0 2.7 1.2 2.7 3.3V15h-2v-3.5c0-1-.4-1.7-1.3-1.7-.7 0-1.2.5-1.4 1-.1.2-.1.4-.1.7V15h-2Z"
-              fill="var(--color-primary-900)"
+              fill="#fff"
             />
           </svg>
         </a>

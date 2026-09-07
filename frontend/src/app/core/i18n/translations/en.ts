@@ -216,6 +216,7 @@ export const en = {
     notFoundText: 'This portfolio does not exist or has not been published yet.',
     emailAria: 'Send email',
     websiteAria: 'Personal website',
+    contactLabel: 'Get in touch',
     contactWhatsapp: 'Chat on WhatsApp',
     contactEmail: 'Send email',
     contactWhatsappMessage: 'Hi! I saw your portfolio on DevPortfolio and would like to talk.',
