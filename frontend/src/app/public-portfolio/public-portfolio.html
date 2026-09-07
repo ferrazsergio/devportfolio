@@ -24,7 +24,14 @@
     <div class="hero__inner">
       <div class="hero__avatar reveal">
         @if (data.profile.photoUrl) {
-          <img [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
+          <button
+            type="button"
+            class="hero__avatar-btn"
+            (click)="openLightbox()"
+            [attr.aria-label]="'publicPortfolio.photoExpand' | translate"
+          >
+            <img [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
+          </button>
         } @else {
           <svg viewBox="0 0 96 96" fill="none">
             <circle cx="48" cy="38" r="16" fill="currentColor" opacity="0.35" />
@@ -48,6 +55,30 @@
       }
       @if (data.profile.bio) {
         <p class="hero__bio reveal">{{ data.profile.bio }}</p>
+      }
+
+      @if (whatsappContactUrl(data) || data.profile.professionalEmail) {
+        <div class="hero__cta reveal">
+          @if (whatsappContactUrl(data); as waUrl) {
+            <a class="btn btn-primary btn-lg" [href]="waUrl" target="_blank" rel="noopener">
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M10 2.5a7.5 7.5 0 0 0-6.5 11.2L2.5 17.5l3.9-1a7.5 7.5 0 1 0 3.6-14Zm4.4 10.6c-.2.5-1.1 1-1.5 1-.4 0-.9.1-2.9-.9-2.4-1.2-3.9-3.6-4-3.8-.1-.2-.9-1.2-.9-2.3s.6-1.6.8-1.9c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2.1.3 0 .5l-.4.5c-.1.2-.2.3-.1.5.2.3.7 1.1 1.5 1.8.9.8 1.7 1.1 2 1.2.2.1.4.1.5-.1l.5-.6c.2-.2.3-.2.5-.1l1.6.8c.2.1.3.1.4.2.1.2.1.9-.1 1.4Z"
+                />
+              </svg>
+              {{ 'publicPortfolio.contactWhatsapp' | translate }}
+            </a>
+          }
+          @if (data.profile.professionalEmail) {
+            <a class="btn btn-secondary btn-lg" [href]="contactEmailUrl(data.profile.professionalEmail)">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <rect x="2.5" y="4.5" width="15" height="11" rx="1.6" />
+                <path d="M3 5.5 10 11 17 5.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {{ 'publicPortfolio.contactEmail' | translate }}
+            </a>
+          }
+        </div>
       }
 
       <div class="hero__contacts reveal">
@@ -315,4 +346,22 @@
       {{ 'publicPortfolio.footerCta' | translate }}
     </a>
   </footer>
+
+  @if (lightboxOpen() && data.profile.photoUrl) {
+    <div
+      class="lightbox"
+      role="dialog"
+      aria-modal="true"
+      tabindex="-1"
+      (click)="onLightboxBackdropClick($event)"
+      (keydown.escape)="closeLightbox()"
+    >
+      <button type="button" class="lightbox__close" [attr.aria-label]="'publicPortfolio.photoClose' | translate" (click)="closeLightbox()">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M5 5 15 15M15 5 5 15" stroke-linecap="round" />
+        </svg>
+      </button>
+      <img class="lightbox__image" [src]="data.profile.photoUrl" [alt]="data.profile.fullName ?? ''" />
+    </div>
+  }
 }

@@ -67,6 +67,13 @@ export class PublicPortfolioComponent implements OnDestroy {
   protected readonly loading = signal(true);
   protected readonly notFound = signal(false);
   protected readonly linkCopied = signal(false);
+  protected readonly lightboxOpen = signal(false);
+
+  private readonly onLightboxKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      this.closeLightbox();
+    }
+  };
 
   constructor() {
     const username = this.route.snapshot.paramMap.get('username')!;
@@ -90,6 +97,7 @@ export class PublicPortfolioComponent implements OnDestroy {
     this.magneticCleanups.forEach((cleanup) => cleanup());
     this.splitHeroName?.revert();
     this.sectionObserver?.disconnect();
+    document.removeEventListener('keydown', this.onLightboxKeydown);
     this.heroSpotlightCleanup?.();
   }
 
@@ -178,7 +186,7 @@ export class PublicPortfolioComponent implements OnDestroy {
   }
 
   private setupMagneticHover(root: HTMLElement): void {
-    const magneticTargets = root.querySelectorAll('.hero__share .btn-primary');
+    const magneticTargets = root.querySelectorAll('.hero__share .btn-primary, .hero__cta .btn');
     magneticTargets.forEach((target) =>
       this.magneticCleanups.push(createMagneticHover(target as HTMLElement, 0.3)),
     );
@@ -285,6 +293,55 @@ export class PublicPortfolioComponent implements OnDestroy {
 
   protected statusLabel(status: ProjectStatus): string {
     return STATUS_LABELS[status];
+  }
+
+  protected whatsappContactUrl(data: PublicPortfolio): string | null {
+    const digits = data.profile.phone?.replace(/\D/g, '');
+    if (!digits) {
+      return null;
+    }
+    const dictionary = this.localeService.locale() === 'en' ? en : pt;
+    const message = dictionary.publicPortfolio.contactWhatsappMessage;
+    return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+  }
+
+  protected contactEmailUrl(email: string): string {
+    const dictionary = this.localeService.locale() === 'en' ? en : pt;
+    return `mailto:${email}?subject=${encodeURIComponent(dictionary.publicPortfolio.contactEmailSubject)}`;
+  }
+
+  protected openLightbox(): void {
+    this.lightboxOpen.set(true);
+    document.addEventListener('keydown', this.onLightboxKeydown);
+    requestAnimationFrame(() => {
+      const overlay = this.elementRef.nativeElement.querySelector('.lightbox');
+      const image = this.elementRef.nativeElement.querySelector('.lightbox__image');
+      if (!overlay || !image) {
+        return;
+      }
+      (overlay as HTMLElement).focus();
+      if (this.reduceMotion) {
+        gsap.set([overlay, image], { opacity: 1, scale: 1 });
+        return;
+      }
+      gsap.set(overlay, { opacity: 0 });
+      gsap.set(image, { opacity: 0, scale: 0.92 });
+      gsap
+        .timeline()
+        .to(overlay, { opacity: 1, duration: 0.25, ease: 'power2.out' })
+        .to(image, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.6)' }, '-=0.15');
+    });
+  }
+
+  protected closeLightbox(): void {
+    this.lightboxOpen.set(false);
+    document.removeEventListener('keydown', this.onLightboxKeydown);
+  }
+
+  protected onLightboxBackdropClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeLightbox();
+    }
   }
 
   protected hasAnyContent(data: PublicPortfolio): boolean {
