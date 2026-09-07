@@ -19,6 +19,7 @@
       <div class="hero__blob hero__blob--one"></div>
       <div class="hero__blob hero__blob--two"></div>
     </div>
+    <div class="hero__spotlight" aria-hidden="true"></div>
 
     <div class="hero__inner">
       <div class="hero__avatar reveal">
@@ -156,6 +157,7 @@
         @if (data.certifications.length > 0) {
           <a href="#certifications">{{ 'publicPortfolio.navCertifications' | translate }}</a>
         }
+        <span class="anchor-nav__indicator" aria-hidden="true"></span>
       </div>
     </nav>
   }

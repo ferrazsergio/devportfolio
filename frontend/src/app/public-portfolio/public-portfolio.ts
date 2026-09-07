@@ -58,6 +58,8 @@ export class PublicPortfolioComponent implements OnDestroy {
   private readonly scrollTriggers: ScrollTrigger[] = [];
   private readonly magneticCleanups: (() => void)[] = [];
   private splitHeroName: SplitText | null = null;
+  private sectionObserver: IntersectionObserver | null = null;
+  private heroSpotlightCleanup: (() => void) | null = null;
   private readonly reduceMotion =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -87,6 +89,8 @@ export class PublicPortfolioComponent implements OnDestroy {
     this.scrollTriggers.forEach((trigger) => trigger.kill());
     this.magneticCleanups.forEach((cleanup) => cleanup());
     this.splitHeroName?.revert();
+    this.sectionObserver?.disconnect();
+    this.heroSpotlightCleanup?.();
   }
 
   /**
@@ -97,10 +101,14 @@ export class PublicPortfolioComponent implements OnDestroy {
   private initAnimations(): void {
     const root = this.elementRef.nativeElement;
 
+    this.setupActiveNav(root);
+
     if (this.reduceMotion) {
       this.setupMagneticHover(root);
       return;
     }
+
+    this.setupHeroSpotlight(root);
 
     const hero = root.querySelector('.hero');
     const heroName = hero?.querySelector('.hero__name');
@@ -174,6 +182,75 @@ export class PublicPortfolioComponent implements OnDestroy {
     magneticTargets.forEach((target) =>
       this.magneticCleanups.push(createMagneticHover(target as HTMLElement, 0.3)),
     );
+  }
+
+  /**
+   * Brilho suave que segue o cursor no herói — só aparece no hover, então não
+   * compete com o conteúdo em telas touch (que não têm :hover de verdade).
+   */
+  private setupHeroSpotlight(root: HTMLElement): void {
+    const hero = root.querySelector('.hero') as HTMLElement | null;
+    if (!hero) {
+      return;
+    }
+    const onMouseMove = (event: MouseEvent) => {
+      const rect = hero.getBoundingClientRect();
+      hero.style.setProperty('--spot-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+      hero.style.setProperty('--spot-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+    };
+    hero.addEventListener('mousemove', onMouseMove);
+    this.heroSpotlightCleanup = () => hero.removeEventListener('mousemove', onMouseMove);
+  }
+
+  /**
+   * Destaca no menu de navegação a seção que está visível na tela, com um
+   * indicador que desliza até o link ativo — mesma linguagem visual do switch
+   * de idioma (um elemento que "desliza" para mostrar o estado atual).
+   */
+  private setupActiveNav(root: HTMLElement): void {
+    const nav = root.querySelector('.anchor-nav');
+    const indicator = nav?.querySelector('.anchor-nav__indicator');
+    const links: HTMLAnchorElement[] = [];
+    nav?.querySelectorAll('a[href^="#"]').forEach((el) => links.push(el as HTMLAnchorElement));
+    const sections: HTMLElement[] = [];
+    links.forEach((link) => {
+      const section = root.querySelector(link.getAttribute('href')!);
+      if (section) {
+        sections.push(section as HTMLElement);
+      }
+    });
+    if (!nav || !indicator || sections.length === 0) {
+      return;
+    }
+
+    const moveIndicatorTo = (link: HTMLAnchorElement) => {
+      links.forEach((candidate) => candidate.classList.toggle('is-active', candidate === link));
+      const targetX = link.offsetLeft;
+      const targetWidth = link.getBoundingClientRect().width;
+      if (this.reduceMotion) {
+        gsap.set(indicator, { opacity: 1, x: targetX, width: targetWidth });
+        return;
+      }
+      gsap.to(indicator, { opacity: 1, x: targetX, width: targetWidth, duration: 0.4, ease: 'power2.out' });
+    };
+
+    this.sectionObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length === 0) {
+          return;
+        }
+        const topMost = visible.reduce((closest, entry) =>
+          entry.boundingClientRect.top < closest.boundingClientRect.top ? entry : closest,
+        );
+        const link = links.find((candidate) => candidate.getAttribute('href') === `#${topMost.target.id}`);
+        if (link) {
+          moveIndicatorTo(link);
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+    sections.forEach((section) => this.sectionObserver!.observe(section));
   }
 
   private updateMetaTags(data: PublicPortfolio): void {
