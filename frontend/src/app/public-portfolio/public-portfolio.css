@@ -14,22 +14,20 @@
   padding: var(--space-8);
 }
 
-/* ---------- Hero (Theme 01 "Modern SaaS" — claro, com decoração) ---------- */
+/* ---------- Hero (Theme 01 "Modern SaaS" — decoração via blobs) ---------- */
 
+/* Fundo sólido, não degradê: os dois tons do degradê original (claro ou
+   escuro) eram próximos demais um do outro pra uma faixa alta (o herói
+   cresceu bastante com as seções novas) — aparecia uma faixa/linha visível
+   no meio ao rolar a página em vez de uma transição suave (banding, comum
+   em degradês sutis numa área grande). Mais perceptível no tema escuro, mas
+   existia nos dois. Um fundo sólido resolve nos dois e ainda combina com a
+   estética "terminal" do produto. */
 .hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--color-neutral-50) 0%, var(--color-surface) 100%);
-  padding: var(--space-16) var(--space-5) var(--space-10);
-}
-
-/* No tema escuro os dois tons desse gradiente são próximos demais um do
-   outro pra uma faixa alta (o herói cresceu bastante com as seções novas) —
-   o degradê aparecia com uma faixa/linha visível no meio ao invés de uma
-   transição suave (banding, comum em degradês sutis entre tons escuros).
-   Um fundo sólido resolve e ainda combina com a estética "terminal". */
-[data-theme='dark'] .hero {
   background: var(--color-bg);
+  padding: var(--space-16) var(--space-5) var(--space-10);
 }
 
 .hero__decoration {
