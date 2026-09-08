@@ -247,16 +247,35 @@ export class PublicPortfolioComponent implements OnDestroy {
       gsap.to(indicator, { opacity: 1, x: targetX, width: targetWidth, duration: 0.4, ease: 'power2.out' });
     };
 
+    // O callback do IntersectionObserver só entrega as entradas que MUDARAM de
+    // estado nessa chamada, não todas as seções observadas no momento — usar só
+    // `entries` pra decidir a seção ativa é o motivo do indicador às vezes ir
+    // parar embaixo de um link errado (ex.: a última seção que saiu do
+    // "viewport band" chega sozinha na entrega, sem a seção que continua
+    // visível). Por isso o estado de "quem está visível agora" é mantido à
+    // parte, atualizado incrementalmente a cada entrega.
+    const intersectingTops = new Map<string, number>();
     this.sectionObserver = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting);
-        if (visible.length === 0) {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            intersectingTops.set(entry.target.id, entry.boundingClientRect.top);
+          } else {
+            intersectingTops.delete(entry.target.id);
+          }
+        }
+        if (intersectingTops.size === 0) {
           return;
         }
-        const topMost = visible.reduce((closest, entry) =>
-          entry.boundingClientRect.top < closest.boundingClientRect.top ? entry : closest,
-        );
-        const link = links.find((candidate) => candidate.getAttribute('href') === `#${topMost.target.id}`);
+        let topMostId: string | null = null;
+        let topMostValue = Infinity;
+        for (const [id, top] of intersectingTops) {
+          if (top < topMostValue) {
+            topMostValue = top;
+            topMostId = id;
+          }
+        }
+        const link = links.find((candidate) => candidate.getAttribute('href') === `#${topMostId}`);
         if (link) {
           moveIndicatorTo(link);
         }
