@@ -4,6 +4,7 @@ import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
 import { SkillApiService } from './skill-api.service';
 import { SKILL_CATEGORIES, Skill } from './skill.model';
+import { TECH_SUGGESTIONS } from './tech-suggestions';
 
 @Component({
   selector: 'app-skills-page',
@@ -21,6 +22,7 @@ export class SkillsPageComponent {
   protected readonly saving = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly editingId = signal<string | null>(null);
+  protected readonly nameSuggestions = signal<string[]>(TECH_SUGGESTIONS.BACKEND);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
@@ -29,6 +31,9 @@ export class SkillsPageComponent {
 
   constructor() {
     this.reload();
+    this.form.controls.category.valueChanges.subscribe((category) => {
+      this.nameSuggestions.set(TECH_SUGGESTIONS[category]);
+    });
   }
 
   private reload(): void {

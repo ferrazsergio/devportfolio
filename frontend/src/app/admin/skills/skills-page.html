@@ -6,7 +6,17 @@
       <p class="alert alert-danger">{{ errorMessage() }}</p>
     }
     <div class="inline-form__fields">
-      <input type="text" formControlName="name" [placeholder]="'skills.namePlaceholder' | translate" />
+      <input
+        type="text"
+        formControlName="name"
+        [placeholder]="'skills.namePlaceholder' | translate"
+        list="tech-name-suggestions"
+      />
+      <datalist id="tech-name-suggestions">
+        @for (suggestion of nameSuggestions(); track suggestion) {
+          <option [value]="suggestion"></option>
+        }
+      </datalist>
       <select formControlName="category">
         @for (option of categories; track option.value) {
           <option [value]="option.value">{{ option.label }}</option>

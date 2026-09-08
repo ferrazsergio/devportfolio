@@ -1,0 +1,76 @@
+import { SkillCategory } from './skill.model';
+
+/**
+ * Sugestões de nome por categoria — mesma ideia já usada em localização e
+ * links sociais: guia com uma lista conhecida, mas continua um campo de
+ * texto livre (datalist, não select), então qualquer tecnologia fora da
+ * lista ainda pode ser digitada normalmente.
+ */
+export const TECH_SUGGESTIONS: Record<SkillCategory, string[]> = {
+  BACKEND: [
+    'Java',
+    'Spring Boot',
+    'Node.js',
+    'Python',
+    'Django',
+    'Flask',
+    'FastAPI',
+    'PHP',
+    'Laravel',
+    'Ruby on Rails',
+    '.NET',
+    'C#',
+    'Go',
+    'Rust',
+    'Kotlin',
+    'Express.js',
+    'NestJS',
+    'GraphQL',
+    'REST API',
+  ],
+  FRONTEND: [
+    'JavaScript',
+    'TypeScript',
+    'React',
+    'Angular',
+    'Vue.js',
+    'Svelte',
+    'Next.js',
+    'HTML',
+    'CSS',
+    'Sass',
+    'Tailwind CSS',
+    'Bootstrap',
+    'jQuery',
+    'Redux',
+    'RxJS',
+  ],
+  DATABASE: [
+    'PostgreSQL',
+    'MySQL',
+    'MongoDB',
+    'Redis',
+    'SQLite',
+    'Oracle',
+    'SQL Server',
+    'Elasticsearch',
+    'DynamoDB',
+    'Cassandra',
+    'Firebase',
+  ],
+  CLOUD: ['AWS', 'Azure', 'Google Cloud Platform', 'Vercel', 'Netlify', 'Heroku', 'DigitalOcean', 'Cloudflare'],
+  DEVOPS: [
+    'Docker',
+    'Kubernetes',
+    'Jenkins',
+    'GitHub Actions',
+    'GitLab CI',
+    'Terraform',
+    'Ansible',
+    'CI/CD',
+    'Nginx',
+    'Linux',
+  ],
+  TOOLS: ['Git', 'GitHub', 'Jira', 'Figma', 'Postman', 'VS Code', 'IntelliJ IDEA', 'Slack', 'Notion'],
+  OTHER: ['Scrum', 'Kanban', 'Design Patterns', 'Clean Architecture', 'TDD', 'Microservices'],
+};
