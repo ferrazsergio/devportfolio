@@ -155,7 +155,7 @@ export const pt = {
     empty: 'Nenhum link social cadastrado ainda.',
     moveUp: 'Mover para cima',
     moveDown: 'Mover para baixo',
-    orderHint: 'A ordem da lista abaixo é a ordem de exibição no seu portfólio público — use as setas para reorganizar.',
+    orderHint: 'A ordem da lista abaixo é a ordem de exibição no seu portfólio público. Use as setas para reorganizar.',
   },
   auth: {
     login: {
@@ -259,7 +259,7 @@ export const pt = {
     certificationsTitle: 'Certificações',
     viewCredential: 'Ver credencial',
     footerText: 'Portfólio construído com DevPortfolio.',
-    footerCta: 'Crie o seu — é open source',
+    footerCta: 'Crie o seu, é open source',
     periodCurrent: 'atual',
   },
 };

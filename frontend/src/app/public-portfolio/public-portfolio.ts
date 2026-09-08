@@ -10,6 +10,7 @@ import { LocaleToggleComponent } from '../core/i18n/locale-toggle/locale-toggle'
 import { TranslatePipe } from '../core/i18n/translate.pipe';
 import { en } from '../core/i18n/translations/en';
 import { pt } from '../core/i18n/translations/pt';
+import { matchSocialPlatform } from '../core/social/social-platforms';
 import { LogoComponent } from '../core/ui/logo/logo';
 import { ThemeToggleComponent } from '../core/ui/theme-toggle/theme-toggle';
 import { PublicPortfolioApiService } from './public-portfolio-api.service';
@@ -261,6 +262,19 @@ export class PublicPortfolioComponent implements OnDestroy {
     sections.forEach((section) => this.sectionObserver!.observe(section));
   }
 
+  /**
+   * A página tem `<base href="/">` (necessário pro roteamento do Angular
+   * funcionar em rotas profundas) — isso faz um `href="#secao"" puro
+   * resolver pra `/#secao` (a home), não `/usuario#secao`. Por isso a
+   * rolagem até a seção é feita manualmente aqui, em vez de deixar o
+   * navegador seguir o link.
+   */
+  protected scrollToSection(event: MouseEvent, id: string): void {
+    event.preventDefault();
+    const target = this.elementRef.nativeElement.querySelector(`#${id}`);
+    target?.scrollIntoView({ behavior: this.reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }
+
   private updateMetaTags(data: PublicPortfolio): void {
     const displayName = data.profile.fullName ?? this.route.snapshot.paramMap.get('username')!;
     const dictionary = this.localeService.locale() === 'en' ? en : pt;
@@ -281,9 +295,9 @@ export class PublicPortfolioComponent implements OnDestroy {
     const start = this.formatDate(startDate);
     if (current) {
       const dictionary = this.localeService.locale() === 'en' ? en : pt;
-      return `${start} — ${dictionary.publicPortfolio.periodCurrent}`;
+      return `${start} - ${dictionary.publicPortfolio.periodCurrent}`;
     }
-    return endDate ? `${start} — ${this.formatDate(endDate)}` : start;
+    return endDate ? `${start} - ${this.formatDate(endDate)}` : start;
   }
 
   protected formatDate(date: string): string {
@@ -344,6 +358,14 @@ export class PublicPortfolioComponent implements OnDestroy {
     }
   }
 
+  protected socialPlatformPath(platform: string): string | null {
+    return matchSocialPlatform(platform)?.path ?? null;
+  }
+
+  protected socialPlatformColor(platform: string): string | null {
+    return matchSocialPlatform(platform)?.color ?? null;
+  }
+
   protected hasAnyContent(data: PublicPortfolio): boolean {
     return (
       data.experiences.length > 0 ||
@@ -372,7 +394,7 @@ export class PublicPortfolioComponent implements OnDestroy {
   private shareText(data: PublicPortfolio): string {
     const dictionary = this.localeService.locale() === 'en' ? en : pt;
     const invite = dictionary.publicPortfolio.shareInvite;
-    return data.profile.headline ? `${invite} — ${data.profile.headline}` : invite;
+    return data.profile.headline ? `${invite}: ${data.profile.headline}` : invite;
   }
 
   protected linkedInShareUrl(): string {

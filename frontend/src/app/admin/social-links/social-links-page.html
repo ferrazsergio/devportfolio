@@ -6,7 +6,17 @@
       <p class="alert alert-danger">{{ errorMessage() }}</p>
     }
     <div class="inline-form__fields">
-      <input type="text" formControlName="platform" [placeholder]="'socialLinks.platformPlaceholder' | translate" />
+      <input
+        type="text"
+        formControlName="platform"
+        [placeholder]="'socialLinks.platformPlaceholder' | translate"
+        list="social-platform-suggestions"
+      />
+      <datalist id="social-platform-suggestions">
+        @for (platform of platformSuggestions; track platform) {
+          <option [value]="platform"></option>
+        }
+      </datalist>
       <input type="text" formControlName="url" [placeholder]="'socialLinks.urlPlaceholder' | translate" class="inline-form__url" />
       <div class="inline-form__actions">
         <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ (editingId() ? 'common.save' : 'common.add') | translate }}</button>

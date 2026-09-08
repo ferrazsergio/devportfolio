@@ -1,0 +1,4 @@
+Brand icon path data in social-platforms.ts is sourced from the simple-icons
+project (https://github.com/simple-icons/simple-icons), licensed under CC0 1.0
+Universal (public domain dedication) — no attribution required, included here
+for reference only.

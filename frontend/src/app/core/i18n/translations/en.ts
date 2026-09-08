@@ -155,7 +155,7 @@ export const en = {
     empty: 'No social links added yet.',
     moveUp: 'Move up',
     moveDown: 'Move down',
-    orderHint: 'The order of the list below is the display order on your public portfolio — use the arrows to rearrange.',
+    orderHint: 'The order of the list below is the display order on your public portfolio. Use the arrows to rearrange.',
   },
   auth: {
     login: {
@@ -259,7 +259,7 @@ export const en = {
     certificationsTitle: 'Certifications',
     viewCredential: 'View credential',
     footerText: 'Portfolio built with DevPortfolio.',
-    footerCta: 'Build your own — it’s open source',
+    footerCta: 'Build your own, it’s open source',
     periodCurrent: 'current',
   },
 };

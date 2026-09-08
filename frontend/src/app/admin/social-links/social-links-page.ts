@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { extractErrorMessage } from '../../core/http/api-error';
+import { SOCIAL_PLATFORMS } from '../../core/social/social-platforms';
 import { SocialLinkApiService } from './social-link-api.service';
 import { SocialLink } from './social-link.model';
 
@@ -16,6 +17,7 @@ export class SocialLinksPageComponent {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(SocialLinkApiService);
 
+  protected readonly platformSuggestions = SOCIAL_PLATFORMS.map((platform) => platform.label);
   protected readonly items = signal<SocialLink[]>([]);
   protected readonly loading = signal(true);
   protected readonly saving = signal(false);

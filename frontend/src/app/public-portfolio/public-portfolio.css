@@ -263,7 +263,7 @@
 .icon-link:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  color: var(--color-primary-600);
+  color: var(--brand-color, var(--color-primary-600));
 }
 
 .icon-link--sm {
