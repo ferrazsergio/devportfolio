@@ -6,12 +6,7 @@ export interface CountryGeoData {
   states: Record<string, { id: string; name: string }[]>;
 }
 
-/**
- * País/estado/cidade sob demanda (dataset MIT `countrycitystatejson`, copiado
- * como arquivos estáticos em `public/geo/`) — só busca o arquivo do país
- * quando ele é realmente selecionado, em vez de carregar tudo de uma vez
- * (o conjunto completo passa de 3MB).
- */
+/** Busca o arquivo de um país só quando ele é selecionado — o dataset completo passa de 3MB. */
 @Injectable({ providedIn: 'root' })
 export class GeoService {
   private readonly http = inject(HttpClient);

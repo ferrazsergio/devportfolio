@@ -704,7 +704,7 @@ button:focus-visible,
   outline-offset: 2px;
 }
 
-/* Correção ortográfica (SpellcheckDirective) — overlay por cima do campo real */
+/* ---------- Correção ortográfica ---------- */
 .spellcheck-overlay {
   margin: 0;
 }

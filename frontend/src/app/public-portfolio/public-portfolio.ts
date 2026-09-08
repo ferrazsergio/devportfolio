@@ -102,11 +102,7 @@ export class PublicPortfolioComponent implements OnDestroy {
     this.heroSpotlightCleanup?.();
   }
 
-  /**
-   * Animações de entrada (hero) e de rolagem (seções/cards). Se o usuário
-   * pediu menos movimento (prefers-reduced-motion), pulamos tudo — o conteúdo
-   * já é totalmente visível por padrão via CSS, então nada quebra.
-   */
+  /** Com prefers-reduced-motion, pula as animações — o CSS já deixa o conteúdo visível por padrão. */
   private initAnimations(): void {
     const root = this.elementRef.nativeElement;
 
@@ -130,9 +126,6 @@ export class PublicPortfolioComponent implements OnDestroy {
 
     const timeline = gsap.timeline();
 
-    // Nome em destaque: revelado palavra por palavra, mesmo tratamento
-    // cinematográfico do título da landing — é o elemento mais importante
-    // do herói, merece mais que um fade genérico.
     if (heroName) {
       this.splitHeroName = SplitText.create(heroName, { type: 'words', mask: 'words' });
       gsap.set(this.splitHeroName.words, { yPercent: 110, opacity: 0 });
@@ -187,20 +180,14 @@ export class PublicPortfolioComponent implements OnDestroy {
   }
 
   private setupMagneticHover(root: HTMLElement): void {
-    // Só o botão isolado de compartilhar recebe o efeito magnético — os
-    // botões de contato (WhatsApp/email) ficam próximos um do outro, e o
-    // deslocamento em direção ao cursor fazia um invadir o espaço do outro
-    // visualmente ao passar o mouse perto da borda entre os dois.
+    // Só o botão de compartilhar — nos de contato (WhatsApp/email), próximos
+    // um do outro, o deslocamento fazia um invadir o espaço visual do outro.
     const magneticTargets = root.querySelectorAll('.hero__share .btn-primary');
     magneticTargets.forEach((target) =>
       this.magneticCleanups.push(createMagneticHover(target as HTMLElement, 0.3)),
     );
   }
 
-  /**
-   * Brilho suave que segue o cursor no herói — só aparece no hover, então não
-   * compete com o conteúdo em telas touch (que não têm :hover de verdade).
-   */
   private setupHeroSpotlight(root: HTMLElement): void {
     const hero = root.querySelector('.hero') as HTMLElement | null;
     if (!hero) {
@@ -215,11 +202,6 @@ export class PublicPortfolioComponent implements OnDestroy {
     this.heroSpotlightCleanup = () => hero.removeEventListener('mousemove', onMouseMove);
   }
 
-  /**
-   * Destaca no menu de navegação a seção que está visível na tela, com um
-   * indicador que desliza até o link ativo — mesma linguagem visual do switch
-   * de idioma (um elemento que "desliza" para mostrar o estado atual).
-   */
   private setupActiveNav(root: HTMLElement): void {
     const nav = root.querySelector('.anchor-nav');
     const indicator = nav?.querySelector('.anchor-nav__indicator');
@@ -247,13 +229,9 @@ export class PublicPortfolioComponent implements OnDestroy {
       gsap.to(indicator, { opacity: 1, x: targetX, width: targetWidth, duration: 0.4, ease: 'power2.out' });
     };
 
-    // O callback do IntersectionObserver só entrega as entradas que MUDARAM de
-    // estado nessa chamada, não todas as seções observadas no momento — usar só
-    // `entries` pra decidir a seção ativa é o motivo do indicador às vezes ir
-    // parar embaixo de um link errado (ex.: a última seção que saiu do
-    // "viewport band" chega sozinha na entrega, sem a seção que continua
-    // visível). Por isso o estado de "quem está visível agora" é mantido à
-    // parte, atualizado incrementalmente a cada entrega.
+    // O callback do IntersectionObserver só entrega as entradas que MUDARAM
+    // de estado, não todas as seções observadas — por isso o estado de "quem
+    // está visível agora" é mantido à parte, atualizado incrementalmente.
     const intersectingTops = new Map<string, number>();
     this.sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -285,13 +263,9 @@ export class PublicPortfolioComponent implements OnDestroy {
     sections.forEach((section) => this.sectionObserver!.observe(section));
   }
 
-  /**
-   * A página tem `<base href="/">` (necessário pro roteamento do Angular
-   * funcionar em rotas profundas) — isso faz um `href="#secao"" puro
-   * resolver pra `/#secao` (a home), não `/usuario#secao`. Por isso a
-   * rolagem até a seção é feita manualmente aqui, em vez de deixar o
-   * navegador seguir o link.
-   */
+  // A página tem `<base href="/">` (necessário pro roteamento do Angular),
+  // o que faz um `href="#secao"` puro resolver pra `/#secao` (a home), não
+  // `/usuario#secao` — por isso a rolagem é feita manualmente aqui.
   protected scrollToSection(event: MouseEvent, id: string): void {
     event.preventDefault();
     const target = this.elementRef.nativeElement.querySelector(`#${id}`);

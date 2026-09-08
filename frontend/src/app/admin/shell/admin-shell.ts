@@ -44,10 +44,6 @@ export class AdminShellComponent implements AfterViewInit, OnDestroy {
     window.removeEventListener('resize', this.onResize);
   }
 
-  /**
-   * Indicador que desliza até o link ativo do menu — mesma linguagem visual
-   * do switch de idioma e do indicador de seção do portfólio público.
-   */
   private moveIndicator(animate: boolean): void {
     const nav = this.elementRef.nativeElement.querySelector('.sidebar__nav');
     const indicator = nav?.querySelector('.sidebar__nav-indicator');
@@ -55,9 +51,9 @@ export class AdminShellComponent implements AfterViewInit, OnDestroy {
     if (!nav || !indicator || !active) {
       return;
     }
-    // Calcula x/y e largura/altura juntos: no layout de coluna (desktop) só o Y
-    // muda entre os links; no layout de linha (sidebar vira topo em telas
-    // estreitas) só o X muda — computar os dois cobre ambos sem caso especial.
+    // X/Y e largura/altura juntos cobrem tanto o layout em coluna (desktop,
+    // só o Y muda) quanto em linha (sidebar vira topo em telas estreitas,
+    // só o X muda) sem precisar de caso especial por breakpoint.
     const activeRect = (active as HTMLElement).getBoundingClientRect();
     const navRect = (nav as HTMLElement).getBoundingClientRect();
     const targetX = activeRect.left - navRect.left;

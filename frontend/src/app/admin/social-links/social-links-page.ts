@@ -60,11 +60,9 @@ export class SocialLinksPageComponent {
     this.saving.set(true);
     this.errorMessage.set(null);
     const editingId = this.editingId();
-    // Ordem não é mais editável no formulário (ver reorder via setas na lista) —
-    // uma criação sempre vai para o fim da lista atual. Não usar o valor que
-    // ficou no FormControl: `cancelEdit()` o recalcula ANTES do próximo `reload()`
-    // devolver a contagem certa, o que já causou itens novos nascendo com a
-    // mesma `order` do item anterior.
+    // Não usar o `order` do FormControl: `cancelEdit()` o recalcula antes do
+    // `reload()` devolver a contagem certa, o que já causou itens nascendo
+    // com a mesma `order` do anterior.
     const value = editingId ? this.form.getRawValue() : { ...this.form.getRawValue(), order: this.items().length };
     const request$ = editingId ? this.api.update(editingId, value) : this.api.create(value);
 

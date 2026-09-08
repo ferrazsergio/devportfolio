@@ -10,9 +10,8 @@
   gap: var(--space-2);
 }
 
-/* Largura fixa por campo (não `flex: 1`) — do contrário o select de país,
-   sozinho antes de estado/cidade aparecerem, esticava pra 100% da linha, e
-   ia "encolhendo" toda vez que um novo campo surgia ao lado dele. */
+/* Largura fixa (não `flex: 1`) — do contrário o select de país esticava a
+   100% sozinho e "encolhia" a cada campo novo surgindo ao lado. */
 .location-input__row select {
   flex: 0 1 240px;
   min-width: 160px;

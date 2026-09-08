@@ -9,14 +9,10 @@ type PhoneModule = typeof import('libphonenumber-js/min');
 const DEFAULT_COUNTRY_BY_LOCALE: Record<string, CountryCode> = { pt: 'BR', en: 'US' };
 
 /**
- * País (código de discagem) + número formatado enquanto digita, em vez de um
- * campo de texto livre — garante que o valor salvo sempre vira um E.164
- * válido (`+5511912345678`), o formato que o botão de WhatsApp do portfólio
- * público precisa pra funcionar de verdade.
- *
- * A biblioteca `libphonenumber-js` é carregada sob demanda (`import()`
- * dinâmico) só quando este campo é usado, pra não pesar o bundle principal
- * do site (landing/portfólio público nunca precisam dela).
+ * Garante que o valor salvo é sempre um E.164 válido (`+5511912345678`),
+ * formato exigido pelo botão de WhatsApp do portfólio público.
+ * `libphonenumber-js` é importada sob demanda pra não pesar o bundle
+ * principal do site (landing/portfólio público nunca precisam dela).
  */
 @Component({
   selector: 'app-phone-input',
@@ -97,10 +93,6 @@ export class PhoneInputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  setDisabledState(): void {
-    // Não há necessidade de desabilitar visualmente aqui hoje.
   }
 
   protected onCountryChange(code: CountryCode): void {

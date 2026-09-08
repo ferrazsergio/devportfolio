@@ -31,10 +31,9 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   constructor() {
-    // O SplitText substitui o nó de texto que o Angular usa pra interpolar
-    // `{{ ... | translate }}` por spans próprios — depois disso, uma troca de
-    // idioma nunca mais chegaria na tela sozinha. Por isso, ao trocar, a gente
-    // reverte o split e recria com o texto (já traduzido) lido direto do dicionário.
+    // SplitText substitui o nó de texto que o Angular usa pra interpolar
+    // `{{ ... | translate }}` — depois disso, uma troca de idioma não chega
+    // mais na tela sozinha, então recria o split com o texto já traduzido.
     effect(() => {
       const locale = this.localeService.locale();
       if (this.heroReady) {
@@ -58,11 +57,6 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     this.splitHeroTitle?.revert();
   }
 
-  /**
-   * Animações de entrada (hero) e de rolagem (seções). Se o usuário pediu
-   * menos movimento (prefers-reduced-motion), pulamos tudo — o conteúdo já é
-   * totalmente visível por padrão via CSS, então nada quebra.
-   */
   private initAnimations(): void {
     const root = this.elementRef.nativeElement;
 
@@ -82,9 +76,6 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
     const timeline = gsap.timeline();
 
-    // Título em destaque: revelado palavra por palavra (não a frase inteira de
-    // uma vez), efeito de "leitura cinematográfica" em vez do fade genérico —
-    // é o elemento mais importante da página, merece um tratamento à parte.
     if (heroTitle) {
       this.splitHeroTitle = SplitText.create(heroTitle, { type: 'words', mask: 'words' });
       gsap.set(this.splitHeroTitle.words, { yPercent: 110, opacity: 0 });

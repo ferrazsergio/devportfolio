@@ -7,10 +7,7 @@ type Dictionary = typeof pt;
 
 const DICTIONARIES: Record<'pt' | 'en', Dictionary> = { pt, en };
 
-/**
- * Lookup síncrono, sem passar pelo pipe — usado quando o próprio TS precisa ler
- * a tradução atual fora do template (ex.: recriar um SplitText após o idioma mudar).
- */
+/** Lookup síncrono pro TS ler uma tradução fora do template, sem passar pelo pipe. */
 export function translateKey(locale: Locale, key: string): string {
   const dictionary = DICTIONARIES[locale];
   const value = key.split('.').reduce<unknown>((node, segment) => {

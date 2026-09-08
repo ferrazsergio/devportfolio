@@ -1,11 +1,6 @@
 import gsap from 'gsap';
 
-/**
- * Efeito "magnético": o elemento acompanha o cursor dentro da própria área,
- * com uma leve amplificação, e volta ao lugar com uma mola (elastic) ao sair.
- * Usa `quickTo` (mais performático que `.to()` repetido a cada mousemove).
- * Retorna uma função de limpeza — chamar em ngOnDestroy pra remover os listeners.
- */
+/** Retorna uma função de limpeza — chamar em ngOnDestroy pra remover os listeners. */
 export function createMagneticHover(element: HTMLElement, strength = 0.35): () => void {
   const moveX = gsap.quickTo(element, 'x', { duration: 0.5, ease: 'power3.out' });
   const moveY = gsap.quickTo(element, 'y', { duration: 0.5, ease: 'power3.out' });

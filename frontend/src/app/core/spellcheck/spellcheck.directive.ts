@@ -8,13 +8,9 @@ import { SpellcheckService } from './spellcheck.service';
 const WORD_PATTERN = /[\p{L}'-]+/gu;
 
 /**
- * Correção ortográfica "no estilo do produto": sublinha palavras que não batem
- * com o dicionário Hunspell do idioma atual (pt_BR/en_US, seguindo o toggle de
- * idioma) e, ao clicar numa palavra sublinhada, mostra sugestões de correção.
- *
- * Implementado com uma camada de overlay (`position: fixed`, texto transparente,
- * só o sublinhado visível) por cima do campo real — o campo em si nunca é tocado,
- * então digitação, colar, undo/redo etc. continuam 100% nativos.
+ * Overlay (`position: fixed`, texto transparente, só o sublinhado visível)
+ * por cima do campo real — nunca toca o campo em si, então digitação, colar
+ * e undo/redo continuam 100% nativos.
  */
 @Directive({
   selector: 'textarea[appSpellcheck], input[appSpellcheck]',

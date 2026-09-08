@@ -6,12 +6,7 @@ import { Locale } from '../i18n/locale.service';
 
 const DICTIONARY_CODE: Record<Locale, string> = { pt: 'pt_BR', en: 'en_US' };
 
-/**
- * Carrega os dicionários Hunspell (pt_BR/en_US) sob demanda — só quando um campo
- * com correção ortográfica é realmente usado — e mantém uma instância por idioma
- * em cache (o `.dic` do pt_BR sozinho tem ~4,5MB, não faz sentido buscar de novo
- * nem carregar os dois de uma vez sem necessidade).
- */
+/** Carregado sob demanda: o `.dic` do pt_BR sozinho tem ~4,5MB. */
 @Injectable({ providedIn: 'root' })
 export class SpellcheckService {
   private readonly http = inject(HttpClient);

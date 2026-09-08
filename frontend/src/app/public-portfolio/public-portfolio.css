@@ -16,13 +16,8 @@
 
 /* ---------- Hero (Theme 01 "Modern SaaS" — decoração via blobs) ---------- */
 
-/* Fundo sólido, não degradê: os dois tons do degradê original (claro ou
-   escuro) eram próximos demais um do outro pra uma faixa alta (o herói
-   cresceu bastante com as seções novas) — aparecia uma faixa/linha visível
-   no meio ao rolar a página em vez de uma transição suave (banding, comum
-   em degradês sutis numa área grande). Mais perceptível no tema escuro, mas
-   existia nos dois. Um fundo sólido resolve nos dois e ainda combina com a
-   estética "terminal" do produto. */
+/* Fundo sólido, não degradê: os dois tons originais eram próximos demais
+   numa área alta, causando banding (faixa visível) ao rolar a página. */
 .hero {
   position: relative;
   overflow: hidden;

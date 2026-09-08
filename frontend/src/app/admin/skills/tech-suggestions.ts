@@ -1,11 +1,6 @@
 import { SkillCategory } from './skill.model';
 
-/**
- * Sugestões de nome por categoria — mesma ideia já usada em localização e
- * links sociais: guia com uma lista conhecida, mas continua um campo de
- * texto livre (datalist, não select), então qualquer tecnologia fora da
- * lista ainda pode ser digitada normalmente.
- */
+/** Sugestões via datalist, não select — qualquer tecnologia fora da lista ainda pode ser digitada. */
 export const TECH_SUGGESTIONS: Record<SkillCategory, string[]> = {
   BACKEND: [
     'Java',

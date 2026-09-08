@@ -3,11 +3,6 @@ import gsap from 'gsap';
 import { Locale, LocaleService } from '../locale.service';
 import { TranslatePipe } from '../translate.pipe';
 
-/**
- * Switch segmentado (estilo iOS) em vez de um botão único que troca de rótulo —
- * mostra os dois idiomas o tempo todo (mais informação, menos "flip seco") e o
- * indicador desliza com uma leve compressão + mola ao trocar.
- */
 @Component({
   selector: 'app-locale-toggle',
   imports: [TranslatePipe],

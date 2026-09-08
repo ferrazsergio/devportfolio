@@ -1,14 +1,4 @@
-/**
- * Reconhecimento de plataforma pelo nome digitado no campo "Links sociais" —
- * troca o ícone genérico (igual pra qualquer link) por um ícone de marca de
- * verdade quando o nome bate com uma plataforma conhecida. Ícones vêm do
- * pacote `simple-icons` (CC0), copiados aqui como dados estáticos — só os
- * ~17 mais relevantes pra um portfólio de desenvolvedor, não o pacote
- * inteiro (que tem milhares).
- *
- * Continua funcionando pra qualquer coisa não reconhecida: o nome digitado
- * sempre é salvo como está, e o ícone genérico entra como fallback.
- */
+/** Ícones do pacote `simple-icons` (CC0), copiados como dados estáticos — só os ~17 mais relevantes, não o pacote inteiro. */
 export interface SocialPlatform {
   key: string;
   label: string;

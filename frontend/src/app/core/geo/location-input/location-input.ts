@@ -7,15 +7,9 @@ import { GeoService } from '../geo.service';
 let nextInstanceId = 0;
 
 /**
- * Substitui o campo de texto livre de localização por país → estado (selects,
- * lista fechada e confiável) → cidade (texto com sugestões da lista do estado,
- * mas ainda editável — algumas cidades pequenas podem não estar no dataset).
- *
- * Compatibilidade: um valor já salvo (string livre antiga) é mostrado como
- * dica ("valor atual: ...") e continua sendo o valor do campo até o usuário
- * de fato interagir com os selects — só então um novo valor combinado
- * substitui o antigo. Nunca tentamos "adivinhar" o país/cidade a partir do
- * texto antigo, pra não mostrar uma seleção errada com confiança falsa.
+ * Um valor já salvo (string livre antiga) só aparece como dica — nunca
+ * tentamos adivinhar o país/cidade a partir dele, pra não mostrar uma
+ * seleção errada com confiança falsa.
  */
 @Component({
   selector: 'app-location-input',
@@ -78,10 +72,6 @@ export class LocationInputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  setDisabledState(): void {
-    // Não há necessidade de desabilitar visualmente os selects aqui hoje.
   }
 
   protected onCountryChange(code: string): void {
