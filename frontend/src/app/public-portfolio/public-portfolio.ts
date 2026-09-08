@@ -187,7 +187,11 @@ export class PublicPortfolioComponent implements OnDestroy {
   }
 
   private setupMagneticHover(root: HTMLElement): void {
-    const magneticTargets = root.querySelectorAll('.hero__share .btn-primary, .hero__cta .btn');
+    // Só o botão isolado de compartilhar recebe o efeito magnético — os
+    // botões de contato (WhatsApp/email) ficam próximos um do outro, e o
+    // deslocamento em direção ao cursor fazia um invadir o espaço do outro
+    // visualmente ao passar o mouse perto da borda entre os dois.
+    const magneticTargets = root.querySelectorAll('.hero__share .btn-primary');
     magneticTargets.forEach((target) =>
       this.magneticCleanups.push(createMagneticHover(target as HTMLElement, 0.3)),
     );
